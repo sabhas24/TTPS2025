@@ -3,7 +3,7 @@ package ttps.grupo2.appmascotas.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Admin extends UsuarioBase{
+public class Admin extends Usuario{
     private List<Usuario> usuarios;
     private List<Mascota> publicaciones;
 
@@ -13,8 +13,9 @@ public class Admin extends UsuarioBase{
         publicaciones = new ArrayList<>();
     }
 
-    public Admin(String email, String contraseña) {
-        super(email, contraseña);
+    public Admin(String nombre, String apellido, String email, String contraseña, String telefono, String barrio, String ciudad, String foto) {
+
+        super(nombre, apellido, email, contraseña, telefono, barrio, ciudad, foto);
         usuarios = new ArrayList<>();
         publicaciones = new ArrayList<>();
     }

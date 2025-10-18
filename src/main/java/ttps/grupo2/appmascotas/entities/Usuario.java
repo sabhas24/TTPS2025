@@ -3,7 +3,10 @@ package ttps.grupo2.appmascotas.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Usuario extends UsuarioBase{
+public class Usuario{
+    private Long id;
+    private String email;
+    private String contraseña;
     private String nombre;
     private String apellido;
     private String telefono;
@@ -17,7 +20,6 @@ public class Usuario extends UsuarioBase{
     private String foto; //¿Qué tipo de dato usamos para una foto?
 
     public Usuario(){
-        super();
         this.puntos = 0;
         this.medallas = new ArrayList<>();
         this.mascotasPublicadas = new ArrayList<>();
@@ -26,14 +28,14 @@ public class Usuario extends UsuarioBase{
     }
 
     public Usuario(String nombre, String apellido, String email, String contraseña, String telefono, String barrio, String ciudad, String foto) {
-        super(email, contraseña);
-
         puntos = 0;
         medallas = new ArrayList<>();
         mascotasPublicadas = new ArrayList<>();
         avistamientosReportados = new ArrayList<>();
         habilitado = true;
 
+        this.email = email;
+        this.contraseña = contraseña;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
@@ -43,6 +45,22 @@ public class Usuario extends UsuarioBase{
     }
 
     // Getters y Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
 
     public String getNombre() {
         return nombre;
