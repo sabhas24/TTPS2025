@@ -18,6 +18,7 @@ public class Mascota {
     private LocalDate fechaPublicacion;
     private List<String> fotos;
     private LocalDate fechaAdopcion;
+    private boolean habilitado;
     private Coordenada coordenada;
     private Usuario publicador;
 
@@ -38,6 +39,7 @@ public class Mascota {
         this.fotos = fotos;
         this.coordenada = coordenada;
         this.publicador = publicador;
+        this.habilitado = true;
     }
 
 
@@ -106,6 +108,14 @@ public class Mascota {
 
     public void setFotos(List<String> fotos) {
         this.fotos = fotos;
+    }
+
+    public boolean isHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
     }
 
     public Coordenada getCoordenada() {
