@@ -3,6 +3,7 @@ package ttps.grupo2.appmascotas.persistence.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
+import ttps.grupo2.appmascotas.entities.Usuario;
 import ttps.grupo2.appmascotas.persistence.clasesUtilitarias.EMF;
 
 import java.util.List;
@@ -93,6 +94,7 @@ public class GenericDAOHibernateJPA<T> implements GenericDAO<T>{
         return resultado;
     }
 
+    //Está bien así el get?
     @Override
     public T get(Long id) {
         Query consulta = EMF.getEMF().createEntityManager()
@@ -107,5 +109,4 @@ public class GenericDAOHibernateJPA<T> implements GenericDAO<T>{
         }
         return null;
     }
-
 }

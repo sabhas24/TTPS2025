@@ -1,5 +1,8 @@
 package ttps.grupo2.appmascotas.persistence.clasesUtilitarias;
 
+import ttps.grupo2.appmascotas.persistence.dao.UsuarioDAO;
+import ttps.grupo2.appmascotas.persistence.dao.UsuarioDAOHibernateJPA;
+
 public class factoryDAO {
 
     public static UsuarioDAO getUsuarioDAO() {
