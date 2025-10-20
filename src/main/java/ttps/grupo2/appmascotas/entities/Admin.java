@@ -1,10 +1,17 @@
 package ttps.grupo2.appmascotas.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Admin extends Usuario{
+    // TIENE SENTIDO PERSISTIR ESTA RELACIÓN?
+    @OneToMany
     private List<Usuario> usuarios;
+    @OneToMany
     private List<Mascota> publicaciones;
 
     public Admin() {

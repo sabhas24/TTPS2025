@@ -1,9 +1,14 @@
 package ttps.grupo2.appmascotas.entities;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario{
+    @Id
     private Long id;
     private String email;
     private String contraseña;
@@ -14,10 +19,21 @@ public class Usuario{
     private String ciudad;
     private boolean habilitado;
     private int puntos;
-    private List<Medalla> medallas;
-    private List<Mascota> mascotasPublicadas;
-    private List<Avistamiento> avistamientosReportados;
     private String foto; //¿Qué tipo de dato usamos para una foto?
+
+    @ManyToMany
+    @JoinTable(name="Usuario_Medalla",
+            joinColumns=@JoinColumn(name="Id_Usuario",
+                    referencedColumnName="id"),
+            inverseJoinColumns=@JoinColumn(name="Id_Medalla",
+                    referencedColumnName="id"))
+    private List<Medalla> medallas;
+
+    @OneToMany(mappedBy = "publicador")
+    private List<Mascota> mascotasPublicadas;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Avistamiento> avistamientosReportados;
 
     public Usuario(){
         this.puntos = 0;

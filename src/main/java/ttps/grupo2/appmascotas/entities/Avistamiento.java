@@ -1,9 +1,14 @@
 package ttps.grupo2.appmascotas.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Entity
 public class Avistamiento {
+    @Id
     private Long id;
     private LocalDateTime fecha;
     private Coordenada coordenada;

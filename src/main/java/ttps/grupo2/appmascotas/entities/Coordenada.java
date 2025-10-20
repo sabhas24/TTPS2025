@@ -1,11 +1,15 @@
 package ttps.grupo2.appmascotas.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-// Clase Coordenada
+@Entity
 public class Coordenada {
+    @Id
     private Long id;
     private double latitud;
     private double longitud;

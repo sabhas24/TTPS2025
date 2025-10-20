@@ -1,9 +1,14 @@
 package ttps.grupo2.appmascotas.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.time.LocalDate;
 import java.util.List;
 
+@Entity
 public class Mascota {
+    @Id
     private Long id;
     private String nombre;
     private double tamanio;

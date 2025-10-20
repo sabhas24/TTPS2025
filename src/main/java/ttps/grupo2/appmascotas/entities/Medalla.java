@@ -1,6 +1,11 @@
 package ttps.grupo2.appmascotas.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Medalla {
+    @Id
     private Long id;
     private String nombre;
     private String descripcion;
