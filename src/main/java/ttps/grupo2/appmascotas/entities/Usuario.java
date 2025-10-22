@@ -11,18 +11,43 @@ public class Usuario{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String email;
-    private String contraseña;
-    private String nombre;
-    private String apellido;
-    private String telefono;
-    private String barrio;
-    private String ciudad;
-    private boolean habilitado;
-    private int puntos;
-    private String foto; //¿Qué tipo de dato usamos para una foto?
 
-    @ManyToMany
+    @Column(nullable = false, unique = true, length = 100)
+    private String email;
+
+    @Column(nullable = false, length = 50)
+    private String contraseña;
+
+    @Column(nullable = false, length = 50)
+    private String nombre;
+
+    @Column(nullable = false, length = 50)
+    private String apellido;
+
+    @Column(nullable = false, length = 50)
+    private String telefono;
+
+    @Column(nullable = false, length = 50)
+    private String barrio;
+
+    @Column(nullable = false, length = 50)
+    private String ciudad;
+
+    @Column(nullable = false)
+    private boolean habilitado;
+
+    @Column(nullable = false, length = 50)
+    private int puntos;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private TipoUsuario tipo;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String foto; // almacena Base64
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="Usuario_Medalla",
             joinColumns=@JoinColumn(name="Id_Usuario",
                     referencedColumnName="id"),
@@ -30,10 +55,10 @@ public class Usuario{
                     referencedColumnName="id"))
     private List<Medalla> medallas;
 
-    @OneToMany(mappedBy = "publicador")
+    @OneToMany(mappedBy = "publicador", fetch = FetchType.LAZY)
     private List<Mascota> mascotasPublicadas;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Avistamiento> avistamientosReportados;
 
     public Usuario(){
@@ -42,9 +67,10 @@ public class Usuario{
         this.mascotasPublicadas = new ArrayList<>();
         this.avistamientosReportados = new ArrayList<>();
         this.habilitado = true;
+        this.tipo = TipoUsuario.USUARIO;
     }
 
-    public Usuario(String nombre, String apellido, String email, String contraseña, String telefono, String barrio, String ciudad, String foto) {
+    public Usuario(String nombre, String apellido, String email, String contraseña, String telefono, String barrio, String ciudad, String foto, TipoUsuario tipo) {
         puntos = 0;
         medallas = new ArrayList<>();
         mascotasPublicadas = new ArrayList<>();
@@ -59,6 +85,7 @@ public class Usuario{
         this.barrio = barrio;
         this.ciudad = ciudad;
         this.foto = foto;
+        this.tipo = tipo;
     }
 
     // Getters y Setters

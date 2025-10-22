@@ -1,6 +1,7 @@
 package ttps.grupo2.appmascotas.persistence.implementations;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import ttps.grupo2.appmascotas.entities.Usuario;
 import ttps.grupo2.appmascotas.persistence.clasesUtilitarias.EMF;
 import ttps.grupo2.appmascotas.persistence.dao.UsuarioDAO;

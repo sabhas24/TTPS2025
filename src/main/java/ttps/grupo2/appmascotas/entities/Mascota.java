@@ -1,9 +1,6 @@
 package ttps.grupo2.appmascotas.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +14,7 @@ public class Mascota {
     private double tamanio;
     private String color;
     private String descripcionExtra;
+    @Enumerated(EnumType.STRING)
     private EstadoMascota estado;
     private LocalDate fechaPublicacion;
     private List<String> fotos;
