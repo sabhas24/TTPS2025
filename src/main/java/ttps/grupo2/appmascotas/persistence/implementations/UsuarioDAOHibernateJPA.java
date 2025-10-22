@@ -1,12 +1,13 @@
-package ttps.grupo2.appmascotas.persistence.dao;
+package ttps.grupo2.appmascotas.persistence.implementations;
 
 import jakarta.persistence.EntityManager;
 import ttps.grupo2.appmascotas.entities.Usuario;
 import ttps.grupo2.appmascotas.persistence.clasesUtilitarias.EMF;
+import ttps.grupo2.appmascotas.persistence.dao.UsuarioDAO;
 
 import java.util.List;
 
-public class UsuarioDAOHibernateJPA extends GenericDAOHibernateJPA<Usuario> implements UsuarioDAO{
+public class UsuarioDAOHibernateJPA extends GenericDAOHibernateJPA<Usuario> implements UsuarioDAO {
     public UsuarioDAOHibernateJPA() {
         super(Usuario.class);
     }

@@ -1,15 +1,22 @@
 package ttps.grupo2.appmascotas.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Medalla {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
     private String descripcion;
     private String icono;
+
+    public Medalla(){
+
+    }
 
     public Medalla(Long id, String nombre, String descripcion, String icono) {
         this.id = id;

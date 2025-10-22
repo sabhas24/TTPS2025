@@ -9,6 +9,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
     private String contraseña;
@@ -192,6 +193,10 @@ public class Usuario{
         this.ciudad = ciudad;
         this.foto = foto;
         return this;
+    }
+
+    public void deshabilitarUsuario(){
+        this.habilitado = false;
     }
 
 }

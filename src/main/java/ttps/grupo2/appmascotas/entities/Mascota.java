@@ -1,6 +1,8 @@
 package ttps.grupo2.appmascotas.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.time.LocalDate;
@@ -9,6 +11,7 @@ import java.util.List;
 @Entity
 public class Mascota {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
     private double tamanio;
@@ -141,5 +144,9 @@ public class Mascota {
     // Otros métodos
     public void agregarFoto(String foto) {
         this.fotos.add(foto);
+    }
+
+    public void deshabilitarPublicacion(){
+        this.habilitado = false;
     }
 }

@@ -1,14 +1,14 @@
-package ttps.grupo2.appmascotas.persistence.dao;
+package ttps.grupo2.appmascotas.persistence.implementations;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
-import ttps.grupo2.appmascotas.entities.Usuario;
 import ttps.grupo2.appmascotas.persistence.clasesUtilitarias.EMF;
+import ttps.grupo2.appmascotas.persistence.dao.GenericDAO;
 
 import java.util.List;
 
-public class GenericDAOHibernateJPA<T> implements GenericDAO<T>{
+public class GenericDAOHibernateJPA<T> implements GenericDAO<T> {
     protected Class<T> persistentClass;
 
     public GenericDAOHibernateJPA(Class<T> clase) {
