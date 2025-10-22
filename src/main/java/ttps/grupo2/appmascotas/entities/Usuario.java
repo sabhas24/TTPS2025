@@ -27,20 +27,20 @@ public class Usuario{
     @Column(nullable = false, length = 50)
     private String telefono;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String barrio;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String ciudad;
 
     @Column(nullable = false)
     private boolean habilitado;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private int puntos;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private TipoUsuario tipo;
 
     @Lob

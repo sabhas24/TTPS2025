@@ -1,9 +1,6 @@
 package ttps.grupo2.appmascotas.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,8 +11,14 @@ public class Coordenada {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private double latitud;
+
+    @Column(nullable = false)
     private double longitud;
+
+    @Column(nullable = false, length = 100)
     private String barrio;
 
     public Coordenada() {
