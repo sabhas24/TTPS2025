@@ -113,4 +113,57 @@ public class TestAvistamientoDAO {
         System.out.println("✅ Test testCrearAvistamiento ejecutado correctamente.");
         em.close();
     }
+    @Test
+    public void testActualizarComentarioYRecuperarSiPerdida() {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        // Crear usuario
+        Usuario usuario = new Usuario("Ana", "Gómez", "ana@example.com", "abcd", "2219876543", "Norte", "La Plata", null, TipoUsuario.USUARIO);
+        em.persist(usuario);
+
+        // Coordenada de la mascota
+        Coordenada coordenadaMascota = new Coordenada(-34.922, -57.955, "Norte");
+
+        // Crear mascota en estado PERDIDO_PROPIO
+        Mascota mascota = new Mascota(
+                "Luna", 0.4, "Negra",
+                "Tiene una mancha blanca", EstadoMascota.PERDIDO_PROPIO,
+                LocalDate.now(), new ArrayList<>(List.of("fotoA.jpg")),
+                coordenadaMascota, usuario
+        );
+        em.persist(mascota);
+
+        // Crear avistamiento
+        Avistamiento avistamiento = new Avistamiento(
+                LocalDateTime.now(),
+                new Coordenada(-34.923, -57.956, "Parque"),
+                "Visto en el parque",
+                new ArrayList<>(List.of("fotoB.jpg")),
+                false,
+                mascota,
+                usuario
+        );
+        em.persist(avistamiento);
+
+        em.getTransaction().commit();
+        em.close();
+
+        // Ejecutar método DAO
+        boolean actualizado = dao.actualizarComentarioYRecuperarSiPerdida(avistamiento.getId(), "Ya está en casa");
+
+        assertTrue(actualizado, "El método debe retornar true");
+
+        // Verificar cambios
+        em = emf.createEntityManager();
+        Avistamiento a = em.find(Avistamiento.class, avistamiento.getId());
+        Mascota m = em.find(Mascota.class, mascota.getId());
+
+        assertEquals("Ya está en casa", a.getComentario());
+        assertTrue(a.isEnPosesion(), "El avistamiento debe marcarse como en posesión");
+        assertEquals(EstadoMascota.RECUPERADO, m.getEstado(), "La mascota debe estar en estado RECUPERADO");
+
+        System.out.println("✅ Test testActualizarComentarioYRecuperarSiPerdida ejecutado correctamente.");
+        em.close();
+    }
 }

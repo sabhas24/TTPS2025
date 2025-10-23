@@ -114,7 +114,7 @@ public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
     }
 
     @Override
-    public boolean actualizarAvistamientoYRecuperarMascota(Long avistamientoId, String nuevoComentario) {
+    public boolean actualizarComentarioYRecuperarSiPerdida(Long avistamientoId, String nuevoComentario) {
         EntityManager em = emf.createEntityManager();
 
         try {
@@ -133,9 +133,12 @@ public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
             avistamiento.setEnPosesion(true);
             em.merge(avistamiento);
 
-            // Cambiar estado de la mascota a RECUPERADO
-            mascota.cambiarEstado(EstadoMascota.RECUPERADO);
-            em.merge(mascota);
+            // Cambiar estado de la mascota solo si está perdida
+            EstadoMascota estadoActual = mascota.getEstado();
+            if (estadoActual == EstadoMascota.PERDIDO_PROPIO || estadoActual == EstadoMascota.PERDIDO_AJENO) {
+                mascota.cambiarEstado(EstadoMascota.RECUPERADO);
+                em.merge(mascota);
+            }
 
             em.getTransaction().commit();
             return true;

@@ -20,5 +20,5 @@ public interface AvistamientoDAO {
                               String comentario, List<String> fotos, boolean enPosesion,
                               Mascota mascota, Usuario usuario);
 
-    boolean actualizarAvistamientoYRecuperarMascota(Long avistamientoId, String nuevoComentario);
+    public boolean actualizarComentarioYRecuperarSiPerdida(Long avistamientoId, String nuevoComentario);
 }
