@@ -1,8 +1,10 @@
 package ttps.grupo2.appmascotas.persistence.clasesUtilitarias;
 
 import ttps.grupo2.appmascotas.persistence.dao.CoordenadaDAO;
+import ttps.grupo2.appmascotas.persistence.dao.MascotaDAO;
 import ttps.grupo2.appmascotas.persistence.dao.UsuarioDAO;
 import ttps.grupo2.appmascotas.persistence.implementations.CoordenadaDAOHibernateJPA;
+import ttps.grupo2.appmascotas.persistence.implementations.MascotaDAOHibernateJPA;
 import ttps.grupo2.appmascotas.persistence.implementations.UsuarioDAOHibernateJPA;
 
 public class factoryDAO {
@@ -13,4 +15,5 @@ public class factoryDAO {
     public static CoordenadaDAO getCoordenadaDAO() {
         return new CoordenadaDAOHibernateJPA();
     }
+    public static MascotaDAO getMascotaDAO() { return new MascotaDAOHibernateJPA(); }
 }

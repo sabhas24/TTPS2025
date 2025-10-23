@@ -4,16 +4,16 @@ import ttps.grupo2.appmascotas.entities.Coordenada;
 import ttps.grupo2.appmascotas.entities.EstadoMascota;
 import ttps.grupo2.appmascotas.entities.Mascota;
 import ttps.grupo2.appmascotas.persistence.dao.MascotaDAO;
-import ttps.grupo2.appmascotas.persistence.implementations.MascotaDAOHibernateJPA;
+import ttps.grupo2.appmascotas.persistence.clasesUtilitarias.factoryDAO;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class TestMascotaDAO {
     public static void main(String[] args) {
-        MascotaDAO dao = new MascotaDAOHibernateJPA();
+        MascotaDAO dao = factoryDAO.getMascotaDAO();
 
-        // Crear mascotas
+        //Creacion
         boolean ok1 = dao.crearMascota("Luna", 0.5, "Negro", "Muy juguetona",
                 EstadoMascota.PERDIDO_PROPIO, LocalDate.now(), List.of("foto1.jpg"),
                 new Coordenada(-34.921, -57.954, "Centro"), null);
@@ -30,17 +30,14 @@ public class TestMascotaDAO {
         assert ok2 : "Falló la creación de Max";
         assert ok3 : "Falló la creación de Nina";
 
-        System.out.println("Todas las mascotas fueron creadas y validadas correctamente.");
-
-        // Modificar estado de Nina a ADOPTADO
+        // busqueda y actualizacon
         Mascota nina = dao.buscarPorNombre("Nina", null);
         assert nina != null : "No se encontró a Nina";
 
         nina.cambiarEstado(EstadoMascota.ADOPTADO);
         dao.actualizar(nina);
-        System.out.println("✔ Estado de Nina actualizado a ADOPTADO.");
 
-        // Eliminar a Nina (debería marcar habilitado = false)
+        // elimincaion
         boolean eliminada = dao.eliminar(nina.getId());
         assert eliminada : "Falló la eliminación lógica de Nina";
 
@@ -49,6 +46,7 @@ public class TestMascotaDAO {
         assert !ninaPost.isHabilitado() : "Nina sigue habilitada (debería estar deshabilitada)";
         assert ninaPost.getEstado() == EstadoMascota.ADOPTADO : "Estado incorrecto después de eliminar";
 
-        System.out.println("✔ Nina fue deshabilitada correctamente tras ser adoptada y eliminada.");
+        // Mensaje final si todo pasó correctamente
+        System.out.println("Todos los tests pasaron correctamente.");
     }
 }
