@@ -59,7 +59,28 @@ public class Mascota {
     }
 
     public void cambiarEstado(EstadoMascota nuevoEstado) {
+        // Transición automática según el estado actual
+        if ((this.estado == EstadoMascota.PERDIDO_PROPIO || this.estado == EstadoMascota.PERDIDO_AJENO)
+                && nuevoEstado == EstadoMascota.RECUPERADO) {
+            this.estado = EstadoMascota.RECUPERADO;
+            return;
+        }
+
+        if (this.estado == EstadoMascota.RECUPERADO && nuevoEstado == EstadoMascota.EN_POSESION) {
+            this.estado = EstadoMascota.EN_POSESION;
+            return;
+        }
+
+        if (this.estado == EstadoMascota.EN_ADOPCION && nuevoEstado == EstadoMascota.ADOPTADO) {
+            this.estado = EstadoMascota.ADOPTADO;
+            this.fechaAdopcion = LocalDate.now();
+            return;
+        }
+
+        // Si no aplica transición automática, se fuerza el cambio
         this.estado = nuevoEstado;
+
+        // Registrar fecha de adopción si corresponde
         if (nuevoEstado == EstadoMascota.ADOPTADO) {
             this.fechaAdopcion = LocalDate.now();
         }
