@@ -21,7 +21,7 @@ https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd" version="3.0">
             <!-- Hibernate -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
             <!-- EL CREATE ES SOLO POR AHORA!!!!! DESPUÉS CAMBIAR -->
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
         </properties>

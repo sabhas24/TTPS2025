@@ -1,9 +1,6 @@
 package ttps.grupo2.appmascotas.persistence.dao;
 
-import ttps.grupo2.appmascotas.entities.Coordenada;
-import ttps.grupo2.appmascotas.entities.EstadoMascota;
-import ttps.grupo2.appmascotas.entities.Mascota;
-import ttps.grupo2.appmascotas.entities.Usuario;
+import ttps.grupo2.appmascotas.entities.*;
 
 import java.time.LocalDate;
 import java.util.List;

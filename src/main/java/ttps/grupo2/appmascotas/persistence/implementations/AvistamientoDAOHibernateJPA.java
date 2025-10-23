@@ -1,0 +1,146 @@
+package ttps.grupo2.appmascotas.persistence.implementations;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import ttps.grupo2.appmascotas.entities.*;
+import ttps.grupo2.appmascotas.persistence.dao.AvistamientoDAO;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
+
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("appmascotas");
+
+    @Override
+    public void guardar(Avistamiento avistamiento) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(avistamiento);
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    @Override
+    public Avistamiento buscarPorId(Long id) {
+        EntityManager em = emf.createEntityManager();
+        Avistamiento a = em.find(Avistamiento.class, id);
+        em.close();
+        return a;
+    }
+
+    @Override
+    public List<Avistamiento> listarTodos() {
+        EntityManager em = emf.createEntityManager();
+        List<Avistamiento> lista = em.createQuery("SELECT a FROM Avistamiento a", Avistamiento.class).getResultList();
+        em.close();
+        return lista;
+    }
+
+    @Override
+    public List<Avistamiento> listarPorMascota(Mascota mascota) {
+        EntityManager em = emf.createEntityManager();
+        List<Avistamiento> lista = em.createQuery(
+                        "SELECT a FROM Avistamiento a WHERE a.mascota = :mascota", Avistamiento.class)
+                .setParameter("mascota", mascota)
+                .getResultList();
+        em.close();
+        return lista;
+    }
+
+    @Override
+    public List<Avistamiento> listarPorUsuario(Usuario usuario) {
+        EntityManager em = emf.createEntityManager();
+        List<Avistamiento> lista = em.createQuery(
+                        "SELECT a FROM Avistamiento a WHERE a.usuario = :usuario", Avistamiento.class)
+                .setParameter("usuario", usuario)
+                .getResultList();
+        em.close();
+        return lista;
+    }
+
+    @Override
+    public void actualizar(Avistamiento avistamiento) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(avistamiento);
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    @Override
+    public void eliminar(Long id) {
+        EntityManager em = emf.createEntityManager();
+        Avistamiento a = em.find(Avistamiento.class, id);
+        if (a != null) {
+            em.getTransaction().begin();
+            em.remove(a);
+            em.getTransaction().commit();
+        }
+        em.close();
+    }
+
+    @Override
+    public boolean crearAvistamiento(LocalDateTime fecha, Coordenada coordenada,
+                                     String comentario, List<String> fotos, boolean enPosesion,
+                                     Mascota mascota, Usuario usuario) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            Avistamiento avistamiento = new Avistamiento(fecha, coordenada, comentario, fotos, enPosesion, mascota, usuario);
+
+            em.getTransaction().begin();
+
+            // Persistir el avistamiento
+            em.persist(avistamiento);
+
+            // Actualizar la mascota con el nuevo avistamiento
+            mascota.agregarAvistamiento(avistamiento);
+            em.merge(mascota);
+
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public boolean actualizarAvistamientoYRecuperarMascota(Long avistamientoId, String nuevoComentario) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            Avistamiento avistamiento = em.find(Avistamiento.class, avistamientoId);
+            if (avistamiento == null) return false;
+
+            Mascota mascota = avistamiento.getMascota();
+            if (mascota == null) return false;
+
+            em.getTransaction().begin();
+
+            // Actualizar comentario del avistamiento
+            avistamiento.setComentario(nuevoComentario);
+
+            // Marcar como en posesión
+            avistamiento.setEnPosesion(true);
+            em.merge(avistamiento);
+
+            // Cambiar estado de la mascota a RECUPERADO
+            mascota.cambiarEstado(EstadoMascota.RECUPERADO);
+            em.merge(mascota);
+
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            em.close();
+        }
+    }
+
+}

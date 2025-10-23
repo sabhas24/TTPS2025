@@ -47,7 +47,9 @@ public class MascotaDAOHibernateJPA implements MascotaDAO {
         EntityManager em = emf.createEntityManager();
 
         List<Mascota> mascotas = em.createQuery(
-                        "SELECT m FROM Mascota m WHERE m.habilitado = true", Mascota.class)
+                        "SELECT m FROM Mascota m WHERE m.estado NOT IN (:estado1, :estado2)", Mascota.class)
+                .setParameter("estado1", EstadoMascota.ADOPTADO)
+                .setParameter("estado2", EstadoMascota.EN_POSESION)
                 .getResultList();
 
         em.close();

@@ -2,6 +2,7 @@ package ttps.grupo2.appmascotas.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,6 +32,10 @@ public class Mascota {
 
     @ManyToOne
     private Usuario publicador;
+
+    // ✅ Nueva relación con Avistamiento
+    @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Avistamiento> avistamientos = new ArrayList<>();
 
     // Constructor vacío
     public Mascota() {
@@ -150,6 +155,14 @@ public class Mascota {
         this.publicador = publicador;
     }
 
+    public List<Avistamiento> getAvistamientos() {
+        return avistamientos;
+    }
+
+    public void setAvistamientos(List<Avistamiento> avistamientos) {
+        this.avistamientos = avistamientos;
+    }
+
     // Otros métodos
     public void agregarFoto(String foto) {
         this.fotos.add(foto);
@@ -157,5 +170,12 @@ public class Mascota {
 
     public void deshabilitarPublicacion() {
         this.habilitado = false;
+    }
+
+    public void agregarAvistamiento(Avistamiento avistamiento) {
+        if (this.avistamientos == null) {
+            this.avistamientos = new ArrayList<>();
+        }
+        this.avistamientos.add(avistamiento);
     }
 }
