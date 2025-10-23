@@ -1,10 +1,6 @@
 package ttps.grupo2.appmascotas.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,20 +9,32 @@ public class Avistamiento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private LocalDateTime fecha;
+
+    @Embedded
     private Coordenada coordenada;
+
     private String comentario;
+
+    @ElementCollection
     private List<String> fotos;
+
     private boolean enPosesion;
+
+    @ManyToOne
     private Mascota mascota;
+
+    @ManyToOne
     private Usuario usuario;
 
-    // Constructor
+    // Constructor vacío
     public Avistamiento() {
     }
 
+    // Constructor completo
     public Avistamiento(LocalDateTime fecha, Coordenada coordenada,
-                        String comentario, List<String> foto, boolean enPosesion,
+                        String comentario, List<String> fotos, boolean enPosesion,
                         Mascota mascota, Usuario usuario) {
         this.fecha = fecha;
         this.coordenada = coordenada;
@@ -38,7 +46,6 @@ public class Avistamiento {
     }
 
     // Getters y Setters
-
 
     public Long getId() {
         return id;
@@ -72,7 +79,7 @@ public class Avistamiento {
         return fotos;
     }
 
-    public void setFoto(List<String> fotos) {
+    public void setFotos(List<String> fotos) {
         this.fotos = fotos;
     }
 

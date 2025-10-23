@@ -1,7 +1,6 @@
 package ttps.grupo2.appmascotas.entities;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -10,23 +9,34 @@ public class Mascota {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nombre;
     private double tamanio;
     private String color;
     private String descripcionExtra;
+
     @Enumerated(EnumType.STRING)
     private EstadoMascota estado;
+
     private LocalDate fechaPublicacion;
+
+    @ElementCollection
     private List<String> fotos;
+
     private LocalDate fechaAdopcion;
     private boolean habilitado;
+
+    @Embedded
     private Coordenada coordenada;
+
+    @ManyToOne
     private Usuario publicador;
 
-    // Constructor
+    // Constructor vacío
     public Mascota() {
     }
 
+    // Constructor completo
     public Mascota(String nombre, double tamanio, String color,
                    String descripcionExtra, EstadoMascota estado,
                    LocalDate fechaPublicacion, List<String> fotos,
@@ -43,13 +53,14 @@ public class Mascota {
         this.habilitado = true;
     }
 
-
     public void cambiarEstado(EstadoMascota nuevoEstado) {
         this.estado = nuevoEstado;
         if (nuevoEstado == EstadoMascota.ADOPTADO) {
             this.fechaAdopcion = LocalDate.now();
         }
     }
+
+    // Getters y Setters
 
     public Long getId() {
         return id;
@@ -85,6 +96,10 @@ public class Mascota {
 
     public void setDescripcionExtra(String descripcionExtra) {
         this.descripcionExtra = descripcionExtra;
+    }
+
+    public EstadoMascota getEstado() {
+        return estado;
     }
 
     public LocalDate getFechaPublicacion() {
@@ -135,16 +150,12 @@ public class Mascota {
         this.publicador = publicador;
     }
 
-    public EstadoMascota getEstado() {
-        return estado;
-    }
-
     // Otros métodos
     public void agregarFoto(String foto) {
         this.fotos.add(foto);
     }
 
-    public void deshabilitarPublicacion(){
+    public void deshabilitarPublicacion() {
         this.habilitado = false;
     }
 }
