@@ -11,7 +11,7 @@ import java.util.List;
 
 public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
 
-    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("appmascotas");
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("unlp");
 
     @Override
     public void guardar(Avistamiento avistamiento) {
@@ -88,16 +88,20 @@ public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
         EntityManager em = emf.createEntityManager();
 
         try {
-            Avistamiento avistamiento = new Avistamiento(fecha, coordenada, comentario, fotos, enPosesion, mascota, usuario);
-
             em.getTransaction().begin();
+
+            // Reatachar entidades para que estén en estado managed
+            Mascota mascotaManaged = em.find(Mascota.class, mascota.getId());
+            Usuario usuarioManaged = em.find(Usuario.class, usuario.getId());
+
+            Avistamiento avistamiento = new Avistamiento(fecha, coordenada, comentario, fotos, enPosesion, mascotaManaged, usuarioManaged);
 
             // Persistir el avistamiento
             em.persist(avistamiento);
 
-            // Actualizar la mascota con el nuevo avistamiento
-            mascota.agregarAvistamiento(avistamiento);
-            em.merge(mascota);
+            // Actualizar relaciones
+            mascotaManaged.agregarAvistamiento(avistamiento);
+            usuarioManaged.agregarAvistamiento(avistamiento);
 
             em.getTransaction().commit();
             return true;

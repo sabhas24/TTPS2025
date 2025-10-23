@@ -206,8 +206,13 @@ public class Usuario{
     }
 
     public void agregarAvistamiento(Avistamiento avistamiento) {
+        if (this.avistamientosReportados == null) {
+            this.avistamientosReportados = new ArrayList<>();
+        }
         this.avistamientosReportados.add(avistamiento);
+        avistamiento.setUsuario(this); // 🔥 clave para mantener la relación sincronizada
     }
+
     public void sumarPuntos(int puntos) {
         this.puntos += puntos;
     }
