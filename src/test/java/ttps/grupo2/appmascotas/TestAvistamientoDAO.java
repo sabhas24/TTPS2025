@@ -4,10 +4,10 @@ import org.junit.jupiter.api.*;
 import ttps.grupo2.appmascotas.entities.*;
 import ttps.grupo2.appmascotas.persistence.dao.AvistamientoDAO;
 import ttps.grupo2.appmascotas.persistence.implementations.AvistamientoDAOHibernateJPA;
+import ttps.grupo2.appmascotas.persistence.clasesUtilitarias.EMF;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,7 +23,8 @@ public class TestAvistamientoDAO {
 
     @BeforeAll
     public static void init() {
-        emf = Persistence.createEntityManagerFactory("unlp");
+        System.setProperty("persistence.unit", "unlp-test");
+        emf = EMF.getEMF();
     }
 
     @BeforeEach
@@ -33,7 +34,7 @@ public class TestAvistamientoDAO {
 
     @AfterAll
     public static void tearDown() {
-        if (emf != null) emf.close();
+        EMF.close();
     }
 
     @Test
@@ -110,7 +111,6 @@ public class TestAvistamientoDAO {
 
         assertNotNull(u.getAvistamientosReportados());
         assertTrue(u.getAvistamientosReportados().contains(a), "El usuario debe tener el avistamiento reportado");
-        System.out.println("✅ Test testCrearAvistamiento ejecutado correctamente.");
         em.close();
     }
     @Test
@@ -163,7 +163,6 @@ public class TestAvistamientoDAO {
         assertTrue(a.isEnPosesion(), "El avistamiento debe marcarse como en posesión");
         assertEquals(EstadoMascota.RECUPERADO, m.getEstado(), "La mascota debe estar en estado RECUPERADO");
 
-        System.out.println("✅ Test testActualizarComentarioYRecuperarSiPerdida ejecutado correctamente.");
         em.close();
     }
 }

@@ -4,6 +4,8 @@ import ttps.grupo2.appmascotas.persistence.dao.AvistamientoDAO;
 import ttps.grupo2.appmascotas.persistence.dao.CoordenadaDAO;
 import ttps.grupo2.appmascotas.persistence.dao.MascotaDAO;
 import ttps.grupo2.appmascotas.persistence.dao.UsuarioDAO;
+import ttps.grupo2.appmascotas.persistence.dao.MedallaDAO;
+import ttps.grupo2.appmascotas.persistence.dao.RankingDAO;
 import ttps.grupo2.appmascotas.persistence.implementations.AvistamientoDAOHibernateJPA;
 import ttps.grupo2.appmascotas.persistence.implementations.CoordenadaDAOHibernateJPA;
 import ttps.grupo2.appmascotas.persistence.implementations.MascotaDAOHibernateJPA;
@@ -19,5 +21,7 @@ public class factoryDAO {
     }
     public static MascotaDAO getMascotaDAO() { return new MascotaDAOHibernateJPA(); }
     public static AvistamientoDAO getAvistamientoDAO() { return new AvistamientoDAOHibernateJPA(); }
+    public static MedallaDAO getMedallaDAO() { return new ttps.grupo2.appmascotas.persistence.implementations.MedallaDAOHibernateJPA(); }
+    public static RankingDAO getRankingDAO() { return new ttps.grupo2.appmascotas.persistence.implementations.RankingDAOHibernateJPA(); }
 
 }

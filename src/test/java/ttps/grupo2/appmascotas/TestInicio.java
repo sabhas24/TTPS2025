@@ -1,12 +1,16 @@
 package ttps.grupo2.appmascotas;
 
-import jakarta.persistence.*;
+import ttps.grupo2.appmascotas.persistence.clasesUtilitarias.EMF;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 
 public class TestInicio {
     public static void main(String[] args) throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver"); // fuerza carga del driver
+        // Forzar carga del driver si fuera necesario
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("unlp");
+        // Usar EMF centralizado
+        EntityManagerFactory emf = EMF.getEMF();
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
@@ -14,7 +18,7 @@ public class TestInicio {
         em.getTransaction().commit();
 
         em.close();
-        emf.close();
+        EMF.close();
 
         System.out.println("Conexión exitosa con la base de datos.");
     }
