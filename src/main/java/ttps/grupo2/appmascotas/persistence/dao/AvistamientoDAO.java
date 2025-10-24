@@ -15,7 +15,7 @@ public interface AvistamientoDAO {
     List<Avistamiento> listarPorMascota(Mascota mascota);
     List<Avistamiento> listarPorUsuario(Usuario usuario);
     void actualizar(Avistamiento avistamiento);
-    void eliminar(Long id);
+    boolean eliminar(Long id);
     boolean crearAvistamiento(LocalDateTime fecha, Coordenada coordenada,
                               String comentario, List<String> fotos, boolean enPosesion,
                               Mascota mascota, Usuario usuario);

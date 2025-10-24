@@ -70,16 +70,27 @@ public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
     }
 
     @Override
-    public void eliminar(Long id) {
+    public boolean eliminar(Long id) {
         EntityManager em = emf.createEntityManager();
-        Avistamiento a = em.find(Avistamiento.class, id);
-        if (a != null) {
+
+        try {
+            Avistamiento a = em.find(Avistamiento.class, id);
+            if (a == null) return false;
+
             em.getTransaction().begin();
-            em.remove(a);
+            a.setHabilitado(false);
+            em.merge(a);
             em.getTransaction().commit();
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            em.close();
         }
-        em.close();
     }
+
 
     @Override
     public boolean crearAvistamiento(LocalDateTime fecha, Coordenada coordenada,
