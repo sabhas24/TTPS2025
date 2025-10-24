@@ -1,7 +1,6 @@
 package ttps.grupo2.appmascotas.persistence.implementations;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import ttps.grupo2.appmascotas.entities.*;
 import ttps.grupo2.appmascotas.persistence.dao.AvistamientoDAO;
 import ttps.grupo2.appmascotas.persistence.clasesUtilitarias.EMF;
@@ -69,7 +68,7 @@ public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
 
     @Override
     public boolean eliminar(Long id) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = EMF.getEMF().createEntityManager();
 
         try {
             Avistamiento a = em.find(Avistamiento.class, id);
