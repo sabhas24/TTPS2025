@@ -113,8 +113,13 @@ Expected output:
 
 ## Additional Notes
 
-### Java Version
-The project requires Java 21 according to pom.xml. The current runner has Java 17, which will cause compilation errors. This is a separate issue from the H2 driver problem and should be addressed separately.
+### Java Version Requirements
+The project requires Java 21 according to pom.xml. Ensure you have Java 21 installed and configured if you encounter compilation errors. You can check your Java version with:
+```bash
+java -version
+```
+
+If needed, install Java 21 or update the pom.xml to match your Java version.
 
 ### Existing Tests
 The existing tests (TestAvistamientoDAO, TestMascotaDAO) currently use the 'unlp' persistence unit (MySQL). These can be updated to use 'unlp-test' if desired for faster test execution without MySQL dependency.
