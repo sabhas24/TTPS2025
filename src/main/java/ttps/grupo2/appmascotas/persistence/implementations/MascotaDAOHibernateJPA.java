@@ -3,12 +3,12 @@ package ttps.grupo2.appmascotas.persistence.implementations;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.Persistence;
 import ttps.grupo2.appmascotas.entities.Coordenada;
 import ttps.grupo2.appmascotas.entities.EstadoMascota;
 import ttps.grupo2.appmascotas.entities.Mascota;
 import ttps.grupo2.appmascotas.entities.Usuario;
 import ttps.grupo2.appmascotas.persistence.dao.MascotaDAO;
+import ttps.grupo2.appmascotas.persistence.clasesUtilitarias.EMF;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.Locale;
 
 public class MascotaDAOHibernateJPA implements MascotaDAO {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("unlp");
+    private EntityManagerFactory emf = EMF.getEMF();
 
     @Override
     public void guardar(Mascota mascota) {
@@ -140,4 +140,3 @@ public class MascotaDAOHibernateJPA implements MascotaDAO {
 
 
 }
-

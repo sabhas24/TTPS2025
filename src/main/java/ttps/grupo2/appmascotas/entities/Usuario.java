@@ -198,7 +198,16 @@ public class Usuario{
     // Métodos adicionales
 
     public void agregarMedalla(Medalla medalla) {
-        this.medallas.add(medalla);
+        if (this.medallas == null) this.medallas = new java.util.ArrayList<>();
+        if (!this.medallas.contains(medalla)) {
+            this.medallas.add(medalla);
+        }
+        if (medalla != null) {
+            if (medalla.getUsuarios() == null) medalla.setUsuarios(new java.util.ArrayList<>());
+            if (!medalla.getUsuarios().contains(this)) {
+                medalla.getUsuarios().add(this);
+            }
+        }
     }
 
     public void agregarMascotaPublicada(Mascota mascota) {

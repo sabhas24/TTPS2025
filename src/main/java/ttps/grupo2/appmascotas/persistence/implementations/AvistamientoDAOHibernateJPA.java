@@ -2,20 +2,18 @@ package ttps.grupo2.appmascotas.persistence.implementations;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import ttps.grupo2.appmascotas.entities.*;
 import ttps.grupo2.appmascotas.persistence.dao.AvistamientoDAO;
+import ttps.grupo2.appmascotas.persistence.clasesUtilitarias.EMF;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
 
-    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("unlp");
-
     @Override
     public void guardar(Avistamiento avistamiento) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = EMF.getEMF().createEntityManager();
         em.getTransaction().begin();
         em.persist(avistamiento);
         em.getTransaction().commit();
@@ -24,7 +22,7 @@ public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
 
     @Override
     public Avistamiento buscarPorId(Long id) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = EMF.getEMF().createEntityManager();
         Avistamiento a = em.find(Avistamiento.class, id);
         em.close();
         return a;
@@ -32,7 +30,7 @@ public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
 
     @Override
     public List<Avistamiento> listarTodos() {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = EMF.getEMF().createEntityManager();
         List<Avistamiento> lista = em.createQuery("SELECT a FROM Avistamiento a", Avistamiento.class).getResultList();
         em.close();
         return lista;
@@ -40,7 +38,7 @@ public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
 
     @Override
     public List<Avistamiento> listarPorMascota(Mascota mascota) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = EMF.getEMF().createEntityManager();
         List<Avistamiento> lista = em.createQuery(
                         "SELECT a FROM Avistamiento a WHERE a.mascota = :mascota", Avistamiento.class)
                 .setParameter("mascota", mascota)
@@ -51,7 +49,7 @@ public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
 
     @Override
     public List<Avistamiento> listarPorUsuario(Usuario usuario) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = EMF.getEMF().createEntityManager();
         List<Avistamiento> lista = em.createQuery(
                         "SELECT a FROM Avistamiento a WHERE a.usuario = :usuario", Avistamiento.class)
                 .setParameter("usuario", usuario)
@@ -62,7 +60,7 @@ public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
 
     @Override
     public void actualizar(Avistamiento avistamiento) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = EMF.getEMF().createEntityManager();
         em.getTransaction().begin();
         em.merge(avistamiento);
         em.getTransaction().commit();
@@ -96,7 +94,7 @@ public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
     public boolean crearAvistamiento(LocalDateTime fecha, Coordenada coordenada,
                                      String comentario, List<String> fotos, boolean enPosesion,
                                      Mascota mascota, Usuario usuario) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = EMF.getEMF().createEntityManager();
 
         try {
             em.getTransaction().begin();
@@ -126,7 +124,7 @@ public class AvistamientoDAOHibernateJPA implements AvistamientoDAO {
 
     @Override
     public boolean actualizarComentarioYRecuperarSiPerdida(Long avistamientoId, String nuevoComentario) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = EMF.getEMF().createEntityManager();
 
         try {
             Avistamiento avistamiento = em.find(Avistamiento.class, avistamientoId);
