@@ -17,6 +17,8 @@ public class Avistamiento {
 
     private String comentario;
 
+    private boolean habilitado;
+
     @ElementCollection
     private List<String> fotos;
 
@@ -43,6 +45,7 @@ public class Avistamiento {
         this.enPosesion = enPosesion;
         this.mascota = mascota;
         this.usuario = usuario;
+        this.habilitado = true;
     }
 
     // Getters y Setters
@@ -105,5 +108,13 @@ public class Avistamiento {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public boolean isHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
     }
 }

@@ -165,4 +165,50 @@ public class TestAvistamientoDAO {
 
         em.close();
     }
+    @Test
+    public void testEliminarAvistamiento() {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        // Crear usuario
+        Usuario usuario = new Usuario("Carlos", "López", "carlos@example.com", "pass", "2215555555", "Sur", "La Plata", null, TipoUsuario.USUARIO);
+        em.persist(usuario);
+
+        // Crear mascota
+        Mascota mascota = new Mascota(
+                "Rocky", 0.6, "Gris",
+                "Tiene una cicatriz en la pata", EstadoMascota.PERDIDO_AJENO,
+                LocalDate.now(), new ArrayList<>(List.of("fotoX.jpg")),
+                new Coordenada(-34.924, -57.957, "Sur"), usuario
+        );
+        em.persist(mascota);
+
+        // Crear avistamiento
+        Avistamiento avistamiento = new Avistamiento(
+                LocalDateTime.now(),
+                new Coordenada(-34.925, -57.958, "Estación"),
+                "Lo vi cerca de la estación",
+                new ArrayList<>(List.of("fotoY.jpg")),
+                false,
+                mascota,
+                usuario
+        );
+        em.persist(avistamiento);
+
+        em.getTransaction().commit();
+        em.close();
+
+        // Ejecutar método eliminar
+        boolean eliminado = dao.eliminar(avistamiento.getId());
+        assertTrue(eliminado, "El método debe retornar true al deshabilitar el avistamiento");
+
+        // Verificar que el avistamiento sigue existiendo pero está deshabilitado
+        em = emf.createEntityManager();
+        Avistamiento a = em.find(Avistamiento.class, avistamiento.getId());
+        assertNotNull(a, "El avistamiento debe seguir existiendo en la base");
+        assertFalse(a.isHabilitado(), "El avistamiento debe estar deshabilitado");
+
+        System.out.println("✅ Test testEliminarAvistamiento ejecutado correctamente.");
+        em.close();
+    }
 }
