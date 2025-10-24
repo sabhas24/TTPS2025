@@ -28,12 +28,16 @@ public class TestH2Connection {
             
             // Verify we can execute a simple query
             em.getTransaction().begin();
-            Object result = em.createNativeQuery("SELECT 1").getSingleResult();
-            em.getTransaction().commit();
-            
-            assertNotNull(result, "Query should return a result");
-            
-            System.out.println("✅ H2 Driver loaded successfully for unlp-test persistence unit");
+            try {
+                Object result = em.createNativeQuery("SELECT 1").getSingleResult();
+                em.getTransaction().commit();
+                assertNotNull(result, "Query should return a result");
+            } catch (Exception e) {
+                if (em.getTransaction().isActive()) {
+                    em.getTransaction().rollback();
+                }
+                throw e;
+            }
             
         } catch (Exception e) {
             fail("Failed to create EntityManagerFactory or execute query: " + e.getMessage());
