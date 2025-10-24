@@ -16,11 +16,10 @@ public class MedallaDAOHibernateJPA extends GenericDAOHibernateJPA<Medalla> impl
     @Override
     public Medalla getByNombre(String nombre) {
         try (EntityManager em = EMF.getEMF().createEntityManager()) {
-            List<Medalla> resultado = em.createQuery("SELECT m FROM Medalla m WHERE m.nombre = :nombre", Medalla.class)
+            Medalla resultado = em.createQuery("SELECT m FROM Medalla m WHERE m.nombre = :nombre", Medalla.class)
                     .setParameter("nombre", nombre)
-                    .setMaxResults(1)
-                    .getResultList();
-            return resultado.stream().findFirst().orElse(null);
+                    .getSingleResult();
+            return resultado;
         } catch (Exception e) {
             return null;
         }
