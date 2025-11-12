@@ -199,4 +199,8 @@ public class Mascota {
         }
         this.avistamientos.add(avistamiento);
     }
+
+    public void setEstado(EstadoMascota estadoMascota) {
+        this.estado = estadoMascota;
+    }
 }

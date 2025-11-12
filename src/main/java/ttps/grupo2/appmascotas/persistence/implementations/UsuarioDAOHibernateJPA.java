@@ -12,7 +12,7 @@ public class UsuarioDAOHibernateJPA extends GenericDAOHibernateJPA<Usuario> impl
     public UsuarioDAOHibernateJPA() {
         super(Usuario.class);
     }
-
+    
     @Override
     public Usuario getByEmail(String mail) {
         EntityManager em = EMF.getEMF().createEntityManager();

@@ -6,7 +6,9 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 import ttps.grupo2.appmascotas.entities.Mascota;
 import ttps.grupo2.appmascotas.entities.EstadoMascota;
+import ttps.grupo2.appmascotas.entities.Usuario;
 import ttps.grupo2.appmascotas.repositories.MascotaRepository;
+import ttps.grupo2.appmascotas.repositories.UsuarioRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,10 +19,21 @@ public class MascotaService {
     @Autowired
     private MascotaRepository mascotaRepository;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+
     // Crear nueva mascota
     public Mascota publicarMascota(Mascota mascota) {
+        Long idUsuario = mascota.getPublicador().getId();
+        Usuario publicador = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+
+        mascota.setPublicador(publicador);
+        mascota.setEstado(EstadoMascota.PERDIDO_PROPIO);
         mascota.setFechaPublicacion(LocalDate.now());
         mascota.setHabilitado(true);
+
         return mascotaRepository.save(mascota);
     }
 
