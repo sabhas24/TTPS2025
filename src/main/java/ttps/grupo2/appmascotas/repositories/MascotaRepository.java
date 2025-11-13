@@ -22,4 +22,6 @@ public interface MascotaRepository extends JpaRepository<Mascota, Long> {
 
     // ✅ Listar mascotas por estado y habilitación
     List<Mascota> findByEstadoAndHabilitadoTrue(EstadoMascota estado);
+
+    List<Mascota> findByPublicadorIdAndHabilitadoTrue(Long publicadorId);
 }

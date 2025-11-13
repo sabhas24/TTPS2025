@@ -1,5 +1,10 @@
 package ttps.grupo2.appmascotas.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +48,12 @@ public class MascotaController {
         return mascotaService.listarMascotasPerdidas();
     }
 
-    @GetMapping("/usuario/{usuarioId}")
-    public List<Mascota> listarPorUsuario(@PathVariable Long usuarioId) {
-        return mascotaService.listarPorUsuario(usuarioId);
+    @Operation(summary = "Listar mascotas habilitadas por usuario")
+    @ApiResponse(responseCode = "200", description = "Mascotas encontradas",
+            content = @Content(mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = Mascota.class))))
+    @GetMapping("/mascota/usuario/{id}")
+    public List<Mascota> listarPorUsuario(@PathVariable Long id) {
+        return mascotaService.listarPorUsuario(id);
     }
 }

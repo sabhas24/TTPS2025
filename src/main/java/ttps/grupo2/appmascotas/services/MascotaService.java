@@ -9,6 +9,7 @@ import ttps.grupo2.appmascotas.entities.EstadoMascota;
 import ttps.grupo2.appmascotas.entities.Usuario;
 import ttps.grupo2.appmascotas.repositories.MascotaRepository;
 import ttps.grupo2.appmascotas.repositories.UsuarioRepository;
+import ttps.grupo2.appmascotas.validations.MascotaValidator;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,9 +23,13 @@ public class MascotaService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private MascotaValidator mascotaValidator;
 
     // Crear nueva mascota
     public Mascota publicarMascota(Mascota mascota) {
+        mascotaValidator.validar(mascota);
+
         Long idUsuario = mascota.getPublicador().getId();
         Usuario publicador = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
@@ -37,24 +42,41 @@ public class MascotaService {
         return mascotaRepository.save(mascota);
     }
 
-    // Editar mascota
+    // Actualizar macota
     public Mascota editarMascota(Long id, Mascota datos) {
         Mascota mascota = mascotaRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mascota no encontrada"));
 
+        // No se puede editar si está deshabilitada
+        if (!mascota.isHabilitado()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No se puede editar una mascota deshabilitada");
+        }
+
+        // Validaciones sobre los nuevos datos
+        mascotaValidator.validarActualizacion(datos, mascota);
+
+        // 🛠️ Actualizar campos permitidos
         mascota.setNombre(datos.getNombre());
         mascota.setColor(datos.getColor());
         mascota.setTamanio(datos.getTamanio());
         mascota.setDescripcionExtra(datos.getDescripcionExtra());
         mascota.setCoordenada(datos.getCoordenada());
         mascota.setFotos(datos.getFotos());
+
         return mascotaRepository.save(mascota);
     }
 
-    // Deshabilitar publicación
+    //Eliminar mascota "solo la deshabilita"
     public void deshabilitarMascota(Long id) {
         Mascota mascota = mascotaRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mascota no encontrada"));
+
+        // Validación: ya está deshabilitada
+        if (!mascota.isHabilitado()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La mascota ya está deshabilitada");
+        }
+
+        // Deshabilitar y guardar
         mascota.deshabilitarPublicacion();
         mascotaRepository.save(mascota);
     }
@@ -74,6 +96,6 @@ public class MascotaService {
 
     // Listar mascotas por usuario
     public List<Mascota> listarPorUsuario(Long usuarioId) {
-        return mascotaRepository.findByPublicadorId(usuarioId);
+        return mascotaRepository.findByPublicadorIdAndHabilitadoTrue(usuarioId);
     }
 }
