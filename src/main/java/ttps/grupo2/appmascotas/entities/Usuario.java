@@ -242,4 +242,7 @@ public class Usuario{
         this.habilitado = false;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
