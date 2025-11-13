@@ -52,7 +52,7 @@ public class MascotaController {
     @ApiResponse(responseCode = "200", description = "Mascotas encontradas",
             content = @Content(mediaType = "application/json",
                     array = @ArraySchema(schema = @Schema(implementation = Mascota.class))))
-    @GetMapping("/mascota/usuario/{id}")
+    @GetMapping("/usuario/{id}")
     public List<Mascota> listarPorUsuario(@PathVariable Long id) {
         return mascotaService.listarPorUsuario(id);
     }
