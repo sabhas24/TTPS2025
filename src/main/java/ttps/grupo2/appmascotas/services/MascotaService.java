@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
+import ttps.grupo2.appmascotas.DTOs.MascotasDTOs.MascotaCreateRequestDTO;
+import ttps.grupo2.appmascotas.DTOs.MascotasDTOs.MascotaUpdateRequestDTO;
+import ttps.grupo2.appmascotas.DTOs.MascotasDTOs.MascotaResponseDTO;
 import ttps.grupo2.appmascotas.entities.Mascota;
 import ttps.grupo2.appmascotas.entities.EstadoMascota;
 import ttps.grupo2.appmascotas.entities.Usuario;
@@ -27,75 +30,105 @@ public class MascotaService {
     private MascotaValidator mascotaValidator;
 
     // Crear nueva mascota
-    public Mascota publicarMascota(Mascota mascota) {
-        mascotaValidator.validar(mascota);
-
-        Long idUsuario = mascota.getPublicador().getId();
-        Usuario publicador = usuarioRepository.findById(idUsuario)
+    public MascotaResponseDTO publicarMascota(MascotaCreateRequestDTO dto) {
+        Usuario publicador = usuarioRepository.findById(dto.getPublicadorId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
 
-        mascota.setPublicador(publicador);
+        Mascota mascota = convertirDesdeCreateDTO(dto, publicador);
+        mascotaValidator.validar(mascota);
+
         mascota.setEstado(EstadoMascota.PERDIDO_PROPIO);
         mascota.setFechaPublicacion(LocalDate.now());
         mascota.setHabilitado(true);
 
-        return mascotaRepository.save(mascota);
+        Mascota guardada = mascotaRepository.save(mascota);
+        return convertirAResponseDTO(guardada);
     }
 
-    // Actualizar macota
-    public Mascota editarMascota(Long id, Mascota datos) {
+    // Actualizar mascota
+    public MascotaResponseDTO editarMascota(Long id, MascotaUpdateRequestDTO dto) {
         Mascota mascota = mascotaRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mascota no encontrada"));
 
-        // No se puede editar si está deshabilitada
         if (!mascota.isHabilitado()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No se puede editar una mascota deshabilitada");
         }
 
-        // Validaciones sobre los nuevos datos
-        mascotaValidator.validarActualizacion(datos, mascota);
+        mascotaValidator.validarActualizacion(dto, mascota);
 
-        // 🛠️ Actualizar campos permitidos
-        mascota.setNombre(datos.getNombre());
-        mascota.setColor(datos.getColor());
-        mascota.setTamanio(datos.getTamanio());
-        mascota.setDescripcionExtra(datos.getDescripcionExtra());
-        mascota.setCoordenada(datos.getCoordenada());
-        mascota.setFotos(datos.getFotos());
+        mascota.setNombre(dto.getNombre());
+        mascota.setColor(dto.getColor());
+        mascota.setTamanio(dto.getTamanio());
+        mascota.setDescripcionExtra(dto.getDescripcionExtra());
+        mascota.setCoordenada(dto.getCoordenada());
+        mascota.setFotos(dto.getFotos());
 
-        return mascotaRepository.save(mascota);
+        Mascota actualizada = mascotaRepository.save(mascota);
+        return convertirAResponseDTO(actualizada);
     }
 
-    //Eliminar mascota "solo la deshabilita"
+    // Deshabilitar mascota
     public void deshabilitarMascota(Long id) {
         Mascota mascota = mascotaRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mascota no encontrada"));
 
-        // Validación: ya está deshabilitada
         if (!mascota.isHabilitado()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La mascota ya está deshabilitada");
         }
 
-        // Deshabilitar y guardar
         mascota.deshabilitarPublicacion();
         mascotaRepository.save(mascota);
     }
 
     // Cambiar estado
-    public Mascota cambiarEstado(Long id, EstadoMascota nuevoEstado) {
+    public MascotaResponseDTO cambiarEstado(Long id, EstadoMascota nuevoEstado) {
         Mascota mascota = mascotaRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mascota no encontrada"));
+
         mascota.cambiarEstado(nuevoEstado);
-        return mascotaRepository.save(mascota);
+        Mascota actualizada = mascotaRepository.save(mascota);
+        return convertirAResponseDTO(actualizada);
     }
 
-    //  Listar mascotas perdidas
-    public List<Mascota> listarMascotasPerdidas() {
-        return mascotaRepository.findByEstado(EstadoMascota.PERDIDO_PROPIO); // o PERDIDO_AJENO si querés incluir ambas
+    // Listar mascotas perdidas
+    public List<MascotaResponseDTO> listarMascotasPerdidas() {
+        return mascotaRepository.findByEstado(EstadoMascota.PERDIDO_PROPIO)
+                .stream()
+                .map(this::convertirAResponseDTO)
+                .toList();
     }
 
     // Listar mascotas por usuario
-    public List<Mascota> listarPorUsuario(Long usuarioId) {
-        return mascotaRepository.findByPublicadorIdAndHabilitadoTrue(usuarioId);
+    public List<MascotaResponseDTO> listarPorUsuario(Long usuarioId) {
+        return mascotaRepository.findByPublicadorIdAndHabilitadoTrue(usuarioId)
+                .stream()
+                .map(this::convertirAResponseDTO)
+                .toList();
+    }
+
+    // Conversión desde DTO de creación
+    private Mascota convertirDesdeCreateDTO(MascotaCreateRequestDTO dto, Usuario publicador) {
+        Mascota mascota = new Mascota();
+        mascota.setNombre(dto.getNombre());
+        mascota.setTamanio(dto.getTamanio());
+        mascota.setColor(dto.getColor());
+        mascota.setDescripcionExtra(dto.getDescripcionExtra());
+        mascota.setFotos(dto.getFotos());
+        mascota.setCoordenada(dto.getCoordenada());
+        mascota.setPublicador(publicador);
+        return mascota;
+    }
+
+    // Conversión a DTO de respuesta
+    private MascotaResponseDTO convertirAResponseDTO(Mascota mascota) {
+        MascotaResponseDTO dto = new MascotaResponseDTO();
+        dto.setId(mascota.getId());
+        dto.setNombre(mascota.getNombre());
+        dto.setColor(mascota.getColor());
+        dto.setEstado(mascota.getEstado());
+        dto.setFotos(mascota.getFotos());
+        dto.setCoordenada(mascota.getCoordenada());
+        dto.setNombrePublicador(mascota.getPublicador().getNombre());
+        return dto;
     }
 }
