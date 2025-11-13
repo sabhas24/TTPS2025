@@ -1,5 +1,6 @@
 package ttps.grupo2.appmascotas.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class Usuario{
     private List<Medalla> medallas;
 
     @OneToMany(mappedBy = "publicador", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Mascota> mascotasPublicadas;
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
