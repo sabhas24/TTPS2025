@@ -3,7 +3,11 @@ package ttps.grupo2.appmascotas.validations;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
+<<<<<<< HEAD
 import ttps.grupo2.appmascotas.DTOs.MascotasDTOs.MascotaUpdateRequestDTO;
+=======
+import ttps.grupo2.appmascotas.dto.MascotaRequestDTO;
+>>>>>>> 3b7f6a8de1672104aa8df08a06e4f2531f60ccf5
 import ttps.grupo2.appmascotas.entities.Mascota;
 import ttps.grupo2.appmascotas.repositories.MascotaRepository;
 
@@ -57,7 +61,11 @@ public class MascotaValidator {
         }
     }
 
+<<<<<<< HEAD
     public void validarActualizacion(MascotaUpdateRequestDTO nueva, Mascota original) {
+=======
+    public void validarActualizacion(MascotaRequestDTO nueva, Mascota original) {
+>>>>>>> 3b7f6a8de1672104aa8df08a06e4f2531f60ccf5
         // Validaciones reutilizadas
         validarTamanio(nueva.getTamanio());
         validarTexto(nueva.getNombre(), "nombre");

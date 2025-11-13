@@ -5,12 +5,18 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+<<<<<<< HEAD
 import ttps.grupo2.appmascotas.DTOs.MascotasDTOs.MascotaCreateRequestDTO;
 import ttps.grupo2.appmascotas.DTOs.MascotasDTOs.MascotaResponseDTO;
 import ttps.grupo2.appmascotas.DTOs.MascotasDTOs.MascotaUpdateRequestDTO;
+=======
+import ttps.grupo2.appmascotas.dto.MascotaRequestDTO;
+import ttps.grupo2.appmascotas.dto.MascotaResponseDTO;
+>>>>>>> 3b7f6a8de1672104aa8df08a06e4f2531f60ccf5
 import ttps.grupo2.appmascotas.entities.EstadoMascota;
 import ttps.grupo2.appmascotas.services.MascotaService;
 
@@ -23,15 +29,21 @@ public class MascotaController {
     @Autowired
     private MascotaService mascotaService;
 
+<<<<<<< HEAD
     @Operation(
             summary = "Publicar una nueva mascota",
             description = "Registra una nueva mascota en estado PERDIDO_PROPIO. Requiere el ID del usuario publicador."
     )
     @ApiResponse(responseCode = "201", description = "Mascota publicada exitosamente",
+=======
+    @Operation(summary = "Publicar nueva mascota", security = @SecurityRequirement(name = "BearerAuth"))
+    @ApiResponse(responseCode = "201", description = "Mascota publicada",
+>>>>>>> 3b7f6a8de1672104aa8df08a06e4f2531f60ccf5
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MascotaResponseDTO.class)))
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+<<<<<<< HEAD
     public MascotaResponseDTO publicar(@RequestBody MascotaCreateRequestDTO dto) {
         return mascotaService.publicarMascota(dto);
     }
@@ -53,6 +65,23 @@ public class MascotaController {
             description = "Modifica el estado de una mascota según las transiciones definidas (ej. PERDIDO → RECUPERADO)."
     )
     @ApiResponse(responseCode = "200", description = "Estado actualizado correctamente",
+=======
+    public MascotaResponseDTO publicar(@RequestBody MascotaRequestDTO dto) {
+        return mascotaService.publicarMascota(dto);
+    }
+
+    @Operation(summary = "Editar mascota existente", security = @SecurityRequirement(name = "BearerAuth"))
+    @ApiResponse(responseCode = "200", description = "Mascota actualizada",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = MascotaResponseDTO.class)))
+    @PutMapping("/{id}")
+    public MascotaResponseDTO editar(@PathVariable Long id, @RequestBody MascotaRequestDTO dto) {
+        return mascotaService.editarMascota(id, dto);
+    }
+
+    @Operation(summary = "Cambiar estado de mascota", security = @SecurityRequirement(name = "BearerAuth"))
+    @ApiResponse(responseCode = "200", description = "Estado actualizado",
+>>>>>>> 3b7f6a8de1672104aa8df08a06e4f2531f60ccf5
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MascotaResponseDTO.class)))
     @PatchMapping("/{id}/estado")
@@ -60,22 +89,32 @@ public class MascotaController {
         return mascotaService.cambiarEstado(id, estado);
     }
 
+<<<<<<< HEAD
     @Operation(
             summary = "Deshabilitar una mascota",
             description = "Marca una mascota como deshabilitada. No la elimina físicamente de la base de datos."
     )
     @ApiResponse(responseCode = "204", description = "Mascota deshabilitada correctamente")
+=======
+    @Operation(summary = "Deshabilitar mascota", security = @SecurityRequirement(name = "BearerAuth"))
+    @ApiResponse(responseCode = "204", description = "Mascota deshabilitada")
+>>>>>>> 3b7f6a8de1672104aa8df08a06e4f2531f60ccf5
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deshabilitar(@PathVariable Long id) {
         mascotaService.deshabilitarMascota(id);
     }
 
+<<<<<<< HEAD
     @Operation(
             summary = "Listar mascotas perdidas",
             description = "Devuelve todas las mascotas en estado PERDIDO_PROPIO que estén habilitadas."
     )
     @ApiResponse(responseCode = "200", description = "Listado de mascotas perdidas",
+=======
+    @Operation(summary = "Listar mascotas perdidas")
+    @ApiResponse(responseCode = "200", description = "Mascotas perdidas encontradas",
+>>>>>>> 3b7f6a8de1672104aa8df08a06e4f2531f60ccf5
             content = @Content(mediaType = "application/json",
                     array = @ArraySchema(schema = @Schema(implementation = MascotaResponseDTO.class))))
     @GetMapping("/perdidas")
