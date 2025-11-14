@@ -80,6 +80,13 @@ public class MascotaService {
         mascotaRepository.save(mascota);
     }
 
+    // Obtener mascota por ID
+    public MascotaResponseDTO obtenerPorId(Long id) {
+        Mascota mascota = mascotaRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mascota no encontrada"));
+        return convertirAResponseDTO(mascota);
+    }
+
     // Cambiar estado
     public MascotaResponseDTO cambiarEstado(Long id, EstadoMascota nuevoEstado) {
         Mascota mascota = mascotaRepository.findById(id)
