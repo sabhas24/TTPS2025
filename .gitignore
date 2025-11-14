@@ -11,6 +11,14 @@ target/
 *.iws
 *.iml
 *.ipr
+### IntelliJ user-specific (safe to ignore) ###
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/dictionaries/
+.idea/shelf/
+.idea/httpRequests/
+.idea/copilotDiffState.xml
 
 ### Eclipse ###
 .apt_generated
