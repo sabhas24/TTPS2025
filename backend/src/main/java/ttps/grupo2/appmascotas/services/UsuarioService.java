@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioCreateRequestDTO;
 import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioUpdateRequestDTO;
-import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioLoginRequestDTO;
 import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioResponseDTO;
 import ttps.grupo2.appmascotas.entities.Usuario;
 import ttps.grupo2.appmascotas.repositories.UsuarioRepository;
@@ -19,6 +19,9 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // Registro de usuario
     public UsuarioResponseDTO registrar(UsuarioCreateRequestDTO dto) {
         if (usuarioRepository.existsByEmail(dto.getEmail())) {
@@ -29,7 +32,7 @@ public class UsuarioService {
         nuevo.setNombre(dto.getNombre());
         nuevo.setApellido(dto.getApellido());
         nuevo.setEmail(dto.getEmail());
-        nuevo.setContraseña(dto.getContraseña());
+        nuevo.setContraseña(passwordEncoder.encode(dto.getContraseña()));
         nuevo.setTelefono(dto.getTelefono());
         nuevo.setBarrio(dto.getBarrio());
         nuevo.setCiudad(dto.getCiudad());
@@ -51,8 +54,7 @@ public class UsuarioService {
                 dto.getTelefono(),
                 dto.getBarrio(),
                 dto.getCiudad(),
-                dto.getFoto()
-        );
+                dto.getFoto());
 
         Usuario actualizado = usuarioRepository.save(usuario);
         return convertirAResponseDTO(actualizado);
@@ -65,22 +67,6 @@ public class UsuarioService {
 
         usuario.deshabilitarUsuario();
         usuarioRepository.save(usuario);
-    }
-
-    // Login básico (sin seguridad avanzada)
-    public UsuarioResponseDTO login(UsuarioLoginRequestDTO dto) {
-        Usuario usuario = usuarioRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email no registrado"));
-
-        if (!usuario.getContraseña().equals(dto.getContraseña())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Contraseña incorrecta");
-        }
-
-        if (!usuario.isHabilitado()) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Usuario deshabilitado");
-        }
-
-        return convertirAResponseDTO(usuario);
     }
 
     // Buscar por email
