@@ -1,0 +1,14 @@
+
+export enum EstadoMascota {
+    PERDIDO_PROPIO = 'PERDIDO_PROPIO',
+    PERDIDO_AJENO = 'PERDIDO_AJENO',
+    RECUPERADO = 'RECUPERADO',
+    ADOPTADO = 'ADOPTADO',
+    EN_ADOPCION = 'EN_ADOPCION',
+    EN_POSESION = 'EN_POSESION'
+}
+
+export enum usuarioTipo {
+    USUARIO = 'USUARIO',
+    ADMIN = 'ADMIN'
+}
