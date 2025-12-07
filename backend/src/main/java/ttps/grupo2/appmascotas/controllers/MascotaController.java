@@ -72,6 +72,18 @@ public class MascotaController {
     }
 
     @Operation(
+            summary = "Obtener mascota por ID",
+            description = "Devuelve los datos de una mascota específica identificada por su ID."
+    )
+    @ApiResponse(responseCode = "200", description = "Mascota encontrada",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = MascotaResponseDTO.class)))
+    @GetMapping("/{id}")
+    public MascotaResponseDTO obtenerPorId(@PathVariable Long id) {
+        return mascotaService.obtenerPorId(id);
+    }
+
+    @Operation(
             summary = "Listar mascotas perdidas",
             description = "Devuelve todas las mascotas en estado PERDIDO_PROPIO que estén habilitadas."
     )
