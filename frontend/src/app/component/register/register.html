@@ -1,0 +1,52 @@
+<div class="register-container">
+    <h2>Registrarse</h2>
+
+    <form (ngSubmit)="onSubmit()" class="register-form">
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" [(ngModel)]="email" placeholder="Ingresá tu email" required>
+        </div>
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" placeholder="Ingresá tu nombre" required>
+        </div>
+        <div class="form-group">
+            <label for="apellido">Apellido</label>
+            <input type="text" id="apellido" name="apellido" [(ngModel)]="apellido" placeholder="Ingresá tu apellido"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label for="contraseña">Contraseña</label>
+            <input type="password" id="contraseña" name="contraseña" [(ngModel)]="password"
+                placeholder="Ingresá tu contraseña, Mínimo 8 caracteres" required>
+        </div>
+        <div class="form-group">
+            <label for="contraseña-confirm">Confirmar Contraseña</label>
+            <input type="password" id="contraseña-confirm" name="contraseña-confirm" [(ngModel)]="passwordConfirm"
+                placeholder="Ingresá tu contraseña nuevamente" required>
+        </div>
+        <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="text" id="telefono" name="telefono" [(ngModel)]="telefono" placeholder="Ingresá tu teléfono"
+                required>
+        </div>
+        <div class="form-group">
+            <label for="barrio">Barrio</label>
+            <input type="text" id="barrio" name="barrio" [(ngModel)]="barrio" placeholder="Ingresá tu barrio" required>
+        </div>
+        <div class="form-group">
+            <label for="ciudad">Ciudad</label>
+            <input type="text" id="ciudad" name="ciudad" [(ngModel)]="ciudad" placeholder="Ingresá tu ciudad" required>
+        </div>
+        <div class="form-group">
+            <label for="foto">Foto (URL)</label>
+            <input type="text" id="foto" name="foto" [(ngModel)]="foto" placeholder="Ingresá tu foto">
+        </div>
+
+        <button type="submit" class="btn-register">Registrar</button>
+    </form>
+
+    <p *ngIf="error" class="error-message">{{ error }}</p>
+</div>

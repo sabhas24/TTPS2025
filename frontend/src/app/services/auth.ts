@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UsuarioLogin, JwtResponse } from '../interfaces/usuario';
+import { UsuarioLogin, JwtResponse, Usuario, UsuarioCreate} from '../interfaces/usuario';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -36,5 +36,8 @@ export class AuthService {
 
   private setToken(token: string): void {
     localStorage.setItem(this.TOKEN_KEY, token);
+  }
+  register(user: UsuarioCreate): Observable<Usuario> {
+    return this.http.post<Usuario>(`${API_BASE_URL}/usuarios/registrar`, user);
   }
 }

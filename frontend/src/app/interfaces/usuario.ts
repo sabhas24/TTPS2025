@@ -15,7 +15,7 @@ export interface Usuario {
     telefono: string;
     barrio: string;
     ciudad: string;
-    foto: string;
+    foto?: string;
     tipo: usuarioTipo;
 }
 
@@ -32,6 +32,9 @@ export interface UsuarioCreate {
     telefono: string;
     barrio: string;
     ciudad: string;
-    foto: string;
+    foto?: string;
     tipo: usuarioTipo;
+}
+export interface JwtResponse {
+    token: string;
 }

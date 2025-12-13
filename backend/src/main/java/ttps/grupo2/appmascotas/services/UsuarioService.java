@@ -36,7 +36,9 @@ public class UsuarioService {
         nuevo.setTelefono(dto.getTelefono());
         nuevo.setBarrio(dto.getBarrio());
         nuevo.setCiudad(dto.getCiudad());
-        nuevo.setFoto(dto.getFoto());
+        if (dto.getFoto() != null && !dto.getFoto().isBlank()) {
+            nuevo.setFoto(dto.getFoto());
+        }
         nuevo.setHabilitado(true);
 
         Usuario guardado = usuarioRepository.save(nuevo);
