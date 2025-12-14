@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Usuario{
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,7 +16,7 @@ public class Usuario{
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 255)
     private String contraseña;
 
     @Column(nullable = false, length = 50)
@@ -49,11 +49,7 @@ public class Usuario{
     private String foto; // almacena Base64
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="Usuario_Medalla",
-            joinColumns=@JoinColumn(name="Id_Usuario",
-                    referencedColumnName="id"),
-            inverseJoinColumns=@JoinColumn(name="Id_Medalla",
-                    referencedColumnName="id"))
+    @JoinTable(name = "Usuario_Medalla", joinColumns = @JoinColumn(name = "Id_Usuario", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "Id_Medalla", referencedColumnName = "id"))
     private List<Medalla> medallas;
 
     @OneToMany(mappedBy = "publicador", fetch = FetchType.LAZY)
@@ -63,7 +59,7 @@ public class Usuario{
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Avistamiento> avistamientosReportados;
 
-    public Usuario(){
+    public Usuario() {
         this.puntos = 0;
         this.medallas = new ArrayList<>();
         this.mascotasPublicadas = new ArrayList<>();
@@ -72,7 +68,8 @@ public class Usuario{
         this.tipo = TipoUsuario.USUARIO;
     }
 
-    public Usuario(String nombre, String apellido, String email, String contraseña, String telefono, String barrio, String ciudad, String foto, TipoUsuario tipo) {
+    public Usuario(String nombre, String apellido, String email, String contraseña, String telefono, String barrio,
+            String ciudad, String foto, TipoUsuario tipo) {
         puntos = 0;
         medallas = new ArrayList<>();
         mascotasPublicadas = new ArrayList<>();
@@ -196,16 +193,17 @@ public class Usuario{
         this.foto = foto;
     }
 
-
     // Métodos adicionales
 
     public void agregarMedalla(Medalla medalla) {
-        if (this.medallas == null) this.medallas = new java.util.ArrayList<>();
+        if (this.medallas == null)
+            this.medallas = new java.util.ArrayList<>();
         if (!this.medallas.contains(medalla)) {
             this.medallas.add(medalla);
         }
         if (medalla != null) {
-            if (medalla.getUsuarios() == null) medalla.setUsuarios(new java.util.ArrayList<>());
+            if (medalla.getUsuarios() == null)
+                medalla.setUsuarios(new java.util.ArrayList<>());
             if (!medalla.getUsuarios().contains(this)) {
                 medalla.getUsuarios().add(this);
             }
@@ -228,7 +226,8 @@ public class Usuario{
         this.puntos += puntos;
     }
 
-    public Usuario editarPerfil(String nombre, String apellido, String telefono, String barrio, String ciudad, String foto) {
+    public Usuario editarPerfil(String nombre, String apellido, String telefono, String barrio, String ciudad,
+            String foto) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
@@ -238,7 +237,7 @@ public class Usuario{
         return this;
     }
 
-    public void deshabilitarUsuario(){
+    public void deshabilitarUsuario() {
         this.habilitado = false;
     }
 

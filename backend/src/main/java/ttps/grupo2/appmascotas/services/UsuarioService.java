@@ -24,25 +24,33 @@ public class UsuarioService {
 
     // Registro de usuario
     public UsuarioResponseDTO registrar(UsuarioCreateRequestDTO dto) {
-        if (usuarioRepository.existsByEmail(dto.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un usuario con ese email");
-        }
+        try {
+            if (usuarioRepository.existsByEmail(dto.getEmail())) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un usuario con ese email");
+            }
 
-        Usuario nuevo = new Usuario();
-        nuevo.setNombre(dto.getNombre());
-        nuevo.setApellido(dto.getApellido());
-        nuevo.setEmail(dto.getEmail());
-        nuevo.setContraseña(passwordEncoder.encode(dto.getContraseña()));
-        nuevo.setTelefono(dto.getTelefono());
-        nuevo.setBarrio(dto.getBarrio());
-        nuevo.setCiudad(dto.getCiudad());
-        if (dto.getFoto() != null && !dto.getFoto().isBlank()) {
-            nuevo.setFoto(dto.getFoto());
-        }
-        nuevo.setHabilitado(true);
+            Usuario nuevo = new Usuario();
+            nuevo.setNombre(dto.getNombre());
+            nuevo.setApellido(dto.getApellido());
+            nuevo.setEmail(dto.getEmail());
+            nuevo.setContraseña(passwordEncoder.encode(dto.getContraseña()));
+            nuevo.setTelefono(dto.getTelefono());
+            nuevo.setBarrio(dto.getBarrio());
+            nuevo.setCiudad(dto.getCiudad());
+            if (dto.getFoto() != null && !dto.getFoto().isBlank()) {
+                nuevo.setFoto(dto.getFoto());
+            }
+            nuevo.setHabilitado(true);
 
-        Usuario guardado = usuarioRepository.save(nuevo);
-        return convertirAResponseDTO(guardado);
+            Usuario guardado = usuarioRepository.save(nuevo);
+            return convertirAResponseDTO(guardado);
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Error al registrar: " + e.getMessage());
+        }
     }
 
     // Edición de perfil

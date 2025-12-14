@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ttps.grupo2.appmascotas.services.JWTService;
-
+import ttps.grupo2.appmascotas.config.PublicRoutes;
 import java.io.IOException;
 
 @Component
@@ -32,6 +32,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
 
+        String path = request.getServletPath();
+
+        boolean isPublic = PublicRoutes.PUBLIC_PATHS.stream().anyMatch(path::startsWith);
+
+        if (isPublic) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         // 1. Extraigo el header Authorization
         final String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
