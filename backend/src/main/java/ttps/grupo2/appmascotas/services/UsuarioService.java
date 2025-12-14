@@ -3,6 +3,10 @@ package ttps.grupo2.appmascotas.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.lang.NonNull;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioCreateRequestDTO;
@@ -54,7 +58,7 @@ public class UsuarioService {
     }
 
     // Edición de perfil
-    public UsuarioResponseDTO editarPerfil(Long id, UsuarioUpdateRequestDTO dto) {
+    public UsuarioResponseDTO editarPerfil(@NonNull Long id, UsuarioUpdateRequestDTO dto) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
 
@@ -71,7 +75,7 @@ public class UsuarioService {
     }
 
     // Deshabilitar usuario
-    public void deshabilitar(Long id) {
+    public void deshabilitar(@NonNull Long id) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
 
@@ -82,6 +86,12 @@ public class UsuarioService {
     // Buscar por email
     public Optional<Usuario> buscarPorEmail(String email) {
         return usuarioRepository.findByEmail(email);
+    }
+
+    public UsuarioResponseDTO buscarPorId(@NonNull Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+        return convertirAResponseDTO(usuario);
     }
 
     // Conversión a DTO de respuesta
@@ -96,5 +106,12 @@ public class UsuarioService {
         dto.setCiudad(usuario.getCiudad());
         dto.setFoto(usuario.getFoto());
         return dto;
+    }
+
+    public List<UsuarioResponseDTO> buscarTodos() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        return usuarios.stream()
+                .map(this::convertirAResponseDTO)
+                .collect(Collectors.toList());
     }
 }

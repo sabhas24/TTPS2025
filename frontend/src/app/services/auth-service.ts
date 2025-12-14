@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UsuarioLogin, JwtResponse, Usuario, UsuarioCreate} from '../interfaces/usuario';
+import { UsuarioLogin, JwtResponse, Usuario, UsuarioCreate } from '../interfaces/usuario';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../envaironment/envaironment';
 
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = environment.apiUrl;
 @Injectable({
   providedIn: 'root'
 })

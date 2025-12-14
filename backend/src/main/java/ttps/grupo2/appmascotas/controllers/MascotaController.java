@@ -20,78 +20,62 @@ import java.util.List;
 @RequestMapping("/mascotas")
 public class MascotaController {
 
-    @Autowired
-    private MascotaService mascotaService;
+        @Autowired
+        private MascotaService mascotaService;
 
-    @Operation(
-            summary = "Publicar una nueva mascota",
-            description = "Registra una nueva mascota en estado PERDIDO_PROPIO. Requiere el ID del usuario publicador."
-    )
-    @ApiResponse(responseCode = "201", description = "Mascota publicada exitosamente",
-            content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = MascotaResponseDTO.class)))
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public MascotaResponseDTO publicar(@RequestBody MascotaCreateRequestDTO dto) {
-        return mascotaService.publicarMascota(dto);
-    }
+        @Operation(summary = "Publicar una nueva mascota", description = "Registra una nueva mascota en estado PERDIDO_PROPIO. Requiere el ID del usuario publicador.")
+        @ApiResponse(responseCode = "201", description = "Mascota publicada exitosamente", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MascotaResponseDTO.class)))
+        @ApiResponse(responseCode = "404", description = "Usuario publicador no encontrado")
+        @ApiResponse(responseCode = "400", description = "Datos inválidos")
+        @PostMapping
+        @ResponseStatus(HttpStatus.CREATED)
+        public MascotaResponseDTO publicar(@RequestBody MascotaCreateRequestDTO dto) {
+                return mascotaService.publicarMascota(dto);
+        }
 
-    @Operation(
-            summary = "Editar una mascota existente",
-            description = "Actualiza los datos de una mascota habilitada. No permite modificar estado ni publicador."
-    )
-    @ApiResponse(responseCode = "200", description = "Mascota actualizada correctamente",
-            content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = MascotaResponseDTO.class)))
-    @PutMapping("/{id}")
-    public MascotaResponseDTO editar(@PathVariable Long id, @RequestBody MascotaUpdateRequestDTO dto) {
-        return mascotaService.editarMascota(id, dto);
-    }
+        @Operation(summary = "Editar una mascota existente", description = "Actualiza los datos de una mascota habilitada. No permite modificar estado ni publicador.")
+        @ApiResponse(responseCode = "200", description = "Mascota actualizada correctamente", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MascotaResponseDTO.class)))
+        @ApiResponse(responseCode = "404", description = "Mascota no encontrada")
+        @ApiResponse(responseCode = "401", description = "No autorizado para editar esta mascota")
+        @ApiResponse(responseCode = "400", description = "Datos inválidos")
+        @PutMapping("/{id}")
+        public MascotaResponseDTO editar(@PathVariable Long id, @RequestBody MascotaUpdateRequestDTO dto) {
+                return mascotaService.editarMascota(id, dto);
+        }
 
-    @Operation(
-            summary = "Cambiar el estado de una mascota",
-            description = "Modifica el estado de una mascota según las transiciones definidas (ej. PERDIDO → RECUPERADO)."
-    )
-    @ApiResponse(responseCode = "200", description = "Estado actualizado correctamente",
-            content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = MascotaResponseDTO.class)))
-    @PatchMapping("/{id}/estado")
-    public MascotaResponseDTO cambiarEstado(@PathVariable Long id, @RequestParam EstadoMascota estado) {
-        return mascotaService.cambiarEstado(id, estado);
-    }
+        @Operation(summary = "Cambiar el estado de una mascota", description = "Modifica el estado de una mascota según las transiciones definidas (ej. PERDIDO → RECUPERADO).")
+        @ApiResponse(responseCode = "200", description = "Estado actualizado correctamente", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MascotaResponseDTO.class)))
+        @ApiResponse(responseCode = "404", description = "Mascota no encontrada")
+        @ApiResponse(responseCode = "400", description = "Transición de estado inválida")
+        @PatchMapping("/{id}/estado")
+        public MascotaResponseDTO cambiarEstado(@PathVariable Long id, @RequestParam EstadoMascota estado) {
+                return mascotaService.cambiarEstado(id, estado);
+        }
 
-    @Operation(
-            summary = "Deshabilitar una mascota",
-            description = "Marca una mascota como deshabilitada. No la elimina físicamente de la base de datos."
-    )
-    @ApiResponse(responseCode = "204", description = "Mascota deshabilitada correctamente")
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deshabilitar(@PathVariable Long id) {
-        mascotaService.deshabilitarMascota(id);
-    }
+        @Operation(summary = "Deshabilitar una mascota", description = "Marca una mascota como deshabilitada. No la elimina físicamente de la base de datos.")
+        @ApiResponse(responseCode = "204", description = "Mascota deshabilitada correctamente")
+        @ApiResponse(responseCode = "404", description = "Mascota no encontrada")
+        @ApiResponse(responseCode = "401", description = "No autorizado para deshabilitar esta mascota")
+        @DeleteMapping("/{id}")
+        @ResponseStatus(HttpStatus.NO_CONTENT)
+        public void deshabilitar(@PathVariable Long id) {
+                mascotaService.deshabilitarMascota(id);
+        }
 
-    @Operation(
-            summary = "Listar mascotas perdidas",
-            description = "Devuelve todas las mascotas en estado PERDIDO_PROPIO que estén habilitadas."
-    )
-    @ApiResponse(responseCode = "200", description = "Listado de mascotas perdidas",
-            content = @Content(mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = MascotaResponseDTO.class))))
-    @GetMapping("/perdidas")
-    public List<MascotaResponseDTO> listarPerdidas() {
-        return mascotaService.listarMascotasPerdidas();
-    }
+        @Operation(summary = "Listar mascotas perdidas", description = "Devuelve todas las mascotas en estado PERDIDO_PROPIO que estén habilitadas.")
+        @ApiResponse(responseCode = "200", description = "Listado de mascotas perdidas", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MascotaResponseDTO.class))))
+        @ApiResponse(responseCode = "401", description = "No autorizado")
+        @GetMapping("/perdidas")
+        public List<MascotaResponseDTO> listarPerdidas() {
+                return mascotaService.listarMascotasPerdidas();
+        }
 
-    @Operation(
-            summary = "Listar mascotas por usuario",
-            description = "Devuelve todas las mascotas habilitadas publicadas por el usuario indicado."
-    )
-    @ApiResponse(responseCode = "200", description = "Listado de mascotas del usuario",
-            content = @Content(mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = MascotaResponseDTO.class))))
-    @GetMapping("/usuario/{id}")
-    public List<MascotaResponseDTO> listarPorUsuario(@PathVariable Long id) {
-        return mascotaService.listarPorUsuario(id);
-    }
+        @Operation(summary = "Listar mascotas por usuario", description = "Devuelve todas las mascotas habilitadas publicadas por el usuario indicado.")
+        @ApiResponse(responseCode = "200", description = "Listado de mascotas del usuario", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MascotaResponseDTO.class))))
+        @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+        @ApiResponse(responseCode = "401", description = "No autorizado")
+        @GetMapping("/usuario/{id}")
+        public List<MascotaResponseDTO> listarPorUsuario(@PathVariable Long id) {
+                return mascotaService.listarPorUsuario(id);
+        }
 }

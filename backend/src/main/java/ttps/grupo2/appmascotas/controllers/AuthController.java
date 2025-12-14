@@ -8,6 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 @RequestMapping("/auth")
@@ -23,6 +27,10 @@ public class AuthController {
         this.jwtService = jwtService;
     }
 
+    @Operation(summary = "Iniciar sesión", description = "Autentica un usuario con email y contraseña, devolviendo un token JWT válido por 1 hora.")
+    @ApiResponse(responseCode = "200", description = "Login exitoso, token generado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = JwtResponseDTO.class)))
+    @ApiResponse(responseCode = "401", description = "Email o contraseña incorrectos")
+    @ApiResponse(responseCode = "400", description = "Credenciales inválidas o incompletas")
     @PostMapping("/login")
     public ResponseEntity<JwtResponseDTO> login(@RequestBody @Valid LoginRequestDTO req) {
         // 1. Autenticar credenciales
