@@ -25,6 +25,7 @@ export class HomeHeader {
     { label: 'Mascotas Perdidas', path: '/mascotas-perdidas' },
   ];
 
+  // Método de logout
   logout() {
     this.authService.logout();
     this.router.navigate(['/']);

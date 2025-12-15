@@ -26,13 +26,11 @@
 
     <!-- Botones de autenticación -->
     <div class="auth-buttons">
-      <!-- Si no está logueado -->
-      <ng-container *ngIf="!authService.isLoggedIn(); else loggedIn">
+      <ng-container *ngIf="!(authService.loggedIn$ | async); else loggedIn">
         <a routerLink="/login" class="btn btn-outline">Iniciar Sesión</a>
         <a routerLink="/register" class="btn btn-primary">Registrarse</a>
       </ng-container>
 
-      <!-- Si está logueado -->
       <ng-template #loggedIn>
         <a routerLink="/perfil" class="btn btn-outline">Ver Perfil</a>
         <button (click)="logout()" class="btn btn-primary">Cerrar Sesión</button>
