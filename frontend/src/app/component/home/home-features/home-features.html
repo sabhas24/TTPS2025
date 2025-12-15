@@ -1,0 +1,45 @@
+<section class="features">
+    <div class="features-container">
+        <div class="features-header">
+            <h2 class="features-title">Cómo Funciona PetFind</h2>
+            <p class="features-subtitle">
+                Nuestra plataforma conecta a los dueños de mascotas con las mascotas perdidas a través de un sistema
+                integral de búsqueda y reporte.
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <div *ngFor="let feature of features" class="feature-card">
+                <div class="feature-icon" [ngClass]="'icon-' + feature.icon">
+                    <ng-container [ngSwitch]="feature.icon">
+                        <svg *ngSwitchCase="'search'" viewBox="0 0 24 24" fill="none">
+                            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+                            <path d="M20 20L16.5 16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+
+                        <svg *ngSwitchCase="'report'" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"
+                                stroke-linejoin="round" />
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+
+                        <svg *ngSwitchCase="'community'" viewBox="0 0 24 24" fill="none">
+                            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                            <path d="M2 21C2 17.134 5.13401 14 9 14C12.866 14 16 17.134 16 21" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" />
+                            <circle cx="17" cy="7" r="3" stroke="currentColor" stroke-width="2" />
+                            <path d="M22 21C22 18.2386 19.7614 16 17 16C16.3443 16 15.7178 16.1221 15.1429 16.3457"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </ng-container>
+                </div>
+
+                <h3 class="feature-title">{{ feature.title }}</h3>
+                <p class="feature-description">{{ feature.description }}</p>
+            </div>
+        </div>
+    </div>
+</section>

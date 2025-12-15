@@ -1,0 +1,12 @@
+<footer class="footer">
+    <div class="footer-container">
+        <nav class="footer-links">
+            <a *ngFor="let link of footerLinks" [routerLink]="link.path" class="footer-link">
+                {{ link.label }}
+            </a>
+        </nav>
+        <p class="footer-copyright">
+            © {{ currentYear }} PetFind. Todos los derechos reservados.
+        </p>
+    </div>
+</footer>

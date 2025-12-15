@@ -1,1 +1,127 @@
-/* You can add global styles to this file, and also import other style files */
+/* Adding global styles with proper color system and design tokens */
+
+/* Color Variables - PetFind Design System */
+:root {
+    /* Primary Colors */
+    --primary-color: #00a7e1;
+    --primary-dark: #0088b8;
+    --primary-light: #e6f7fd;
+
+    /* Text Colors */
+    --text-dark: #1a1a1a;
+    --text-medium: #4a5568;
+    --text-light: #718096;
+
+    /* Background Colors */
+    --bg-white: #ffffff;
+    --bg-light: #f7f9fb;
+
+    /* Border Colors */
+    --border-color: #e2e8f0;
+
+    /* Semantic Colors */
+    --success-color: #48bb78;
+    --error-color: #f56565;
+    --warning-color: #ed8936;
+}
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+        "Droid Sans", "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--text-dark);
+    background-color: var(--bg-white);
+    line-height: 1.5;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+p {
+    line-height: 1.6;
+}
+
+/* Button Styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--bg-white);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 167, 225, 0.3);
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--text-medium);
+    border: 1.5px solid var(--border-color);
+}
+
+.btn-outline:hover {
+    background-color: var(--bg-light);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-large {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+}
+
+/* Focus Styles for Accessibility */
+a:focus,
+button:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Utility Classes */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Responsive Images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}

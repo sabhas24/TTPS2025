@@ -12,14 +12,14 @@ public class UsuarioDAOHibernateJPA extends GenericDAOHibernateJPA<Usuario> impl
     public UsuarioDAOHibernateJPA() {
         super(Usuario.class);
     }
-    
+
     @Override
     public Usuario getByEmail(String mail) {
         EntityManager em = EMF.getEMF().createEntityManager();
         Usuario usr;
         try {
             usr = (Usuario) em.createQuery("SELECT m FROM " +
-                            this.getPersistentClass().getSimpleName() + " m WHERE m.email = :email")
+                    this.getPersistentClass().getSimpleName() + " m WHERE m.email = :email")
                     .setParameter("email", mail).getSingleResult();
         } catch (Exception e) {
             usr = null;
@@ -35,7 +35,8 @@ public class UsuarioDAOHibernateJPA extends GenericDAOHibernateJPA<Usuario> impl
         Usuario usr;
         try {
             usr = (Usuario) em.createQuery("SELECT m FROM " +
-                            this.getPersistentClass().getSimpleName() + " m WHERE m.email = :email and m.contraseña = :contraseña")
+                    this.getPersistentClass().getSimpleName()
+                    + " m WHERE m.email = :email and m.contraseña = :contraseña")
                     .setParameter("contraseña", contraseña)
                     .setParameter("email", mail).getSingleResult();
         } catch (Exception e) {
@@ -52,7 +53,7 @@ public class UsuarioDAOHibernateJPA extends GenericDAOHibernateJPA<Usuario> impl
         List<Usuario> usuarios;
         try {
             usuarios = em.createQuery("SELECT m FROM " +
-                            this.getPersistentClass().getSimpleName() + " m ORDER BY m.puntos DESC", Usuario.class)
+                    this.getPersistentClass().getSimpleName() + " m ORDER BY m.puntos DESC", Usuario.class)
                     .setMaxResults(N)
                     .getResultList();
         } catch (Exception e) {
@@ -62,6 +63,5 @@ public class UsuarioDAOHibernateJPA extends GenericDAOHibernateJPA<Usuario> impl
         }
         return usuarios;
     }
-
 
 }
