@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="78e42ac3-30f5-4e3e-9f53-c1c1138b248c" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/frontend/src/app/component/home/home.component.css" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/frontend/src/app/component/home/home.component.html" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="35MUDbHJhkG0KU0ExaSL1GBxWbq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;JUnit.ttps.grupo2.appmascotas in appMascotas.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Node.js.main.ts.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AppMascotasApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.AppmascotasApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;jakarta-webapp&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/TTPS_JAVA/TTPS2025&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.typescriptcompiler&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\USER1\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\TTPS_JAVA\TTPS2025\frontend\src\assets\img" />
+      <recent name="D:\TTPS_JAVA\TTPS2025\frontend\src\app\component\home" />
+      <recent name="D:\TTPS_JAVA\TTPS2025\frontend\src" />
+      <recent name="D:\TTPS_JAVA\TTPS2025\frontend\src\app" />
+      <recent name="D:\TTPS_JAVA\TTPS2025\frontend\src\app\component" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Node.js.main.ts">
+    <configuration name="ttps.grupo2.appmascotas in appMascotas" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="appMascotas" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ttps.grupo2.appmascotas.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ttps.grupo2.appmascotas" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="main.ts" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="main.ts" typescript-loader="bundled" working-dir="$PROJECT_DIR$/frontend/src">
+      <method v="2" />
+    </configuration>
+    <configuration name="AppMascotasApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="appMascotas" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="ttps.grupo2.appmascotas.AppMascotasApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ttps.grupo2.appmascotas.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AppmascotasApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="appmascotas" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="ttps.grupo2.appmascotas.AppmascotasApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.main.ts" />
+        <item itemvalue="Spring Boot.AppMascotasApplication" />
+        <item itemvalue="JUnit.ttps.grupo2.appmascotas in appMascotas" />
+        <item itemvalue="Spring Boot.AppMascotasApplication" />
+        <item itemvalue="JUnit.ttps.grupo2.appmascotas in appMascotas" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28238.7" />
+        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28238.7" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="78e42ac3-30f5-4e3e-9f53-c1c1138b248c" name="Changes" comment="" />
+      <created>1762919317949</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1762919317949</updated>
+      <workItem from="1762919319033" duration="91000" />
+      <workItem from="1762919576654" duration="71000" />
+      <workItem from="1762950667621" duration="4531000" />
+      <workItem from="1762970019603" duration="31369000" />
+      <workItem from="1763051859643" duration="1348000" />
+      <workItem from="1763053232400" duration="5802000" />
+      <workItem from="1763060211011" duration="98000" />
+      <workItem from="1763060325601" duration="236000" />
+      <workItem from="1763060571205" duration="57000" />
+      <workItem from="1763060661840" duration="130000" />
+      <workItem from="1763060811213" duration="334000" />
+      <workItem from="1763147549397" duration="3357000" />
+      <workItem from="1765151894218" duration="743000" />
+      <workItem from="1765152654407" duration="2178000" />
+      <workItem from="1765155036394" duration="6358000" />
+      <workItem from="1765161468716" duration="626000" />
+      <workItem from="1765162177583" duration="312000" />
+      <workItem from="1765162541779" duration="1497000" />
+      <workItem from="1765164080602" duration="705000" />
+      <workItem from="1765164813421" duration="142000" />
+      <workItem from="1765756123954" duration="7896000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/.." />
+    </ignored-roots>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
