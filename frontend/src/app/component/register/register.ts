@@ -7,6 +7,7 @@ import { usuarioTipo } from '../../interfaces/enums';
 
 @Component({
   selector: 'app-register',
+  standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './register.html',
   styleUrl: './register.css',

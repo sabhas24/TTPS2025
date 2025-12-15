@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioCreateRequestDTO;
+import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs. UsuarioRegisterResponseDTO;
 import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioUpdateRequestDTO;
 import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioResponseDTO;
 import ttps.grupo2.appmascotas.services.UsuarioService;
@@ -26,8 +27,8 @@ public class UsuarioController {
         @ApiResponse(responseCode = "500", description = "Error interno del servidor")
         @PostMapping("/registrar")
         @ResponseStatus(HttpStatus.CREATED)
-        public UsuarioResponseDTO registrar(@RequestBody UsuarioCreateRequestDTO dto) {
-                return usuarioService.registrar(dto);
+        public UsuarioRegisterResponseDTO registrar(@RequestBody UsuarioCreateRequestDTO dto) {
+            return usuarioService.registrar(dto);
         }
 
         @Operation(summary = "Editar perfil de usuario", description = "Actualiza los datos personales del usuario identificado por su ID. Solo se modifican campos visibles del perfil.")

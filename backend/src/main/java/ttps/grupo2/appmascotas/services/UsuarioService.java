@@ -27,7 +27,7 @@ public class UsuarioService {
     private PasswordEncoder passwordEncoder;
 
     // Registro de usuario
-    public UsuarioResponseDTO registrar(UsuarioCreateRequestDTO dto) {
+    public UsuarioRegisterResponseDTO registrar(UsuarioCreateRequestDTO dto) {
         try {
             if (usuarioRepository.existsByEmail(dto.getEmail())) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un usuario con ese email");
@@ -47,7 +47,16 @@ public class UsuarioService {
             nuevo.setHabilitado(true);
 
             Usuario guardado = usuarioRepository.save(nuevo);
-            return convertirAResponseDTO(guardado);
+
+            // 🔐 Cargar UserDetails y generar JWT
+            var userDetails = userDetailsService.loadUserByUsername(guardado.getEmail());
+            String token = jwtService.generateToken(userDetails);
+
+            // Devolver DTO con usuario y token
+            return new UsuarioRegisterResponseDTO(
+                    convertirAResponseDTO(guardado),
+                    token
+            );
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
@@ -114,4 +123,11 @@ public class UsuarioService {
                 .map(this::convertirAResponseDTO)
                 .collect(Collectors.toList());
     }
+
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
 }
