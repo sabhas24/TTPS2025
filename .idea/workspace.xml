@@ -5,14 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="78e42ac3-30f5-4e3e-9f53-c1c1138b248c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/DTOs/UsuariosDTOs/UsuarioRegisterResponseDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/DTOs/UsuariosDTOs/UsuarioRegisterResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/DTOs/UsuariosDTOs/UsuarioRegisterResponseDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/controllers/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/controllers/UsuarioController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/services/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/services/UsuarioService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/descarga-_2_.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/home-header/home-header.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/home/home-header/home-header.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/home-header/home-header.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/home/home-header/home-header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/home-header/home-header.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/home/home-header/home-header.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/home.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/home.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/home.component.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/component/register/register.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/register/register.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/envaironment/envaironment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/envaironment/envaironment.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/tsconfig.app.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/tsconfig.app.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +183,7 @@
       <workItem from="1765164080602" duration="705000" />
       <workItem from="1765164813421" duration="142000" />
       <workItem from="1765756123954" duration="7896000" />
-      <workItem from="1765810763632" duration="7418000" />
+      <workItem from="1765810763632" duration="11216000" />
     </task>
     <servers />
   </component>

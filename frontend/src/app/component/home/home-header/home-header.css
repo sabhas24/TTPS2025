@@ -72,3 +72,10 @@
         padding: 0 1rem;
     }
 }
+
+.active-link {
+  font-weight: bold;
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+}
+

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth-service'
+import { AuthService } from '../../services/auth-service';
 import { UsuarioCreate } from '../../interfaces/usuario';
 import { usuarioTipo } from '../../interfaces/enums';
+import { Router } from '@angular/router'; // <-- Importar Router
 
 @Component({
   selector: 'app-register',
@@ -25,7 +26,7 @@ export class Register {
   tipo = usuarioTipo.USUARIO;
   error: string | null = null;
 
-  constructor(private AuthService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) {} // <-- Inyectar Router
 
   onSubmit() {
     if (this.password.length < 8) {
@@ -48,9 +49,10 @@ export class Register {
       tipo: this.tipo
     }
 
-    this.AuthService.register(body).subscribe({
+    this.authService.register(body).subscribe({
       next: () => {
-
+        // Registro exitoso → redirigir al Home
+        this.router.navigate(['/']);
       },
       error: err => {
         if (err.status === 409) {
@@ -63,6 +65,4 @@ export class Register {
       }
     });
   }
-
-
 }

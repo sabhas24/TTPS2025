@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioCreateRequestDTO;
 import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioUpdateRequestDTO;
+import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioRegisterResponseDTO;
 import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioResponseDTO;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import ttps.grupo2.appmascotas.entities.Usuario;
 import ttps.grupo2.appmascotas.repositories.UsuarioRepository;
 

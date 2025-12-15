@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioCreateRequestDTO;
-import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs. UsuarioRegisterResponseDTO;
+import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioRegisterResponseDTO;
 import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioUpdateRequestDTO;
 import ttps.grupo2.appmascotas.DTOs.UsuariosDTOs.UsuarioResponseDTO;
 import ttps.grupo2.appmascotas.services.UsuarioService;
