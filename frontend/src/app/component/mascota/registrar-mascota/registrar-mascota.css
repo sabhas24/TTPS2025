@@ -1,0 +1,61 @@
+.form-section {
+  padding: 4rem 1rem;
+  background-color: var(--bg-light);
+}
+
+.form-container {
+  max-width: 600px;
+  margin: auto;
+}
+
+.form-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+  color: var(--text-medium);
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+input, select, textarea {
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+textarea {
+  min-height: 100px;
+}
+
+.radio-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.map-placeholder {
+  height: 200px;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: #666;
+}
+
+.coords {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class PublicRoutes {
     public static final List<String> PUBLIC_PATHS = List.of(
-            "/auth",
+            "/auth/login",
             "/usuarios/registrar",
             "/error",
             "/v3/api-docs",
