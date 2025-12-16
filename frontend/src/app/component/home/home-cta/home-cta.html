@@ -1,9 +1,31 @@
 <section class="cta">
-    <div class="cta-container">
-        <h2 class="cta-title">¿Listo para Encontrar a Tu Mascota?</h2>
-        <p class="cta-subtitle">
-            Crea una cuenta para acceder a todas las funciones y comienza tu búsqueda hoy.
-        </p>
-        <a routerLink="/register" class="btn btn-primary btn-large">Regístrate Ahora</a>
-    </div>
+  <div class="cta-container">
+
+    <h2 class="cta-title">¿Listo para Encontrar a Tu Mascota?</h2>
+
+    <!-- NO LOGUEADO -->
+    <p class="cta-subtitle" *ngIf="!authService.isLoggedIn()">
+      Crea una cuenta para acceder a todas las funciones y comienza tu búsqueda hoy.
+    </p>
+
+    <a
+      *ngIf="!authService.isLoggedIn()"
+      routerLink="/register"
+      class="btn btn-primary btn-large">
+      Regístrate Ahora
+    </a>
+
+    <!-- LOGUEADO -->
+    <p class="cta-subtitle" *ngIf="authService.isLoggedIn()">
+      Publicá una mascota perdida o encontrada y ayudá a reunir familias.
+    </p>
+
+    <a
+      *ngIf="authService.isLoggedIn()"
+      routerLink="/mascotas/crear"
+      class="btn btn-primary btn-large">
+      Registrar Mascota
+    </a>
+
+  </div>
 </section>

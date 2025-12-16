@@ -23,6 +23,8 @@ export class HomeHeader {
     { label: 'Inicio', path: '/' },
     { label: 'Ranking', path: '/ranking' },
     { label: 'Mascotas Perdidas', path: '/mascotas-perdidas' },
+    { label: 'Registrar Mascota Perdida', path: '/mascotas/crear' },
+
   ];
 
   // Método de logout

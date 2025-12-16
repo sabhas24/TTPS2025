@@ -1,0 +1,87 @@
+<app-home-header></app-home-header>
+
+<section class="form-section">
+  <div class="form-container">
+
+    <h2 class="form-title">Registrar Mascota Perdida</h2>
+
+    <p class="form-subtitle">
+      Completá el formulario para publicar una mascota perdida.
+    </p>
+
+    <form (ngSubmit)="submit()">
+
+      <div class="form-group">
+        <label>Nombre de la mascota</label>
+        <input type="text" [(ngModel)]="nombre" name="nombre" required />
+      </div>
+
+      <div class="form-group">
+        <label>Tamaño</label>
+        <select [(ngModel)]="tamanio" name="tamanio" required>
+          <option value="">Seleccionar</option>
+          <option value="CHICO">Chico</option>
+          <option value="MEDIANO">Mediano</option>
+          <option value="GRANDE">Grande</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Color</label>
+        <input type="text" [(ngModel)]="color" name="color" />
+      </div>
+
+      <div class="form-group">
+        <label>Fecha de pérdida</label>
+        <input type="date" [(ngModel)]="fechaPerdida" name="fechaPerdida" />
+      </div>
+
+      <div class="form-group">
+        <label>Tipo de reporte</label>
+        <div class="radio-group">
+          <label>
+            <input type="radio" value="PROPIO" [(ngModel)]="tipoPerdida" name="tipoPerdida" />
+            Perdido propio
+          </label>
+
+          <label>
+            <input type="radio" value="AJENO" [(ngModel)]="tipoPerdida" name="tipoPerdida" />
+            Perdido ajeno
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea [(ngModel)]="descripcionExtra" name="descripcionExtra"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Foto de referencia</label>
+        <input type="file" multiple (change)="onFotoSeleccionada($event)" />
+      </div>
+
+      <div class="form-group">
+        <label>Ubicación donde se perdió</label>
+
+        <div class="map-placeholder">
+          🗺️ Mapa (se conecta en el próximo paso)
+        </div>
+
+        <p *ngIf="latitud && longitud">
+          Coordenadas: {{ latitud }}, {{ longitud }}
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label>Usuario que publica</label>
+        <input type="text" value="Usuario autenticado" disabled />
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-large">
+        Cargar Mascota
+      </button>
+
+    </form>
+  </div>
+</section>

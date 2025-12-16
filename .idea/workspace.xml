@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="78e42ac3-30f5-4e3e-9f53-c1c1138b248c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/Filter/JwtAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/Filter/JwtAuthFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/config/PublicRoutes.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/config/PublicRoutes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/login/login.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/login/login.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/interfaces/usuario.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/interfaces/usuario.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/home-cta/home-cta.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/home/home-cta/home-cta.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/home-cta/home-cta.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/home/home-cta/home-cta.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/home-header/home-header.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/home/home-header/home-header.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,7 +180,7 @@
       <workItem from="1765756123954" duration="7896000" />
       <workItem from="1765810763632" duration="11794000" />
       <workItem from="1765827993958" duration="891000" />
-      <workItem from="1765854079607" duration="3899000" />
+      <workItem from="1765854079607" duration="7581000" />
     </task>
     <servers />
   </component>
