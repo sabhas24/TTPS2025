@@ -1,7 +1,7 @@
 import { Component } from "@angular/core"
 import { ReactiveFormsModule, FormBuilder, type FormGroup, Validators } from "@angular/forms"
 import { CommonModule } from "@angular/common"
-import { RouterLink } from "@angular/router"
+import { RouterLink, Router } from "@angular/router"
 import { AuthService } from "../../services/auth-service"
 import { HomeFooter } from "../home/home-footer/home-footer"
 import type { UsuarioLogin } from "../../interfaces/usuario"
@@ -22,6 +22,7 @@ export class Login {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private router: Router,
   ) {
     this.loginForm = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
@@ -49,13 +50,13 @@ export class Login {
 
     const body: UsuarioLogin = {
       email: this.loginForm.value.email,
-      contraseña: this.loginForm.value.password,
+      password: this.loginForm.value.password,
     }
 
     this.authService.login(body).subscribe({
       next: () => {
-        console.log("Login exitoso")
-        // Navigate to home or dashboard
+        this.isSubmitting = false
+        this.router.navigate(['/'])
       },
       error: (err) => {
         this.isSubmitting = false
