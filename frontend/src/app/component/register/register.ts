@@ -1,69 +1,115 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth-service';
-import { UsuarioCreate } from '../../interfaces/usuario';
-import { usuarioTipo } from '../../interfaces/enums';
+import { Component } from "@angular/core"
+import { ReactiveFormsModule, FormBuilder, type FormGroup, Validators } from "@angular/forms"
+import { CommonModule } from "@angular/common"
+import { AuthService } from "../../services/auth-service"
+import type { UsuarioCreate } from "../../interfaces/usuario"
+import { usuarioTipo } from "../../interfaces/enums"
+import { RouterLink } from "@angular/router"
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [FormsModule, CommonModule],
-  templateUrl: './register.html',
-  styleUrls: ['./register.css'],
+  selector: "app-register",
+  imports: [ReactiveFormsModule, CommonModule, RouterLink],
+  templateUrl: "./register.html",
+  styleUrl: "./register.css",
 })
 export class Register {
-  nombre = '';
-  apellido = '';
-  email = '';
-  password = '';
-  telefono = '';
-  barrio = '';
-  ciudad = '';
-  foto = '';
-  passwordConfirm = '';
-  tipo = usuarioTipo.USUARIO;
-  error: string | null = null;
+  registerForm: FormGroup
+  error: string | null = null
+  imagePreview: string | null = null
+  selectedFile: File | null = null
+  isSubmitting = false
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+  ) {
+    this.registerForm = this.fb.group(
+      {
+        nombre: ["", [Validators.required, Validators.minLength(2)]],
+        apellido: ["", [Validators.required, Validators.minLength(2)]],
+        email: ["", [Validators.required, Validators.email]],
+        password: ["", [Validators.required, Validators.minLength(8)]],
+        passwordConfirm: ["", [Validators.required]],
+        telefono: ["", [Validators.required, Validators.pattern(/^\d{10,15}$/)]],
+        barrio: ["", [Validators.required]],
+        ciudad: ["", [Validators.required]],
+        cbu: ["", [Validators.pattern(/^\d{22}$/)]],
+      },
+      { validators: this.passwordMatchValidator },
+    )
+  }
 
-  onSubmit() {
-    if (this.password.length < 8) {
-      this.error = 'La contraseña debe tener al menos 8 caracteres';
-      return;
+  passwordMatchValidator(form: FormGroup) {
+    const password = form.get("password")
+    const confirmPassword = form.get("passwordConfirm")
+    return password && confirmPassword && password.value === confirmPassword.value ? null : { passwordMismatch: true }
+  }
+
+  onImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0]
+
+      // Create preview
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        this.imagePreview = e.target?.result as string
+      }
+      reader.readAsDataURL(this.selectedFile)
     }
-    if (this.password !== this.passwordConfirm) {
-      this.error = 'Las contraseñas no coinciden';
-      return;
+  }
+
+  removeImage(): void {
+    this.selectedFile = null
+    this.imagePreview = null
+  }
+
+  getControl(name: string) {
+    return this.registerForm.get(name)
+  }
+
+  hasError(fieldName: string, errorType: string): boolean {
+    const field = this.registerForm.get(fieldName)
+    return !!(field?.hasError(errorType) && (field?.dirty || field?.touched))
+  }
+
+  onSubmit(): void {
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched()
+      return
     }
 
+    this.isSubmitting = true
+    this.error = null
+
+    const formValue = this.registerForm.value
     const body: UsuarioCreate = {
-      nombre: this.nombre,
-      apellido: this.apellido,
-      email: this.email,
-      contraseña: this.password,
-      telefono: this.telefono,
-      barrio: this.barrio,
-      ciudad: this.ciudad,
-      foto: this.foto,
-      tipo: this.tipo
-    };
+      nombre: formValue.nombre,
+      apellido: formValue.apellido,
+      email: formValue.email,
+      contraseña: formValue.password,
+      telefono: formValue.telefono,
+      barrio: formValue.barrio,
+      ciudad: formValue.ciudad,
+      foto: this.imagePreview || "",
+      tipo: usuarioTipo.USUARIO,
+    }
 
-    // Registrarse y redirigir al home automáticamente
     this.authService.register(body).subscribe({
       next: () => {
-        this.router.navigate(['/']); // redirige al home
+        // Success - could navigate to login or home
+        console.log("Registro exitoso")
       },
-      error: err => {
+      error: (err) => {
+        this.isSubmitting = false
         if (err.status === 409) {
-          this.error = 'El email ya está registrado';
+          this.error = "El email ya está registrado"
         } else if (err.status === 400) {
-          this.error = err.error.message || 'Datos inválidos';
+          this.error = err.error.message || "Datos inválidos"
         } else {
-          this.error = 'Error del servidor, intenta más tarde';
+          this.error = "Error del servidor, intenta más tarde"
         }
-      }
-    });
+      },
+    })
   }
 }
