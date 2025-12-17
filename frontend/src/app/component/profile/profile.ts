@@ -1,9 +1,9 @@
 import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { type FormBuilder, type FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
+import { FormBuilder, type FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
 import { RouterModule } from "@angular/router"
-import type { UsuarioService } from "../../services/usuario-service"
-import type { AuthService } from "../../services/auth-service"
+import { UsuarioService } from "../../services/usuario-service"
+import { AuthService } from "../../services/auth-service"
 import type { Usuario } from "../../interfaces/usuario"
 import { HomeHeader } from "../home/home-header/home-header"
 import { HomeFooter } from "../home/home-footer/home-footer"
@@ -45,8 +45,12 @@ export class Profile implements OnInit {
   }
 
   loadUserProfile(): void {
-    // TODO: Obtener el ID del usuario del token o del AuthService
-    const userId = 1 // Placeholder - reemplazar con el ID real del usuario logueado
+    const userId = this.authService.getUsuarioId()
+
+    if (userId === null) {
+      this.errorMessage = "No se pudo obtener la información del usuario. Por favor, inicia sesión nuevamente."
+      return
+    }
 
     this.isLoading = true
     this.usuarioService.getPerfil(userId).subscribe({
@@ -122,8 +126,15 @@ export class Profile implements OnInit {
     this.successMessage = ""
     this.errorMessage = ""
 
+    const userId = this.authService.getUsuarioId()
+
+    if (userId === null) {
+      this.errorMessage = "No se pudo obtener la información del usuario. Por favor, inicia sesión nuevamente."
+      this.isLoading = false
+      return
+    }
+
     // TODO: Implementar lógica de subida de imagen si hay una nueva
-    const userId = 1 // Placeholder - reemplazar con el ID real
 
     const updateData: Partial<Usuario> = {
       ...this.profileForm.value,
