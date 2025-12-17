@@ -45,3 +45,37 @@
   background-color: #ef4444;
   color: white;
 }
+.paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.btn-pag {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  background-color: #eee;
+  color: #333;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn-pag:hover:not(:disabled) {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-pag:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.btn-pag.active {
+  background-color: #007bff;
+  color: white;
+  cursor: default;
+}

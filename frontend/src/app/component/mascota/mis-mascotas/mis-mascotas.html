@@ -24,9 +24,29 @@
 
     <!-- Controles de paginación -->
     <div class="paginacion" *ngIf="totalPaginas > 1">
-      <button (click)="paginaAnterior()" [disabled]="paginaActual === 1">Anterior</button>
-      <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
-      <button (click)="siguientePagina()" [disabled]="paginaActual === totalPaginas">Siguiente</button>
+      <button
+        class="btn-pag"
+        (click)="paginaAnterior()"
+        [disabled]="paginaActual === 1">
+        &laquo; Anterior
+      </button>
+
+      <ng-container *ngFor="let p of paginasArray()">
+        <button
+          class="btn-pag"
+          [class.active]="p === paginaActual"
+          (click)="irAPagina(p)">
+          {{ p }}
+        </button>
+      </ng-container>
+
+      <button
+        class="btn-pag"
+        (click)="siguientePagina()"
+        [disabled]="paginaActual === totalPaginas">
+        Siguiente &raquo;
+      </button>
     </div>
+
   </div>
 </main>

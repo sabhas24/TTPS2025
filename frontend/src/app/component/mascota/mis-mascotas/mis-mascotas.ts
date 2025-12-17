@@ -99,5 +99,14 @@ export class MisMascotas {
       }
     });
   }
+  paginasArray(): number[] {
+    return Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
+  }
+
+  irAPagina(numero: number) {
+    this.paginaActual = numero;
+    this.listarMascotas();
+  }
+
 
 }
