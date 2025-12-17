@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="78e42ac3-30f5-4e3e-9f53-c1c1138b248c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/public/leaflet/marker-icon-2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/public/leaflet/marker-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/public/leaflet/marker-shadow.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/component/mapa/mapa.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/services/georef.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/angular.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mapa/mapa.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mapa/mapa.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.ts" afterDir="false" />
     </list>

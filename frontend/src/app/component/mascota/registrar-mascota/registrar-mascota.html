@@ -65,6 +65,7 @@
         <label>Ubicación donde se perdió</label>
 
         <app-mapa
+          *ngIf="lat && lon"
           [lat]="lat"
           [lon]="lon"
           (coordenadasSeleccionadas)="onMapaSeleccionado($any($event))">

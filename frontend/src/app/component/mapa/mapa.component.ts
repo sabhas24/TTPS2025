@@ -5,7 +5,9 @@ import {
   EventEmitter,
   ViewChild,
   ElementRef,
-  AfterViewInit
+  AfterViewInit,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import * as L from 'leaflet';
 
@@ -20,11 +22,9 @@ L.Icon.Default.mergeOptions({
 @Component({
   selector: 'app-mapa',
   standalone: true,
-  template: `
-    <div #mapContainer style="height:300px;width:100%;border-radius:8px"></div>
-  `
+  template: `<div #mapContainer style="height:300px;width:100%;border-radius:8px"></div>`
 })
-export class MapaComponent implements AfterViewInit {
+export class MapaComponent implements AfterViewInit, OnChanges {
 
   private _lat!: number;
   private _lon!: number;
@@ -71,10 +71,14 @@ export class MapaComponent implements AfterViewInit {
     setTimeout(() => this.map.invalidateSize(), 0);
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.initialized && (changes['lat'] || changes['lon'])) {
+      this.updateMap();
+    }
+  }
+
   private updateMap(): void {
     if (!this.initialized) return;
-
-    console.log('Mapa actualizado a:', this._lat, this._lon);
 
     this.map.setView([this._lat, this._lon], 14);
     this.marker.setLatLng([this._lat, this._lon]);

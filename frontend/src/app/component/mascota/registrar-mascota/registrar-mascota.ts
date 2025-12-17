@@ -16,7 +16,7 @@ import { MapaComponent } from '../../mapa/mapa.component';
     MapaComponent
   ],
   templateUrl: './registrar-mascota.html',
-  styleUrl: './registrar-mascota.css',
+  styleUrls: ['./registrar-mascota.css'],
 })
 export class RegistrarMascota {
 
@@ -28,10 +28,8 @@ export class RegistrarMascota {
 
   tipoPerdida: 'PROPIO' | 'AJENO' = 'PROPIO';
 
-  /** 👇 USAMOS LOS MISMOS NOMBRES QUE EL MAPA */
-  lat: number = -34.9205; // La Plata
+  lat: number = -34.9205; // valor por defecto
   lon: number = -57.9536;
-
 
   fotos: File[] = [];
 
@@ -48,21 +46,32 @@ export class RegistrarMascota {
       this.usuarioNombre = `${usuario.nombre} ${usuario.apellido}`;
       this.usuarioId = usuario.id;
 
-      // 📍 Barrio o ciudad para Georef
-      const lugar = usuario.barrio || usuario.ciudad;
+      // Revisamos si hay coordenadas guardadas en localStorage
+      const stored = localStorage.getItem('ubicacionUsuario');
+      if (stored) {
+        const coord = JSON.parse(stored);
+        this.lat = coord.lat;
+        this.lon = coord.lon;
+        console.log('Coordenadas cargadas desde localStorage:', this.lat, this.lon);
+      } else {
+        // Obtenemos coordenadas desde Georef según barrio o ciudad
+        const lugar = usuario.barrio || usuario.ciudad;
+        if (lugar) {
+          this.georefService.obtenerCentroideLocalidad(lugar)
+            .subscribe({
+              next: (coord) => {
+                this.lat = coord.lat;
+                this.lon = coord.lon;
+                console.log('Coordenadas iniciales desde Georef:', this.lat, this.lon);
 
-      if (lugar) {
-        this.georefService.obtenerCentroideLocalidad(lugar)
-          .subscribe({
-            next: (coord) => {
-              this.lat = coord.lat;
-              this.lon = coord.lon;
-              console.log('Coordenadas iniciales:', this.lat, this.lon);
-            },
-            error: () => {
-              console.warn('No se pudo obtener la ubicación inicial');
-            }
-          });
+                // Guardamos en localStorage
+                localStorage.setItem('ubicacionUsuario', JSON.stringify({ lat: this.lat, lon: this.lon }));
+              },
+              error: () => {
+                console.warn('No se pudo obtener la ubicación inicial');
+              }
+            });
+        }
       }
     }
   }
@@ -74,15 +83,12 @@ export class RegistrarMascota {
     }
   }
 
-  /** 👇 coincide con el output del mapa */
-  onMapaSeleccionado(event: any) {
+  onMapaSeleccionado(event: { lat: number; lon: number }) {
     this.lat = event.lat;
     this.lon = event.lon;
 
-    localStorage.setItem(
-      'ubicacionMascota',
-      JSON.stringify({ lat: this.lat, lon: this.lon })
-    );
+    // Guardamos la ubicación seleccionada en localStorage
+    localStorage.setItem('ubicacionUsuario', JSON.stringify({ lat: this.lat, lon: this.lon }));
   }
 
   submit() {
