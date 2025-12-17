@@ -1,55 +1,23 @@
-<div class="register-page">
-  <!-- Header -->
-  <div class="register-header">
-    <div class="header-content">
-      <div class="logo">
-        <span class="logo-text">PetFind</span> Mis Mascotas
-      </div>
-      <a routerLink="/" class="btn-home">Inicio</a>
-    </div>
-  </div>
+<app-home-header></app-home-header>
 
-  <!-- Contenido Principal -->
-  <div class="register-content">
-    <div class="form-section">
-      <h1>Mis Mascotas Publicadas</h1>
+<main class="mis-mascotas-page">
+  <h1>Mis Mascotas</h1>
 
-      <!-- Mensaje de error global -->
-      <div *ngIf="error" class="error-message-global">{{ error }}</div>
+  <div *ngIf="cargando">Cargando...</div>
+  <div *ngIf="error" class="error-message-global">{{ error }}</div>
 
-      <!-- Cargando -->
-      <p *ngIf="cargando">Cargando mascotas...</p>
-
-      <!-- Lista de mascotas -->
-      <div *ngIf="!cargando && mascotas.length === 0">
-        <p>No tenés mascotas publicadas aún.</p>
-      </div>
-
-      <div class="mascota-list" *ngIf="mascotas.length > 0">
-        <div class="mascota-card" *ngFor="let mascota of mascotas">
-          <div class="image-preview has-image">
-            <img [src]="mascota.fotos[0]" alt="{{ mascota.nombre }}" />
-          </div>
-          <div class="mascota-info">
-            <h2>{{ mascota.nombre }}</h2>
-            <p><strong>Tamaño:</strong> {{ mascota.tamanio }}</p>
-            <p><strong>Color:</strong> {{ mascota.color }}</p>
-            <p><strong>Estado:</strong> {{ mascota.estado }}</p>
-            <p><strong>Barrio:</strong> {{ mascota.coordenada.barrio || 'Sin especificar' }}</p>
-          </div>
-          <div class="mascota-actions">
-            <button class="btn-submit" (click)="editarMascota(mascota.id)">Editar</button>
-            <button class="btn-remove">Eliminar</button> <!-- Botón sin acción aún -->
-          </div>
-        </div>
+  <div *ngIf="!cargando && !error" class="mascotas-list">
+    <div *ngFor="let mascota of mascotas" class="mascota-card">
+      <img [src]="mascota.fotos[0]" alt="{{ mascota.nombre }}" />
+      <div class="info">
+        <h3>{{ mascota.nombre }}</h3>
+        <p>Tamaño: {{ mascota.tamanio }}</p>
+        <p>Color: {{ mascota.color }}</p>
+        <p>{{ mascota.descripcionExtra }}</p>
+        <button (click)="editarMascota(mascota.id)">Editar</button>
+        <!-- Botón de eliminar solo visual, sin acción -->
+        <button disabled>Eliminar</button>
       </div>
     </div>
   </div>
-
-  <!-- Footer -->
-  <div class="register-footer">
-    <div class="footer-content">
-      <div class="footer-slogan">Encuentra y publica mascotas fácilmente</div>
-    </div>
-  </div>
-</div>
+</main>

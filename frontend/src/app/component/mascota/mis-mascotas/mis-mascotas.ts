@@ -5,11 +5,16 @@ import { Router } from '@angular/router';
 
 import { Mascota, MascotaService } from '../../../services/mascota-service';
 import { AuthService } from '../../../services/auth-service';
+import { HomeHeader } from '../../home/home-header/home-header'; // <-- IMPORTAR
 
 @Component({
   selector: 'app-mis-mascotas',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HomeHeader // <-- AGREGAR
+  ],
   templateUrl: './mis-mascotas.html',
   styleUrls: ['./mis-mascotas.css']
 })
@@ -36,13 +41,13 @@ export class MisMascotas {
       return;
     }
 
-    // Usamos getMascotas() y filtramos por publicadorId
+    // Por ahora asumimos que getMascotas() devuelve todas y filtramos por usuario
     this.mascotaService.getMascotas().subscribe({
-      next: (res: Mascota[]) => {
+      next: (res) => {
         this.mascotas = res.filter(m => m.publicadorId === usuario.id);
         this.cargando = false;
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error(err);
         this.error = 'Error al cargar mascotas';
         this.cargando = false;
