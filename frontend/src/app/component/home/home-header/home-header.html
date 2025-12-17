@@ -15,14 +15,17 @@
 
     <!-- Navegación -->
     <nav class="nav-links">
-      <a *ngFor="let link of navLinks"
-         [routerLink]="link.path"
-         routerLinkActive="active-link"
-         [routerLinkActiveOptions]="{ exact: true }"
-         class="nav-link">
-        {{ link.label }}
-      </a>
+      <ng-container *ngFor="let link of navLinks">
+        <a *ngIf="!link.requiereLogin || (authService.loggedIn$ | async)"
+           [routerLink]="link.path"
+           routerLinkActive="active-link"
+           [routerLinkActiveOptions]="{ exact: true }"
+           class="nav-link">
+          {{ link.label }}
+        </a>
+      </ng-container>
     </nav>
+
 
     <!-- Botones de autenticación -->
     <div class="auth-buttons">

@@ -6,6 +6,7 @@ import { AuthService } from '../../../services/auth-service';
 interface NavLink {
   label: string;
   path: string;
+  requiereLogin?: boolean; // ahora opcional
 }
 
 @Component({
@@ -23,11 +24,10 @@ export class HomeHeader {
     { label: 'Inicio', path: '/' },
     { label: 'Ranking', path: '/ranking' },
     { label: 'Mascotas Perdidas', path: '/mascotas-perdidas' },
-    { label: 'Registrar Mascota Perdida', path: '/mascotas/crear' },
-
+    { label: 'Registrar Mascota Perdida', path: '/mascotas/crear', requiereLogin: true },
+    { label: 'Mis Mascotas', path: '/mascotas/mis-mascotas', requiereLogin: true }
   ];
 
-  // Método de logout
   logout() {
     this.authService.logout();
     this.router.navigate(['/']);

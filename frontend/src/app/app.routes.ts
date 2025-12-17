@@ -1,9 +1,8 @@
-import type { Routes } from "@angular/router"
-import { Login } from "./component/login/login"
-import { Register } from "./component/register/register"
-import { Home } from "./component/home/home"
+import type { Routes } from "@angular/router";
+import { Login } from "./component/login/login";
+import { Register } from "./component/register/register";
+import { Home } from "./component/home/home";
 import { RegistrarMascota } from './component/mascota/registrar-mascota/registrar-mascota';
-
 
 export const routes: Routes = [
   { path: "", component: Home },
@@ -15,4 +14,10 @@ export const routes: Routes = [
       import('./component/mascota/registrar-mascota/registrar-mascota')
         .then(m => m.RegistrarMascota)
   },
-]
+  {
+    path: 'mascotas/mis-mascotas',
+    loadComponent: () =>
+      import('./component/mascota/mis-mascotas/mis-mascotas')
+        .then(m => m.MisMascotas)
+  }
+];

@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="78e42ac3-30f5-4e3e-9f53-c1c1138b248c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/home-header/home-header.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/home/home-header/home-header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/home-header/home-header.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/home/home-header/home-header.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,7 +180,7 @@
       <workItem from="1765810763632" duration="11794000" />
       <workItem from="1765827993958" duration="891000" />
       <workItem from="1765854079607" duration="7581000" />
-      <workItem from="1765984054568" duration="11374000" />
+      <workItem from="1765984054568" duration="13344000" />
     </task>
     <servers />
   </component>
