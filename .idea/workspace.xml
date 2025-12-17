@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78e42ac3-30f5-4e3e-9f53-c1c1138b248c" name="Changes" comment="" />
+    <list default="true" id="78e42ac3-30f5-4e3e-9f53-c1c1138b248c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mascota/mis-mascotas/mis-mascotas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/mis-mascotas/mis-mascotas.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -176,7 +179,7 @@
       <workItem from="1765827993958" duration="891000" />
       <workItem from="1765854079607" duration="7581000" />
       <workItem from="1765984054568" duration="13735000" />
-      <workItem from="1766009729078" duration="3115000" />
+      <workItem from="1766009729078" duration="4161000" />
     </task>
     <servers />
   </component>

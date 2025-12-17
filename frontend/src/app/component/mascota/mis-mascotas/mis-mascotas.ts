@@ -86,6 +86,10 @@ export class MisMascotas {
 
     this.mascotaService.deleteMascota(id).subscribe({
       next: () => {
+        // Ajustar página si eliminamos el último elemento de la última página
+        if (this.mascotasPaginadas.length === 1 && this.paginaActual > 1) {
+          this.paginaActual--;
+        }
         // Volvemos a cargar la página actual desde backend
         this.listarMascotas();
       },
