@@ -48,21 +48,33 @@ export class MascotaService {
     return this.http.post<Mascota>(this.baseUrl, mascota);
   }
 
-  // ===== Obtener todas las mascotas =====
-  getMascotas(): Observable<Mascota[]> {
-    return this.http.get<Mascota[]>(`${this.baseUrl}/mascotas`);
+  // ===== Listar mascotas del usuario autenticado =====
+  getMascotasPorUsuario(usuarioId: number): Observable<Mascota[]> {
+    return this.http.get<Mascota[]>(`${this.baseUrl}/usuario/${usuarioId}`);
   }
 
-  // ===== Cambiar estado de una mascota =====
+  // ===== Listar mascotas perdidas =====
+  getMascotasPerdidas(): Observable<Mascota[]> {
+    return this.http.get<Mascota[]>(`${this.baseUrl}/perdidas`);
+  }
+
+  // ===== Editar mascota =====
+  updateMascota(id: number, dto: any): Observable<Mascota> {
+    return this.http.put<Mascota>(`${this.baseUrl}/${id}`, dto);
+  }
+
+  // ===== Cambiar estado de mascota =====
   updateEstado(id: number, estado: string): Observable<Mascota> {
-    return this.http.patch<Mascota>(
-      `${this.baseUrl}/mascotas/${id}/estado?estado=${estado}`,
-      null
-    );
+    return this.http.patch<Mascota>(`${this.baseUrl}/${id}/estado?estado=${estado}`, null);
   }
 
-  // ===== Opcional: obtener mascota por id =====
+  // ===== Borrado lógico de mascota =====
+  deleteMascota(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  // ===== Obtener mascota por ID =====
   getMascotaById(id: number): Observable<Mascota> {
-    return this.http.get<Mascota>(`${this.baseUrl}/mascotas/${id}`);
+    return this.http.get<Mascota>(`${this.baseUrl}/${id}`);
   }
 }

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { Mascota, MascotaService } from '../../../services/mascota-service';
 import { AuthService } from '../../../services/auth-service';
-import { HomeHeader } from '../../home/home-header/home-header'; // <-- IMPORTAR
+import { HomeHeader } from '../../home/home-header/home-header';
 
 @Component({
   selector: 'app-mis-mascotas',
@@ -13,15 +13,21 @@ import { HomeHeader } from '../../home/home-header/home-header'; // <-- IMPORTAR
   imports: [
     CommonModule,
     FormsModule,
-    HomeHeader // <-- AGREGAR
+    HomeHeader
   ],
   templateUrl: './mis-mascotas.html',
   styleUrls: ['./mis-mascotas.css']
 })
 export class MisMascotas {
   mascotas: Mascota[] = [];
+  mascotasPaginadas: Mascota[] = [];
   cargando: boolean = true;
   error: string = '';
+
+  // Variables de paginación
+  paginaActual: number = 1;
+  mascotasPorPagina: number = 5;
+  totalPaginas: number = 1;
 
   constructor(
     private mascotaService: MascotaService,
@@ -34,17 +40,18 @@ export class MisMascotas {
   }
 
   listarMascotas() {
-    const usuario = this.authService.getUsuario();
-    if (!usuario) {
+    const usuarioId = this.authService.getUsuarioId();
+    if (!usuarioId) {
       this.error = 'Usuario no autenticado';
       this.cargando = false;
       return;
     }
 
-    // Por ahora asumimos que getMascotas() devuelve todas y filtramos por usuario
-    this.mascotaService.getMascotas().subscribe({
+    this.mascotaService.getMascotasPorUsuario(usuarioId).subscribe({
       next: (res) => {
-        this.mascotas = res.filter(m => m.publicadorId === usuario.id);
+        this.mascotas = res;
+        this.totalPaginas = Math.ceil(this.mascotas.length / this.mascotasPorPagina);
+        this.actualizarPaginacion();
         this.cargando = false;
       },
       error: (err) => {
@@ -55,7 +62,44 @@ export class MisMascotas {
     });
   }
 
+  actualizarPaginacion() {
+    const start = (this.paginaActual - 1) * this.mascotasPorPagina;
+    const end = start + this.mascotasPorPagina;
+    this.mascotasPaginadas = this.mascotas.slice(start, end);
+  }
+
+  siguientePagina() {
+    if (this.paginaActual < this.totalPaginas) {
+      this.paginaActual++;
+      this.actualizarPaginacion();
+    }
+  }
+
+  paginaAnterior() {
+    if (this.paginaActual > 1) {
+      this.paginaActual--;
+      this.actualizarPaginacion();
+    }
+  }
+
   editarMascota(id: number) {
     this.router.navigate([`/mascotas/editar/${id}`]);
+  }
+
+  eliminarMascota(id: number) {
+    if (!confirm('¿Desea eliminar esta mascota?')) return;
+
+    this.mascotaService.deleteMascota(id).subscribe({
+      next: () => {
+        this.mascotas = this.mascotas.filter(m => m.id !== id);
+        this.totalPaginas = Math.ceil(this.mascotas.length / this.mascotasPorPagina);
+        if (this.paginaActual > this.totalPaginas) this.paginaActual = this.totalPaginas;
+        this.actualizarPaginacion();
+      },
+      error: (err) => {
+        console.error(err);
+        this.error = 'Error al eliminar mascota';
+      }
+    });
   }
 }
