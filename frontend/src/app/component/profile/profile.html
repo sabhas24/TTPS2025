@@ -1,0 +1,164 @@
+<div class="profile-container">
+    <app-home-header></app-home-header>
+
+    <main class="profile-content">
+        <div class="profile-wrapper">
+            <!-- Left Section: Form -->
+            <div class="profile-form-section">
+                <div class="profile-header">
+                    <h1 class="profile-title">Mi Perfil</h1>
+                    <p class="profile-subtitle">
+                        {{
+                        isEditMode
+                        ? "Edita tu información personal"
+                        : "Visualiza tu información personal"
+                        }}
+                    </p>
+                </div>
+
+                <!-- Success/Error Messages -->
+                <div class="message-container">
+                    <div *ngIf="successMessage" class="success-message">
+                        <svg class="message-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        {{ successMessage }}
+                    </div>
+
+                    <div *ngIf="errorMessage" class="error-message">
+                        <svg class="message-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        {{ errorMessage }}
+                    </div>
+                </div>
+
+                <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                    <!-- Name and Last Name -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nombre" class="form-label">
+                                Nombre<span class="required">*</span>
+                            </label>
+                            <input type="text" id="nombre" formControlName="nombre" class="form-input"
+                                [class.input-error]="hasError('nombre')" placeholder="Juan" />
+                            <span *ngIf="hasError('nombre')" class="error-text">
+                                {{ getErrorMessage("nombre") }}
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="apellido" class="form-label">
+                                Apellido<span class="required">*</span>
+                            </label>
+                            <input type="text" id="apellido" formControlName="apellido" class="form-input"
+                                [class.input-error]="hasError('apellido')" placeholder="Pérez" />
+                            <span *ngIf="hasError('apellido')" class="error-text">
+                                {{ getErrorMessage("apellido") }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Email and Phone -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email" class="form-label">
+                                Correo Electrónico<span class="required">*</span>
+                            </label>
+                            <input type="email" id="email" formControlName="email" class="form-input"
+                                [class.input-error]="hasError('email')" placeholder="juan@ejemplo.com" />
+                            <span *ngIf="hasError('email')" class="error-text">
+                                {{ getErrorMessage("email") }}
+                            </span>
+                            <span *ngIf="!isEditMode" class="info-text">
+                                El correo electrónico no se puede modificar
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefono" class="form-label">
+                                Teléfono<span class="required">*</span>
+                            </label>
+                            <input type="tel" id="telefono" formControlName="telefono" class="form-input"
+                                [class.input-error]="hasError('telefono')" placeholder="1234567890" />
+                            <span *ngIf="hasError('telefono')" class="error-text">
+                                {{ getErrorMessage("telefono") }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Neighborhood and City -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="barrio" class="form-label">
+                                Barrio<span class="required">*</span>
+                            </label>
+                            <input type="text" id="barrio" formControlName="barrio" class="form-input"
+                                [class.input-error]="hasError('barrio')" placeholder="Palermo" />
+                            <span *ngIf="hasError('barrio')" class="error-text">
+                                {{ getErrorMessage("barrio") }}
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ciudad" class="form-label">
+                                Ciudad<span class="required">*</span>
+                            </label>
+                            <input type="text" id="ciudad" formControlName="ciudad" class="form-input"
+                                [class.input-error]="hasError('ciudad')" placeholder="Buenos Aires" />
+                            <span *ngIf="hasError('ciudad')" class="error-text">
+                                {{ getErrorMessage("ciudad") }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" (click)="toggleEditMode()"
+                            [disabled]="isLoading">
+                            {{ isEditMode ? "Cancelar" : "Editar Perfil" }}
+                        </button>
+                        <button *ngIf="isEditMode" type="submit" class="btn btn-primary"
+                            [disabled]="isLoading || profileForm.invalid">
+                            {{ isLoading ? "Guardando..." : "Guardar Cambios" }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Section: Photo -->
+            <div class="profile-photo-section">
+                <div class="photo-container">
+                    <div class="photo-wrapper">
+                        <img *ngIf="selectedImage" [src]="selectedImage" alt="Foto de perfil" class="profile-photo" />
+                        <div *ngIf="!selectedImage" class="photo-placeholder">
+                            <svg class="placeholder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <input type="file" id="fileInput" accept="image/*" (change)="onImageSelected($event)"
+                        style="display: none" [disabled]="!isEditMode" />
+
+                    <div class="photo-actions" *ngIf="isEditMode">
+                        <button type="button" class="btn btn-upload" (click)="triggerFileInput()">
+                            {{ selectedImage ? "Cambiar Imagen" : "Cargar Imagen" }}
+                        </button>
+                        <button *ngIf="selectedImage" type="button" class="btn btn-remove" (click)="removeImage()">
+                            Eliminar Imagen
+                        </button>
+                    </div>
+
+                    <p class="photo-hint">
+                        Formatos aceptados: JPG, PNG, GIF. Tamaño máximo: 5MB
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <app-home-footer></app-home-footer>
+</div>
