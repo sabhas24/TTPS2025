@@ -34,6 +34,14 @@ export interface MascotaCreateDTO {
   publicadorId: number;
 }
 
+export interface PageDTO<T> {
+  content: T[];
+  totalPages: number;
+  totalElements?: number;
+  number?: number; // número de página
+  size?: number; // tamaño página
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -77,4 +85,9 @@ export class MascotaService {
   getMascotaById(id: number): Observable<Mascota> {
     return this.http.get<Mascota>(`${this.baseUrl}/${id}`);
   }
+  // Listar mascotas paginadas por usuario (backend)
+  getMascotasPorUsuarioPaginado(usuarioId: number, pagina: number, tamaño: number): Observable<PageDTO<Mascota>> {
+    return this.http.get<PageDTO<Mascota>>(`${this.baseUrl}/usuario/${usuarioId}/paginado?pagina=${pagina}&tamaño=${tamaño}`);
+  }
+
 }

@@ -13,6 +13,9 @@ import ttps.grupo2.appmascotas.entities.Usuario;
 import ttps.grupo2.appmascotas.repositories.MascotaRepository;
 import ttps.grupo2.appmascotas.repositories.UsuarioRepository;
 import ttps.grupo2.appmascotas.validations.MascotaValidator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -130,5 +133,12 @@ public class MascotaService {
         dto.setCoordenada(mascota.getCoordenada());
         dto.setNombrePublicador(mascota.getPublicador().getNombre());
         return dto;
+    }
+
+    public Page<MascotaResponseDTO> listarPorUsuarioPaginado(Long usuarioId, int pagina, int tamaño) {
+        Pageable pageable = PageRequest.of(pagina - 1, tamaño); // Spring empieza desde 0
+        Page<Mascota> mascotasPage = mascotaRepository.findByPublicadorIdAndHabilitadoTrue(usuarioId, pageable);
+
+        return mascotasPage.map(this::convertirAResponseDTO);
     }
 }

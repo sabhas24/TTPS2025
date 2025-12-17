@@ -13,7 +13,7 @@
         <img [src]="mascota.fotos[0]" alt="{{ mascota.nombre }}" />
         <div class="info">
           <h3>{{ mascota.nombre }}</h3>
-          <p>Barrio: {{ mascota.coordenada?.barrio || 'No definido' }}</p>
+          <p>Barrio: {{ mascota.coordenada.barrio || 'No definido' }}</p>
           <p>Color: {{ mascota.color }}</p>
           <p>{{ mascota.descripcionExtra }}</p>
           <button (click)="editarMascota(mascota.id)">Editar</button>

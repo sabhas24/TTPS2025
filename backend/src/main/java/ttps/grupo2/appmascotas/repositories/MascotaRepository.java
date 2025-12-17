@@ -3,6 +3,8 @@ package ttps.grupo2.appmascotas.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ttps.grupo2.appmascotas.entities.Mascota;
 import ttps.grupo2.appmascotas.entities.EstadoMascota;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -24,4 +26,6 @@ public interface MascotaRepository extends JpaRepository<Mascota, Long> {
     List<Mascota> findByEstadoAndHabilitadoTrue(EstadoMascota estado);
 
     List<Mascota> findByPublicadorIdAndHabilitadoTrue(Long publicadorId);
+
+    Page<Mascota> findByPublicadorIdAndHabilitadoTrue(Long usuarioId, Pageable pageable);
 }

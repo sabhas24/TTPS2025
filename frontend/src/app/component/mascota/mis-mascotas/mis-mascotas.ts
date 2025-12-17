@@ -19,7 +19,6 @@ import { HomeHeader } from '../../home/home-header/home-header';
   styleUrls: ['./mis-mascotas.css']
 })
 export class MisMascotas {
-  mascotas: Mascota[] = [];
   mascotasPaginadas: Mascota[] = [];
   cargando: boolean = true;
   error: string = '';
@@ -47,38 +46,34 @@ export class MisMascotas {
       return;
     }
 
-    this.mascotaService.getMascotasPorUsuario(usuarioId).subscribe({
-      next: (res) => {
-        this.mascotas = res;
-        this.totalPaginas = Math.ceil(this.mascotas.length / this.mascotasPorPagina);
-        this.actualizarPaginacion();
-        this.cargando = false;
-      },
-      error: (err) => {
-        console.error(err);
-        this.error = 'Error al cargar mascotas';
-        this.cargando = false;
-      }
-    });
-  }
+    this.cargando = true;
 
-  actualizarPaginacion() {
-    const start = (this.paginaActual - 1) * this.mascotasPorPagina;
-    const end = start + this.mascotasPorPagina;
-    this.mascotasPaginadas = this.mascotas.slice(start, end);
+    this.mascotaService.getMascotasPorUsuarioPaginado(usuarioId, this.paginaActual, this.mascotasPorPagina)
+      .subscribe({
+        next: (res) => {
+          this.mascotasPaginadas = res.content;
+          this.totalPaginas = res.totalPages;
+          this.cargando = false;
+        },
+        error: (err) => {
+          console.error(err);
+          this.error = 'Error al cargar mascotas';
+          this.cargando = false;
+        }
+      });
   }
 
   siguientePagina() {
     if (this.paginaActual < this.totalPaginas) {
       this.paginaActual++;
-      this.actualizarPaginacion();
+      this.listarMascotas();
     }
   }
 
   paginaAnterior() {
     if (this.paginaActual > 1) {
       this.paginaActual--;
-      this.actualizarPaginacion();
+      this.listarMascotas();
     }
   }
 
@@ -91,10 +86,8 @@ export class MisMascotas {
 
     this.mascotaService.deleteMascota(id).subscribe({
       next: () => {
-        this.mascotas = this.mascotas.filter(m => m.id !== id);
-        this.totalPaginas = Math.ceil(this.mascotas.length / this.mascotasPorPagina);
-        if (this.paginaActual > this.totalPaginas) this.paginaActual = this.totalPaginas;
-        this.actualizarPaginacion();
+        // Volvemos a cargar la página actual desde backend
+        this.listarMascotas();
       },
       error: (err) => {
         console.error(err);
@@ -102,4 +95,5 @@ export class MisMascotas {
       }
     });
   }
+
 }

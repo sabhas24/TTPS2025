@@ -13,6 +13,8 @@ import ttps.grupo2.appmascotas.DTOs.MascotasDTOs.MascotaResponseDTO;
 import ttps.grupo2.appmascotas.DTOs.MascotasDTOs.MascotaUpdateRequestDTO;
 import ttps.grupo2.appmascotas.entities.EstadoMascota;
 import ttps.grupo2.appmascotas.services.MascotaService;
+import org.springframework.data.domain.Page;
+
 
 import java.util.List;
 
@@ -92,4 +94,16 @@ public class MascotaController {
         public List<MascotaResponseDTO> listarPorUsuario(@PathVariable Long id) {
                 return mascotaService.listarPorUsuario(id);
         }
+
+        @Operation(summary = "Listar mascotas por usuario paginadas", description = "Devuelve mascotas habilitadas del usuario según la página y tamaño indicados")
+        @ApiResponse(responseCode = "200", description = "Listado paginado de mascotas del usuario")
+        @GetMapping("/usuario/{id}/paginado")
+        public Page<MascotaResponseDTO> listarPorUsuarioPaginado(
+                @PathVariable Long id,
+                @RequestParam(defaultValue = "1") int pagina,
+                @RequestParam(defaultValue = "10") int tamaño
+        ) {
+            return mascotaService.listarPorUsuarioPaginado(id, pagina, tamaño);
+        }
+
 }
