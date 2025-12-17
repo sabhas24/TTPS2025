@@ -44,13 +44,17 @@ export class Profile implements OnInit {
     this.loadUserProfile()
   }
 
-  loadUserProfile(): void {
+  private getUserId(): number | null {
     const userId = this.authService.getUsuarioId()
-
     if (!userId) {
       this.errorMessage = "No se pudo obtener el ID del usuario. Por favor, inicia sesión nuevamente."
-      return
     }
+    return userId
+  }
+
+  loadUserProfile(): void {
+    const userId = this.getUserId()
+    if (!userId) return
 
     this.isLoading = true
     this.usuarioService.getPerfil(userId).subscribe({
@@ -126,10 +130,8 @@ export class Profile implements OnInit {
     this.successMessage = ""
     this.errorMessage = ""
 
-    const userId = this.authService.getUsuarioId()
-
+    const userId = this.getUserId()
     if (!userId) {
-      this.errorMessage = "No se pudo obtener el ID del usuario. Por favor, inicia sesión nuevamente."
       this.isLoading = false
       return
     }
