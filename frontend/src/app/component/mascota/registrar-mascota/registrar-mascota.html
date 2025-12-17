@@ -75,7 +75,11 @@
 
       <div class="form-group">
         <label>Usuario que publica</label>
-        <input type="text" value="Usuario autenticado" disabled />
+        <input
+          type="text"
+          [value]="usuarioNombre || 'Usuario autenticado'"
+          disabled
+        />
       </div>
 
       <button type="submit" class="btn btn-primary btn-large">

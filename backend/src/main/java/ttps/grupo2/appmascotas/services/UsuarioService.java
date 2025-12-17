@@ -50,9 +50,8 @@ public class UsuarioService {
 
             Usuario guardado = usuarioRepository.save(nuevo);
 
-            // 🔐 Cargar UserDetails y generar JWT
-            var userDetails = userDetailsService.loadUserByUsername(guardado.getEmail());
-            String token = jwtService.generateToken(userDetails);
+            // 🔐 Generar JWT usando el Usuario completo (no UserDetails)
+            String token = jwtService.generateToken(guardado);
 
             // Devolver DTO con usuario y token
             return new UsuarioRegisterResponseDTO(

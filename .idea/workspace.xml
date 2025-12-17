@@ -5,14 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="78e42ac3-30f5-4e3e-9f53-c1c1138b248c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/home-cta/home-cta.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/home/home-cta/home-cta.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/home-cta/home-cta.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/home/home-cta/home-cta.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/home/home-header/home-header.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/home/home-header/home-header.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/controllers/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/services/JWTService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/services/JWTService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/services/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/services/UsuarioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/register/register.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/register/register.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/services/auth-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/services/auth-service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/img/descarga-_1_.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

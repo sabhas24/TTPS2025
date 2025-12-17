@@ -1,5 +1,7 @@
 package ttps.grupo2.appmascotas.services;
-
+import ttps.grupo2.appmascotas.entities.Usuario;
+import java.util.HashMap;
+import java.util.Map;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -41,10 +43,20 @@ public class JWTService {
         return claims.getSubject();
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(Usuario usuario) {
         long now = System.currentTimeMillis();
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", usuario.getId());
+        claims.put("nombre", usuario.getNombre());
+        claims.put("apellido", usuario.getApellido());
+        claims.put("email", usuario.getEmail());
+        claims.put("barrio", usuario.getBarrio());
+        claims.put("ciudad", usuario.getCiudad());
+
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
+                .setClaims(claims)
+                .setSubject(usuario.getEmail()) // sigue siendo el email
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + jwtExpirationInMs))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)

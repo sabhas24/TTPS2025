@@ -30,7 +30,20 @@ export class RegistrarMascota {
 
   fotos: File[] = [];
 
-  constructor(public authService: AuthService) {}
+  usuarioNombre = '';
+  usuarioId: number | null = null;
+
+
+  constructor(public authService: AuthService) {
+    const usuario = this.authService.getUsuario();
+
+    if (usuario) {
+      this.usuarioNombre = `${usuario.nombre} ${usuario.apellido}`;
+      this.usuarioId = usuario.id;
+    }
+
+    console.log('Usuario JWT:', usuario);
+  }
 
   onFotoSeleccionada(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -45,6 +58,10 @@ export class RegistrarMascota {
   }
 
   submit() {
+    if (!this.usuarioId) {
+      alert('Debe iniciar sesión para publicar una mascota');
+      return;
+    }
     const mascotaDTO = {
       nombre: this.nombre,
       tamanio: this.tamanio,
@@ -57,7 +74,7 @@ export class RegistrarMascota {
         longitud: this.longitud
       },
       fotos: this.fotos,
-      publicadorId: 'DESDE_JWT' // 🔒 luego se obtiene del token
+      publicadorId: this.usuarioId // 🔒 luego se obtiene del token
     };
 
     console.log('Mascota a publicar:', mascotaDTO);

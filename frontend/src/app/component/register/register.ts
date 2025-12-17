@@ -13,6 +13,7 @@ import { HomeFooter } from "../home/home-footer/home-footer"
   imports: [ReactiveFormsModule, CommonModule, HomeFooter, RouterLink],
   templateUrl: "./register.html",
   styleUrl: "./register.css",
+  standalone: true
 })
 export class Register {
   registerForm: FormGroup
