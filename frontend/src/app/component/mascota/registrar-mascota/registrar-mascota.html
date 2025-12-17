@@ -64,12 +64,14 @@
       <div class="form-group">
         <label>Ubicación donde se perdió</label>
 
-        <div class="map-placeholder">
-          🗺️ Mapa (se conecta en el próximo paso)
-        </div>
+        <app-mapa
+          [lat]="lat"
+          [lon]="lon"
+          (coordenadasSeleccionadas)="onMapaSeleccionado($any($event))">
+        </app-mapa>
 
-        <p *ngIf="latitud && longitud">
-          Coordenadas: {{ latitud }}, {{ longitud }}
+        <p *ngIf="lat !== null && lon !== null">
+          Coordenadas: {{ lat }}, {{ lon }}
         </p>
       </div>
 
