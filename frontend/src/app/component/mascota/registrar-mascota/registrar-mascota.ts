@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../../../services/auth-service';
 import { MascotaService, MascotaCreateDTO } from '../../../services/mascota-service';
@@ -43,7 +44,8 @@ export class RegistrarMascota {
   constructor(
     public authService: AuthService,
     private georefService: GeorefService,
-    private mascotaService: MascotaService
+    private mascotaService: MascotaService,
+    private router: Router
   ) {
     const usuario = this.authService.getUsuario();
 
@@ -170,6 +172,7 @@ export class RegistrarMascota {
         console.log('=== Respuesta del backend ===', res);
         alert('Mascota publicada correctamente');
         this.resetForm();
+        this.router.navigate(['/']);
       },
       error: (err) => {
         console.error('=== ERROR del backend ===', err);
