@@ -1,35 +1,68 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../envaironment/envaironment';
 import { HttpClient } from '@angular/common/http';
-import { Mascota } from '../interfaces/mascota';
 import { Observable } from 'rxjs';
+import { environment } from '../../envaironment/envaironment'; // Ajustar path según tu proyecto
 
-const API_BASE_URL = environment.apiUrl;
-@Injectable({
-  providedIn: 'root',
-})
-export class MascotaService {
-  constructor(private http: HttpClient) { }
-  getMascotaById(id: number): Observable<Mascota> {
-    return this.http.get<Mascota>(`${API_BASE_URL}/mascotas/${id}`);
-  }
-  deleteMascota(id: number): Observable<void> {
-    return this.http.delete<void>(`${API_BASE_URL}/mascotas/${id}`);
-  }
-  createMascota(mascota: Mascota): Observable<Mascota> {
-    return this.http.post<Mascota>(`${API_BASE_URL}/mascotas`, mascota)
-  }
-  updateMascota(id: number, mascota: Partial<Mascota>): Observable<Mascota> {
-    return this.http.put<Mascota>(`${API_BASE_URL}/mascotas/${id}`, mascota);
-  }
-  updateEstado(id: number, estadoAdopcion: string): Observable<Mascota> {
-    return this.http.patch<Mascota>(`${API_BASE_URL}/mascotas/${id}/estado`, { estadoAdopcion });
-  }
-  getMascotasPerdiadas(): Observable<Mascota[]> {
-    return this.http.get<Mascota[]>(`${API_BASE_URL}/mascotas/perdidas`);
-  }
-  getMascotasPorUsuario(usuarioId: number): Observable<Mascota[]> {
-    return this.http.get<Mascota[]>(`${API_BASE_URL}/mascotas/usuario/${usuarioId}`);
-  }
+// ===== Modelo completo de Mascota =====
+export interface CoordenadaDTO {
+  latitud: number;
+  longitud: number;
+  barrio?: string; // hacemos opcional por compatibilidad
 }
 
+export interface Mascota {
+  id: number;
+  nombre: string;
+  tamanio: number;
+  color: string;
+  descripcionExtra: string;
+  fotos: string[];
+  coordenada: CoordenadaDTO;
+  publicadorId: number;
+  estado: string;
+  nombrePublicador: string;
+}
+
+// ===== DTO para crear Mascota =====
+export interface MascotaCreateDTO {
+  nombre: string;
+  tamanio: number;
+  color: string;
+  descripcionExtra: string;
+  fotos: string[];
+  coordenada: CoordenadaDTO; // aquí incluimos barrio opcional
+  publicadorId: number;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MascotaService {
+
+  private baseUrl = `${environment.apiUrl}/mascotas`;
+
+  constructor(private http: HttpClient) { }
+
+  // ===== Crear nueva mascota =====
+  createMascota(mascota: MascotaCreateDTO): Observable<Mascota> {
+    return this.http.post<Mascota>(this.baseUrl, mascota);
+  }
+
+  // ===== Obtener todas las mascotas =====
+  getMascotas(): Observable<Mascota[]> {
+    return this.http.get<Mascota[]>(`${this.baseUrl}/mascotas`);
+  }
+
+  // ===== Cambiar estado de una mascota =====
+  updateEstado(id: number, estado: string): Observable<Mascota> {
+    return this.http.patch<Mascota>(
+      `${this.baseUrl}/mascotas/${id}/estado?estado=${estado}`,
+      null
+    );
+  }
+
+  // ===== Opcional: obtener mascota por id =====
+  getMascotaById(id: number): Observable<Mascota> {
+    return this.http.get<Mascota>(`${this.baseUrl}/mascotas/${id}`);
+  }
+}

@@ -30,8 +30,22 @@ public class MascotaController {
         @PostMapping
         @ResponseStatus(HttpStatus.CREATED)
         public MascotaResponseDTO publicar(@RequestBody MascotaCreateRequestDTO dto) {
-                return mascotaService.publicarMascota(dto);
+            System.out.println("DTO recibido:");
+            System.out.println("Nombre: " + dto.getNombre());
+            System.out.println("Tamaño: " + dto.getTamanio());
+            System.out.println("Color: " + dto.getColor());
+            System.out.println("DescripcionExtra: " + dto.getDescripcionExtra());
+            System.out.println("Fotos: " + dto.getFotos());
+            if (dto.getCoordenada() != null) {
+                System.out.println("Coordenada lat: " + dto.getCoordenada().getLatitud());
+                System.out.println("Coordenada lon: " + dto.getCoordenada().getLongitud());
+                System.out.println("Coordenada barrio: " + dto.getCoordenada().getBarrio());
+            }
+            System.out.println("PublicadorId: " + dto.getPublicadorId());
+
+            return mascotaService.publicarMascota(dto);
         }
+
 
         @Operation(summary = "Editar una mascota existente", description = "Actualiza los datos de una mascota habilitada. No permite modificar estado ni publicador.")
         @ApiResponse(responseCode = "200", description = "Mascota actualizada correctamente", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MascotaResponseDTO.class)))

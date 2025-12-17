@@ -51,11 +51,15 @@ public class MascotaValidator {
         if (fotos == null || fotos.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Debe incluir al menos una foto");
         }
-        boolean formatoIncorrecto = fotos.stream().anyMatch(f -> !f.toLowerCase().endsWith(".jpg"));
+
+        boolean formatoIncorrecto = fotos.stream()
+                .anyMatch(f -> !(f.startsWith("data:image/jpeg;base64,") || f.startsWith("data:image/jpg;base64,")));
+
         if (formatoIncorrecto) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Solo se permiten fotos en formato .jpg");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Solo se permiten fotos en formato JPEG/Base64");
         }
     }
+
 
     public void validarActualizacion(MascotaUpdateRequestDTO nueva, Mascota original) {
         // Validaciones reutilizadas

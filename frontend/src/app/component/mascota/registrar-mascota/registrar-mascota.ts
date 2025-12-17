@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 import { AuthService } from '../../../services/auth-service';
-import { HomeHeader } from '../../home/home-header/home-header';
+import { MascotaService, MascotaCreateDTO } from '../../../services/mascota-service';
 import { GeorefService } from '../../../services/georef.service';
+
+import { HomeHeader } from '../../home/home-header/home-header';
 import { MapaComponent } from '../../mapa/mapa.component';
 
 @Component({
@@ -20,25 +23,27 @@ import { MapaComponent } from '../../mapa/mapa.component';
 })
 export class RegistrarMascota {
 
-  nombre = '';
-  tamanio = '';
-  color = '';
-  descripcionExtra = '';
-  fechaPerdida = '';
+  // ===== Datos del formulario =====
+  nombre: string = '';
+  tamanio: number | null = null;
+  color: string = '';
+  descripcionExtra: string = '';
 
-  tipoPerdida: 'PROPIO' | 'AJENO' = 'PROPIO';
-
-  lat: number = -34.9205; // valor por defecto
+  // ===== Ubicación =====
+  lat: number = -34.9205;
   lon: number = -57.9536;
 
-  fotos: File[] = [];
+  // ===== Fotos =====
+  fotosBase64: string[] = [];
 
-  usuarioNombre = '';
+  // ===== Usuario =====
+  usuarioNombre: string = '';
   usuarioId: number | null = null;
 
   constructor(
     public authService: AuthService,
-    private georefService: GeorefService
+    private georefService: GeorefService,
+    private mascotaService: MascotaService
   ) {
     const usuario = this.authService.getUsuario();
 
@@ -46,72 +51,139 @@ export class RegistrarMascota {
       this.usuarioNombre = `${usuario.nombre} ${usuario.apellido}`;
       this.usuarioId = usuario.id;
 
-      // Revisamos si hay coordenadas guardadas en localStorage
       const stored = localStorage.getItem('ubicacionUsuario');
       if (stored) {
         const coord = JSON.parse(stored);
         this.lat = coord.lat;
         this.lon = coord.lon;
-        console.log('Coordenadas cargadas desde localStorage:', this.lat, this.lon);
       } else {
-        // Obtenemos coordenadas desde Georef según barrio o ciudad
         const lugar = usuario.barrio || usuario.ciudad;
         if (lugar) {
-          this.georefService.obtenerCentroideLocalidad(lugar)
-            .subscribe({
-              next: (coord) => {
-                this.lat = coord.lat;
-                this.lon = coord.lon;
-                console.log('Coordenadas iniciales desde Georef:', this.lat, this.lon);
-
-                // Guardamos en localStorage
-                localStorage.setItem('ubicacionUsuario', JSON.stringify({ lat: this.lat, lon: this.lon }));
-              },
-              error: () => {
-                console.warn('No se pudo obtener la ubicación inicial');
-              }
-            });
+          this.georefService.obtenerCentroideLocalidad(lugar).subscribe({
+            next: (coord) => {
+              this.lat = coord.lat;
+              this.lon = coord.lon;
+              localStorage.setItem(
+                'ubicacionUsuario',
+                JSON.stringify({ lat: this.lat, lon: this.lon })
+              );
+            },
+            error: () => console.warn('No se pudo obtener la ubicación inicial')
+          });
         }
       }
     }
   }
 
+  // ===== Conversión de imágenes a Base64 con reducción =====
   onFotoSeleccionada(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files) {
-      this.fotos = Array.from(input.files);
-    }
+    if (!input.files) return;
+
+    this.fotosBase64 = [];
+
+    Array.from(input.files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxWidth = 800; // ancho máximo
+          const maxHeight = 800; // alto máximo
+          let width = img.width;
+          let height = img.height;
+
+          // Mantener proporción
+          if (width > height) {
+            if (width > maxWidth) {
+              height = (height * maxWidth) / width;
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width = (width * maxHeight) / height;
+              height = maxHeight;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, width, height);
+            // Convertir a Base64 (calidad 70%)
+            const compressed = canvas.toDataURL('image/jpeg', 0.7);
+            this.fotosBase64.push(compressed);
+          }
+        };
+        img.src = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    });
   }
 
+  // ===== Selección desde el mapa =====
   onMapaSeleccionado(event: { lat: number; lon: number }) {
     this.lat = event.lat;
     this.lon = event.lon;
-
-    // Guardamos la ubicación seleccionada en localStorage
     localStorage.setItem('ubicacionUsuario', JSON.stringify({ lat: this.lat, lon: this.lon }));
   }
 
+  // ===== Envío al backend con validación de tamaño total =====
   submit() {
-    if (!this.usuarioId) {
-      alert('Debe iniciar sesión para publicar una mascota');
+    if (!this.usuarioId || this.tamanio === null || !this.nombre.trim()) {
+      alert('Faltan datos obligatorios');
       return;
     }
 
-    const mascotaDTO = {
+    const barrioUsuario = this.authService.getUsuario()?.barrio || 'Sin especificar';
+
+    const mascotaDTO: MascotaCreateDTO = {
       nombre: this.nombre,
-      tamanio: this.tamanio,
+      tamanio: this.tamanio!,
       color: this.color,
       descripcionExtra: this.descripcionExtra,
-      fechaPerdida: this.fechaPerdida,
-      tipoPerdida: this.tipoPerdida,
+      fotos: this.fotosBase64,
       coordenada: {
         latitud: this.lat,
-        longitud: this.lon
+        longitud: this.lon,
+        barrio: barrioUsuario
       },
-      fotos: this.fotos,
       publicadorId: this.usuarioId
     };
 
-    console.log('Mascota a publicar:', mascotaDTO);
+    // Validar tamaño total aproximado del payload
+    const payloadStr = JSON.stringify(mascotaDTO);
+    const payloadSizeKB = new Blob([payloadStr]).size / 1024;
+    const maxSizeKB = 2000; // 2 MB máximo
+
+    if (payloadSizeKB > maxSizeKB) {
+      alert(`El tamaño total de las imágenes es demasiado grande (${payloadSizeKB.toFixed(0)} KB). Reduzca las imágenes.`);
+      return;
+    }
+
+    console.log('=== Mascota a enviar al backend ===', JSON.stringify(mascotaDTO, null, 2));
+
+    this.mascotaService.createMascota(mascotaDTO).subscribe({
+      next: (res) => {
+        console.log('=== Respuesta del backend ===', res);
+        alert('Mascota publicada correctamente');
+        this.resetForm();
+      },
+      error: (err) => {
+        console.error('=== ERROR del backend ===', err);
+        alert('Error al publicar la mascota, revisá la consola');
+      }
+    });
+  }
+
+  // ===== Reset del formulario =====
+  private resetForm() {
+    this.nombre = '';
+    this.tamanio = null;
+    this.color = '';
+    this.descripcionExtra = '';
+    this.fotosBase64 = [];
   }
 }

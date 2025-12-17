@@ -21,8 +21,12 @@ public class Mascota {
 
     private LocalDate fechaPublicacion;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "mascota_fotos", joinColumns = @JoinColumn(name = "mascota_id"))
+    @Column(name = "foto", columnDefinition = "MEDIUMTEXT")
     private List<String> fotos;
+
+
 
     private LocalDate fechaAdopcion;
     private boolean habilitado;

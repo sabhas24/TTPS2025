@@ -6,9 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="78e42ac3-30f5-4e3e-9f53-c1c1138b248c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mapa/mapa.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mapa/mapa.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/controllers/MascotaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/controllers/MascotaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/entities/Coordenada.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/entities/Coordenada.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/entities/Mascota.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/entities/Mascota.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/validations/MascotaValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/validations/MascotaValidator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/registrar-mascota/registrar-mascota.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/services/mascota-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/services/mascota-service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,35 +55,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "JUnit.ttps.grupo2.appmascotas in appMascotas.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Node.js.main.ts.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.AppMascotasApplication.executor": "Run",
-    "Spring Boot.AppmascotasApplication.executor": "Run",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/TTPS_JAVA/TTPS2025/frontend/public/leaflet",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "settings.typescriptcompiler",
-    "ts.external.directory.path": "C:\\Users\\USER1\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;JUnit.ttps.grupo2.appmascotas in appMascotas.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Node.js.main.ts.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AppMascotasApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.AppmascotasApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/TTPS_JAVA/TTPS2025/frontend/public/leaflet&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.typescriptcompiler&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\USER1\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\TTPS_JAVA\TTPS2025\frontend\public\leaflet" />
@@ -180,6 +184,7 @@
       <workItem from="1765810763632" duration="11794000" />
       <workItem from="1765827993958" duration="891000" />
       <workItem from="1765854079607" duration="7581000" />
+      <workItem from="1765984054568" duration="9974000" />
     </task>
     <servers />
   </component>

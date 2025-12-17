@@ -11,7 +11,7 @@ public class Coordenada {
     @Column(nullable = false)
     private double longitud;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = true, length = 100)
     private String barrio;
 
     public Coordenada() {
