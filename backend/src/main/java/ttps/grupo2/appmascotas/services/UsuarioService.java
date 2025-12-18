@@ -50,14 +50,11 @@ public class UsuarioService {
 
             Usuario guardado = usuarioRepository.save(nuevo);
 
-            // 🔐 Generar JWT usando el Usuario completo (no UserDetails)
             String token = jwtService.generateToken(guardado);
 
-            // Devolver DTO con usuario y token
             return new UsuarioRegisterResponseDTO(
                     convertirAResponseDTO(guardado),
-                    token
-            );
+                    token);
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {

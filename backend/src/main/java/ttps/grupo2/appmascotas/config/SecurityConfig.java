@@ -56,22 +56,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // 🔓 PERMITIR PREFLIGHT
-                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
-
-                        // 🔓 LOGIN Y REGISTRO
-                        .requestMatchers(
-                                "/auth/login",
+                        .requestMatchers("/auth/**",
                                 "/usuarios/registrar",
                                 "/error",
+                                "/v3/api-docs",
                                 "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html"
-                        ).permitAll()
-
-                        // 🔒 TODO LO DEMÁS CON JWT
-                        .anyRequest().authenticated()
-                )
+                                "/swagger-ui.html",
+                                "/swagger-ui/**")
+                        .permitAll()
+                        .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
