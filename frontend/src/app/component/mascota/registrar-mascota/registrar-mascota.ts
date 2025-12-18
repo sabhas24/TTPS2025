@@ -37,6 +37,18 @@ export class RegistrarMascota {
   usuarioNombre: string = '';
   usuarioId: number | null = null;
 
+  // ✅ Expresiones regulares
+  private regexNombreColor = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ ]+$/;
+  private regexDescripcion = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ0-9 ,.\/]+$/;
+
+  // ✅ Errores por campo
+  errores = {
+    nombre: '',
+    tamanio: '',
+    color: '',
+    descripcion: ''
+  };
+
   constructor(
     public authService: AuthService,
     private georefService: GeorefService,
@@ -136,6 +148,42 @@ export class RegistrarMascota {
   }
 
   submit() {
+    if (!this.usuarioId || this.tamanio === null || !this.nombre.trim()) {
+      window.alert('⚠️ Faltan datos obligatorios para publicar la mascota.');
+      return;
+    }
+
+    // ✅ Validaciones
+    this.errores = { nombre: '', tamanio: '', color: '', descripcion: '' };
+
+    if (!this.nombre.trim() || !this.regexNombreColor.test(this.nombre)) {
+      this.errores.nombre = 'El nombre solo puede contener letras y espacios.';
+    }
+
+    if (this.tamanio === null || this.tamanio <= 0) {
+      this.errores.tamanio = 'El tamaño debe ser un número positivo.';
+    } else if (this.tamanio > 150) {
+      this.errores.tamanio = 'El tamaño no puede superar los 150 cm.';
+    }
+
+    if (this.color.trim() && !this.regexNombreColor.test(this.color)) {
+      this.errores.color = 'El color solo puede contener letras y espacios.';
+    }
+
+    if (this.descripcionExtra.trim() && !this.regexDescripcion.test(this.descripcionExtra)) {
+      this.errores.descripcion = 'La descripción solo puede contener letras, números, espacios, comas, puntos y "/".';
+    }
+
+    if (
+      this.errores.nombre ||
+      this.errores.tamanio ||
+      this.errores.color ||
+      this.errores.descripcion
+    ) {
+      window.alert('⚠️ Hay errores en el formulario. Revisá los campos.');
+      return;
+    }
+
     if (!this.usuarioId || this.tamanio === null || !this.nombre.trim()) {
       window.alert('⚠️ Faltan datos obligatorios para publicar la mascota.');
       return;
