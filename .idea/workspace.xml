@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78e42ac3-30f5-4e3e-9f53-c1c1138b248c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/DTOs/MascotasDTOs/MascotaResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/DTOs/MascotasDTOs/MascotaResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/controllers/MascotaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/controllers/MascotaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/services/MascotaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/services/MascotaService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mascota/editar-mascota-perdida/editar-mascota-perdida.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/editar-mascota-perdida/editar-mascota-perdida.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mascota/editar-mascota-perdida/editar-mascota-perdida.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/editar-mascota-perdida/editar-mascota-perdida.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mascota/mis-mascotas/mis-mascotas.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/mis-mascotas/mis-mascotas.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mascota/mis-mascotas/mis-mascotas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/mis-mascotas/mis-mascotas.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/services/auth-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/services/auth-service.ts" afterDir="false" />
-    </list>
+    <list default="true" id="78e42ac3-30f5-4e3e-9f53-c1c1138b248c" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

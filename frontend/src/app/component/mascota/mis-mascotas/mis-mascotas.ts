@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,6 +19,7 @@ import { HomeHeader } from '../../home/home-header/home-header';
   styleUrls: ['./mis-mascotas.css']
 })
 export class MisMascotas {
+
   mascotasPaginadas: Mascota[] = [];
   cargando: boolean = true;
   error: string = '';
@@ -30,32 +31,40 @@ export class MisMascotas {
   constructor(
     private mascotaService: MascotaService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdRef: ChangeDetectorRef   // ✅ agregado
   ) {}
 
   ngOnInit() {
     const usuarioId = this.authService.getUsuarioId();
+
     if (!usuarioId) {
       this.error = 'Usuario no autenticado';
       this.cargando = false;
       return;
     }
+
     this.listarMascotas(usuarioId);
   }
 
   listarMascotas(usuarioId: number) {
     this.cargando = true;
-    this.mascotaService.getMascotasPorUsuarioPaginado(usuarioId, this.paginaActual, this.mascotasPorPagina)
+
+    this.mascotaService
+      .getMascotasPorUsuarioPaginado(usuarioId, this.paginaActual, this.mascotasPorPagina)
       .subscribe({
         next: (res) => {
           this.mascotasPaginadas = res.content;
           this.totalPaginas = res.totalPages;
+
           this.cargando = false;
+          this.cdRef.detectChanges();   // ✅ fuerza el renderizado
         },
         error: (err) => {
           console.error(err);
           this.error = 'Error al cargar mascotas';
           this.cargando = false;
+          this.cdRef.detectChanges();   // ✅ también acá
         }
       });
   }
@@ -82,11 +91,13 @@ export class MisMascotas {
 
   eliminarMascota(id: number) {
     if (!confirm('¿Desea eliminar esta mascota?')) return;
+
     this.mascotaService.deleteMascota(id).subscribe({
       next: () => {
         if (this.mascotasPaginadas.length === 1 && this.paginaActual > 1) {
           this.paginaActual--;
         }
+
         const usuarioId = this.authService.getUsuarioId();
         if (usuarioId) this.listarMascotas(usuarioId);
       },
