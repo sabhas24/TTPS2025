@@ -26,15 +26,13 @@ public class Mascota {
     @Column(name = "foto", columnDefinition = "MEDIUMTEXT")
     private List<String> fotos;
 
-
-
     private LocalDate fechaAdopcion;
     private boolean habilitado;
 
     @Embedded
     private Coordenada coordenada;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Usuario publicador;
 
     // ✅ Nueva relación con Avistamiento
@@ -47,9 +45,9 @@ public class Mascota {
 
     // Constructor completo
     public Mascota(String nombre, double tamanio, String color,
-                   String descripcionExtra, EstadoMascota estado,
-                   LocalDate fechaPublicacion, List<String> fotos,
-                   Coordenada coordenada, Usuario publicador) {
+            String descripcionExtra, EstadoMascota estado,
+            LocalDate fechaPublicacion, List<String> fotos,
+            Coordenada coordenada, Usuario publicador) {
         this.nombre = nombre;
         this.tamanio = tamanio;
         this.color = color;

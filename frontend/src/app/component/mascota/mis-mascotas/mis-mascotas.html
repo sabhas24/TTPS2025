@@ -30,7 +30,8 @@
     <!-- Lista de mascotas -->
     <div *ngIf="mascotasPaginadas.length > 0" class="mascotas-list">
 
-      <div *ngFor="let mascota of mascotasPaginadas" class="mascota-card">
+      <!-- Agregando navegación al detalle de mascota -->
+      <div *ngFor="let mascota of mascotasPaginadas" class="mascota-card" (click)="verDetalle(mascota.id)">
 
         <!-- Imagen segura -->
         <img [src]="mascota.fotos && mascota.fotos.length > 0 ? mascota.fotos[0] : 'assets/no-image.png'"
@@ -47,12 +48,13 @@
             <span class="badge perdida">🔍 Perdida</span>
           </p>
 
-          <div *ngIf="mostrarAcciones" class="acciones">
+          <!-- Evitando propagación de eventos en los botones de acción -->
+          <div *ngIf="mostrarAcciones" class="acciones" (click)="$event.stopPropagation()">
             <button class="btn-editar" (click)="editarMascota(mascota.id)">Editar</button>
             <button class="btn-eliminar" (click)="eliminarMascota(mascota.id)">Eliminar</button>
           </div>
 
-          <div *ngIf="modo === 'perdidas'" class="acciones-perdidas">
+          <div *ngIf="modo === 'perdidas'" class="acciones-perdidas" (click)="$event.stopPropagation()">
             <button class="btn-reportar">Reportar Avistamiento</button>
           </div>
         </div>

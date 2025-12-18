@@ -165,6 +165,10 @@ public class Usuario {
         return medallas;
     }
 
+    public void setTipo(TipoUsuario tipo) {
+        this.tipo = tipo;
+    }
+
     public void setMedallas(List<Medalla> medallas) {
         this.medallas = medallas;
     }

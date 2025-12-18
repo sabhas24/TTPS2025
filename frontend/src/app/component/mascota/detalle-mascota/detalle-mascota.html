@@ -1,0 +1,161 @@
+<app-home-header></app-home-header>
+<div class="detalle-container">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+        <div class="spinner"></div>
+        <p>Cargando información de la mascota...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="error-container">
+        <p>{{ error }}</p>
+        <button class="btn-primary" (click)="volverAtras()">Volver al inicio</button>
+    </div>
+
+    <!-- Content -->
+    <div *ngIf="mascota && !loading" class="content-wrapper">
+        <!-- Header Section -->
+        <div class="header-section">
+            <button class="back-button" (click)="volverAtras()">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                Volver
+            </button>
+            <h1 class="mascota-nombre">{{ mascota.nombre }}</h1>
+            <span [class]="'estado-badge ' + getEstadoBadgeClass()">
+                {{ getEstadoTexto() }}
+            </span>
+        </div>
+
+        <div class="main-content">
+            <!-- Left Column: Images & Description -->
+            <div class="left-column">
+                <!-- Image Gallery -->
+                <div class="image-gallery">
+                    <div class="main-image">
+                        <img [src]="mascota.fotos[selectedImageIndex]" [alt]="'Foto de ' + mascota.nombre"
+                            class="pet-image" />
+                    </div>
+                    <div class="thumbnail-grid" *ngIf="mascota.fotos.length > 1">
+                        <div *ngFor="let foto of mascota.fotos; let i = index" class="thumbnail"
+                            [class.active]="i === selectedImageIndex" (click)="selectImage(i)">
+                            <img [src]="foto" [alt]="'Miniatura ' + (i + 1)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Section -->
+                <div class="about-section">
+                    <h2>Sobre {{ mascota.nombre }}</h2>
+                    <p class="descripcion">{{ mascota.descripcionExtra }}</p>
+                </div>
+
+                <!-- Map Section -->
+                <div class="mapa-avistamientos-section">
+                    <h2>📍 Última Ubicación Vista<span *ngIf="avistamientos.length > 0"> y Avistamientos</span></h2>
+                    <div [ngClass]="{'mapa-avistamientos-grid': avistamientos.length > 0}">
+                        <div class="mapa-col">
+                            <div id="mapa-mascota" class="mapa-container"></div>
+                        </div>
+                        <div *ngIf="avistamientos.length > 0" class="avistamientos-col">
+                            <div class="avistamientos-lista">
+                                <div class="avistamiento-card" *ngFor="let avistamiento of avistamientos">
+                                    <img *ngIf="mascota.fotos[0]" [src]="mascota.fotos[0]" [alt]="mascota.nombre"
+                                        class="avistamiento-thumb" />
+                                    <div class="avistamiento-info">
+                                        <h3 class="avistamiento-lugar">{{ avistamiento.coordenada.barrio || 'Ubicación
+                                            no especificada' }}</h3>
+                                        <p class="avistamiento-coordenadas">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                                                <path
+                                                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+                                                    fill="currentColor" />
+                                            </svg>
+                                            {{ avistamiento.coordenada.latitud.toFixed(4) }}° N, {{
+                                            avistamiento.coordenada.longitud.toFixed(4) }}° W
+                                        </p>
+                                        <p class="avistamiento-descripcion">{{ avistamiento.descripcion }}</p>
+                                    </div>
+                                    <span class="avistamiento-fecha">{{ formatearFechaAvistamiento(avistamiento.fecha)
+                                        }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Details & Contact -->
+            <div class="right-column">
+                <!-- Pet Details Card -->
+                <div class="details-card">
+                    <h2>Detalles de la Mascota</h2>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Color</span>
+                            <span class="detail-value">{{ mascota.color }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Tamaño</span>
+                            <span class="detail-value">{{ getTamanioTexto() }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Ubicación</span>
+                            <span class="detail-value">{{ mascota.coordenada.barrio || 'No especificado' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Card -->
+                <div class="contact-card" *ngIf="dueno">
+                    <h2>Información de Contacto</h2>
+                    <div class="dueno-info">
+                        <div class="dueno-avatar">
+                            <img *ngIf="dueno.foto" [src]="dueno.foto" [alt]="dueno.nombre">
+                            <div *ngIf="!dueno.foto" class="avatar-initial">
+                                {{ getDuenoInitial() }}
+                            </div>
+                        </div>
+                        <div class="dueno-datos">
+                            <h3>{{ dueno.nombre }} {{ dueno.apellido }}</h3>
+                            <p class="dueno-ciudad">{{ getDuenoCiudad() }}</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            <span>{{ dueno.email }}</span>
+                        </div>
+                        <div class="contact-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            <span>{{ dueno.telefono }}</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-report" (click)="reportarAvistamiento()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                                fill="currentColor" />
+                        </svg>
+                        Reportar avistamiento
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-home-footer></app-home-footer>

@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -124,25 +125,44 @@ public class MascotaService {
 
     // Conversión a DTO de respuesta
     private MascotaResponseDTO convertirAResponseDTO(Mascota mascota) {
-        MascotaResponseDTO dto = new MascotaResponseDTO();
-        dto.setId(mascota.getId());
-        dto.setNombre(mascota.getNombre());
-        dto.setColor(mascota.getColor());
-        dto.setTamanio(mascota.getTamanio());
-        dto.setDescripcionExtra(mascota.getDescripcionExtra());
-        dto.setEstado(mascota.getEstado());
-        dto.setFotos(mascota.getFotos());
-        dto.setCoordenada(mascota.getCoordenada());
-        dto.setPublicadorId(mascota.getPublicador().getId());
-        dto.setNombrePublicador(mascota.getPublicador().getNombre());
-        return dto;
+        try {
+            MascotaResponseDTO dto = new MascotaResponseDTO();
+            dto.setId(mascota.getId());
+            dto.setNombre(mascota.getNombre());
+            dto.setColor(mascota.getColor());
+            dto.setTamanio(mascota.getTamanio());
+            dto.setDescripcionExtra(mascota.getDescripcionExtra());
+            dto.setEstado(mascota.getEstado());
+            dto.setFotos(mascota.getFotos() != null ? mascota.getFotos() : new ArrayList<>());
+            dto.setCoordenada(mascota.getCoordenada());
+
+            if (mascota.getPublicador() != null) {
+                dto.setPublicadorId(mascota.getPublicador().getId());
+                dto.setNombrePublicador(mascota.getPublicador().getNombre());
+            }
+
+            return dto;
+        } catch (Exception e) {
+            System.err.println("Error al convertir mascota " + mascota.getId() + ": " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public Page<MascotaResponseDTO> listarPorUsuarioPaginado(Long usuarioId, int pagina, int tamaño) {
-        Pageable pageable = PageRequest.of(pagina - 1, tamaño); // Spring empieza desde 0
-        Page<Mascota> mascotasPage = mascotaRepository.findByPublicadorIdAndHabilitadoTrue(usuarioId, pageable);
+        try {
+            System.out.println(
+                    "Listando mascotas para usuario: " + usuarioId + ", página: " + pagina + ", tamaño: " + tamaño);
+            Pageable pageable = PageRequest.of(pagina - 1, tamaño); // Spring empieza desde 0
+            Page<Mascota> mascotasPage = mascotaRepository.findByPublicadorIdAndHabilitadoTrue(usuarioId, pageable);
+            System.out.println("Encontradas " + mascotasPage.getTotalElements() + " mascotas");
 
-        return mascotasPage.map(this::convertirAResponseDTO);
+            return mascotasPage.map(this::convertirAResponseDTO);
+        } catch (Exception e) {
+            System.err.println("Error en listarPorUsuarioPaginado: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public MascotaResponseDTO obtenerMascotaPorId(Long id) {

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MascotaService, Mascota } from '../../../services/mascota-service';
 import { AuthService } from '../../../services/auth-service';
 import { HomeHeader } from '../../home/home-header/home-header';
+import { HomeFooter } from 'app/component/home/home-footer/home-footer';
 
 @Component({
   selector: 'app-editar-mascota-perdida',
@@ -13,6 +14,7 @@ import { HomeHeader } from '../../home/home-header/home-header';
     CommonModule,
     FormsModule,
     HomeHeader,
+    HomeFooter,
   ],
   templateUrl: './editar-mascota-perdida.html',
   styleUrls: ['./editar-mascota-perdida.css']
@@ -53,7 +55,7 @@ export class EditarMascotaPerdida {
     private authService: AuthService,
     private ngZone: NgZone,
     private cdRef: ChangeDetectorRef
-  ) {}
+  ) { }
 
   volver() {
     this.router.navigate(['/mascotas/mis-mascotas']);

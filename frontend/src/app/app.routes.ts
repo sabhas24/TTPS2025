@@ -29,10 +29,10 @@ export const routes: Routes = [
       import('./component/mascota/mascotas-perdidas-page/mascotas-perdidas-page')
         .then(m => m.MascotasPerdidasPage)
   },
+
   {
-    path: 'mascotas/editar/:id',
-    loadComponent: () =>
-      import('./component/mascota/editar-mascota-perdida/editar-mascota-perdida')
-        .then(m => m.EditarMascotaPerdida)
-  }
+    path: "mascotas/detalle/:id",
+    loadComponent: () => import("./component/mascota/detalle-mascota/detalle-mascota").then((m) => m.DetalleMascota),
+  },
+
 ];
