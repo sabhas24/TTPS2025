@@ -14,6 +14,12 @@
     </div>
   </div>
 
+  <!-- ✅ Cambiar foto -->
+  <div class="form-group mb-3">
+    <label for="fotoNueva">Cambiar foto</label>
+    <input type="file" id="fotoNueva" class="form-control" (change)="onNuevaFoto($event)">
+  </div>
+
   <form (ngSubmit)="actualizarMascota()">
 
     <!-- ✅ Nombre -->

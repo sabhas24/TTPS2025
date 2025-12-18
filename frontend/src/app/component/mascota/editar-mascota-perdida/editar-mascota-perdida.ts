@@ -36,11 +36,9 @@ export class EditarMascotaPerdida {
   error: string = '';
   exito: string = '';
 
-  // ✅ Expresiones regulares
   private regexNombreColor = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ ]+$/;
   private regexDescripcion = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ0-9 ,.]+$/;
 
-  // ✅ Errores por campo
   validaciones = {
     nombre: '',
     tamanio: '',
@@ -72,7 +70,6 @@ export class EditarMascotaPerdida {
 
     this.mascotaService.getMascotaById(id).subscribe({
       next: (res) => {
-        console.log("✅ Mascota recibida:", res);
         this.mascota = res;
 
         if (!this.mascota.coordenada) {
@@ -82,49 +79,52 @@ export class EditarMascotaPerdida {
         this.cargando = false;
         this.cdRef.detectChanges();
       },
-      error: (err) => {
-        console.error("❌ Error al cargar mascota:", err);
+      error: () => {
         this.error = 'No se pudo cargar la mascota';
         this.cargando = false;
       }
     });
   }
 
-  onFotosChange(value: string) {
-    this.mascota.fotos = value.split(',').map(f => f.trim());
+  // ✅ Convertir nueva foto a base64 y reemplazar la actual
+  onNuevaFoto(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result as string;
+      this.mascota.fotos = [base64]; // ✅ reemplaza la foto actual
+    };
+    reader.readAsDataURL(file);
   }
 
   actualizarMascota() {
 
-    // ✅ Validar nombre
     if (!this.regexNombreColor.test(this.mascota.nombre)) {
       this.validaciones.nombre = 'El nombre solo puede contener letras y espacios';
     } else {
       this.validaciones.nombre = '';
     }
 
-    // ✅ Validar tamaño
     if (this.mascota.tamanio <= 0) {
       this.validaciones.tamanio = 'El tamaño debe ser un número positivo';
     } else {
       this.validaciones.tamanio = '';
     }
 
-    // ✅ Validar color
     if (!this.regexNombreColor.test(this.mascota.color)) {
       this.validaciones.color = 'El color solo puede contener letras y espacios';
     } else {
       this.validaciones.color = '';
     }
 
-    // ✅ Validar descripción
     if (this.mascota.descripcionExtra && !this.regexDescripcion.test(this.mascota.descripcionExtra)) {
       this.validaciones.descripcion = 'La descripción solo puede contener letras, números, espacios, comas y puntos';
     } else {
       this.validaciones.descripcion = '';
     }
 
-    // ✅ Si hay errores, no enviar
     if (
       this.validaciones.nombre ||
       this.validaciones.tamanio ||
@@ -149,11 +149,9 @@ export class EditarMascotaPerdida {
     this.mascotaService.updateMascota(this.mascota.id, dto).subscribe({
       next: () => {
         this.exito = 'Mascota actualizada correctamente';
-
         this.router.navigate(['/mascotas/mis-mascotas']);
       },
-      error: (err) => {
-        console.error(err);
+      error: () => {
         this.error = 'Error al actualizar la mascota';
       }
     });
