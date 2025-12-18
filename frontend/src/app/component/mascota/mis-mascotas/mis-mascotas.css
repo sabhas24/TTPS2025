@@ -1,50 +1,190 @@
+.header-section {
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+}
+
+.header-section h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  color: #1f2937;
+}
+
+.contador {
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #6b7280;
+}
+
+.error-message-global {
+  background-color: #fee2e2;
+  border: 1px solid #ef4444;
+  color: #991b1b;
+  padding: 1rem;
+  margin: 1rem 2rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.no-mascotas {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.no-mascotas p {
+  color: #6b7280;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn-registrar {
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.btn-registrar:hover {
+  background-color: #2563eb;
+}
+
 .mascotas-list {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   padding: 2rem;
 }
 
 .mascota-card {
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.mascota-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 .mascota-card img {
   width: 100%;
-  height: 180px;
+  height: 200px;
   object-fit: cover;
 }
 
 .mascota-card .info {
   padding: 1rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.mascota-card button {
-  margin-right: 0.5rem;
-  padding: 0.5rem 1rem;
+.mascota-card h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.3rem;
+  color: #1f2937;
+}
+
+.mascota-card p {
+  margin: 0.4rem 0;
+  color: #4b5563;
+}
+
+.descripcion {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 0.75rem;
+}
+
+.estado-badge {
+  margin-top: 0.75rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge.perdida {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.acciones {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.acciones button {
+  flex: 1;
+  padding: 0.6rem 1rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
 }
 
-.mascota-card button:hover {
-  opacity: 0.8;
-}
-
-.mascota-card button:first-child {
-  background-color: #4ade80;
+.btn-editar {
+  background-color: #10b981;
   color: white;
 }
 
-.mascota-card button:last-child {
+.btn-editar:hover {
+  background-color: #059669;
+}
+
+.btn-eliminar {
   background-color: #ef4444;
   color: white;
 }
+
+.btn-eliminar:hover {
+  background-color: #dc2626;
+}
+
+.acciones-perdidas {
+  margin-top: 1rem;
+}
+
+.acciones-perdidas button {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.acciones-perdidas button:hover {
+  background-color: #2563eb;
+}
+
 .paginacion {
   display: flex;
   justify-content: center;

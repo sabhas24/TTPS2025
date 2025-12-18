@@ -20,14 +20,14 @@ export const routes: Routes = [
   {
     path: 'mascotas/mis-mascotas',
     loadComponent: () =>
-      import('./component/mascota/mis-mascotas/mis-mascotas')
-        .then(m => m.MisMascotas)
+      import('./component/mascota/mis-mascotas-page/mis-mascotas-page')
+        .then(m => m.MisMascotasPage)
   },
   {
     path: 'mascotas/perdidas',
     loadComponent: () =>
-      import('./component/mascota/mis-mascotas/mis-mascotas')
-        .then(m => m.MisMascotas)
+      import('./component/mascota/mascotas-perdidas-page/mascotas-perdidas-page')
+        .then(m => m.MascotasPerdidasPage)
   },
   {
     path: 'mascotas/editar/:id',
