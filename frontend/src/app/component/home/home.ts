@@ -6,6 +6,7 @@ import { HomeHero } from "./home-hero/home-hero"
 import { HomeFeatures } from "./home-features/home-features"
 import { HomeCta } from "./home-cta/home-cta"
 import { HomeFooter } from "./home-footer/home-footer"
+import { MisMascotas } from "../mascota/mis-mascotas/mis-mascotas"
 
 @Component({
     selector: "app-home",
@@ -18,6 +19,7 @@ import { HomeFooter } from "./home-footer/home-footer"
         HomeFeatures,
         HomeCta,
         HomeFooter,
+        MisMascotas,
     ],
     templateUrl: "./home.html",
     styleUrl: "./home.css",

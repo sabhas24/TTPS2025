@@ -24,7 +24,13 @@ export const routes: Routes = [
         .then(m => m.MisMascotas)
   },
   {
-    path: 'mascotas/editar/:id',   // 👈 agregamos la ruta con parámetro id
+    path: 'mascotas/perdidas',
+    loadComponent: () =>
+      import('./component/mascota/mis-mascotas/mis-mascotas')
+        .then(m => m.MisMascotas)
+  },
+  {
+    path: 'mascotas/editar/:id',
     loadComponent: () =>
       import('./component/mascota/editar-mascota-perdida/editar-mascota-perdida')
         .then(m => m.EditarMascotaPerdida)

@@ -1,7 +1,7 @@
 <app-home-header></app-home-header>
 
 <main class="mis-mascotas-page">
-  <h1>Mis Mascotas</h1>
+  <h1>{{ titulo }}</h1>
 
   <!-- Estado de carga -->
   <div *ngIf="cargando">Cargando...</div>
@@ -14,7 +14,7 @@
 
     <!-- Si no hay mascotas -->
     <div *ngIf="mascotasPaginadas.length === 0" class="no-mascotas">
-      <p>No tienes mascotas registradas.</p>
+      <p>{{ modo === 'usuario' ? 'No tienes mascotas registradas.' : 'No hay mascotas perdidas en este momento.' }}</p>
     </div>
 
     <!-- Lista de mascotas -->
@@ -33,8 +33,10 @@
           <p>Color: {{ mascota.color }}</p>
           <p>{{ mascota.descripcionExtra }}</p>
 
-          <button (click)="editarMascota(mascota.id)">Editar</button>
-          <button (click)="eliminarMascota(mascota.id)">Eliminar</button>
+          <div *ngIf="mostrarAcciones" class="acciones">
+            <button (click)="editarMascota(mascota.id)">Editar</button>
+            <button (click)="eliminarMascota(mascota.id)">Eliminar</button>
+          </div>
         </div>
 
       </div>

@@ -94,11 +94,11 @@ public class MascotaService {
     }
 
     // Listar mascotas perdidas
-    public List<MascotaResponseDTO> listarMascotasPerdidas() {
-        return mascotaRepository.findByEstado(EstadoMascota.PERDIDO_PROPIO)
-                .stream()
-                .map(this::convertirAResponseDTO)
-                .toList();
+    public Page<MascotaResponseDTO> listarMascotasPerdidas(int pagina, int tamaño) {
+        Pageable pageable = PageRequest.of(pagina - 1, tamaño);
+        Page<Mascota> mascotasPage = mascotaRepository.findByEstadoAndHabilitadoTrue(EstadoMascota.PERDIDO_PROPIO,
+                pageable);
+        return mascotasPage.map(this::convertirAResponseDTO);
     }
 
     // Listar mascotas por usuario

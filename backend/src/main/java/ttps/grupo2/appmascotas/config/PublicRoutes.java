@@ -8,6 +8,7 @@ public class PublicRoutes {
             "/usuarios/registrar",
             "/auth/**",
             "/error",
+            "/mascotas/perdidas",
             "/v3/api-docs",
             "/v3/api-docs/**",
             "/swagger-ui.html",

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -20,6 +20,10 @@ import { HomeHeader } from '../../home/home-header/home-header';
 })
 export class MisMascotas {
 
+  @Input() modo: 'usuario' | 'perdidas' = 'usuario';
+  @Input() mostrarAcciones: boolean = true;
+  @Input() titulo: string = 'Mis Mascotas';
+
   mascotasPaginadas: Mascota[] = [];
   cargando: boolean = true;
   error: string = '';
@@ -32,19 +36,23 @@ export class MisMascotas {
     private mascotaService: MascotaService,
     private authService: AuthService,
     private router: Router,
-    private cdRef: ChangeDetectorRef   // ✅ agregado
-  ) {}
+    private cdRef: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
-    const usuarioId = this.authService.getUsuarioId();
+    if (this.modo === 'usuario') {
+      const usuarioId = this.authService.getUsuarioId();
 
-    if (!usuarioId) {
-      this.error = 'Usuario no autenticado';
-      this.cargando = false;
-      return;
+      if (!usuarioId) {
+        this.error = 'Usuario no autenticado';
+        this.cargando = false;
+        return;
+      }
+
+      this.listarMascotas(usuarioId);
+    } else {
+      this.listarMascotasPerdidas();
     }
-
-    this.listarMascotas(usuarioId);
   }
 
   listarMascotas(usuarioId: number) {
@@ -58,30 +66,56 @@ export class MisMascotas {
           this.totalPaginas = res.totalPages;
 
           this.cargando = false;
-          this.cdRef.detectChanges();   // ✅ fuerza el renderizado
+          this.cdRef.detectChanges();
         },
         error: (err) => {
           console.error(err);
           this.error = 'Error al cargar mascotas';
           this.cargando = false;
-          this.cdRef.detectChanges();   // ✅ también acá
+          this.cdRef.detectChanges();
         }
       });
+  }
+
+  listarMascotasPerdidas() {
+    this.cargando = true;
+
+    this.mascotaService.getMascotasPerdidas(this.paginaActual, this.mascotasPorPagina).subscribe({
+      next: (res) => {
+        this.mascotasPaginadas = res.content;
+        this.totalPaginas = res.totalPages;
+        this.cargando = false;
+        this.cdRef.detectChanges();
+      },
+      error: (err) => {
+        console.error(err);
+        this.error = 'Error al cargar mascotas perdidas';
+        this.cargando = false;
+        this.cdRef.detectChanges();
+      }
+    });
   }
 
   siguientePagina() {
     if (this.paginaActual < this.totalPaginas) {
       this.paginaActual++;
-      const usuarioId = this.authService.getUsuarioId();
-      if (usuarioId) this.listarMascotas(usuarioId);
+      this.recargarDatos();
     }
   }
 
   paginaAnterior() {
     if (this.paginaActual > 1) {
       this.paginaActual--;
+      this.recargarDatos();
+    }
+  }
+
+  recargarDatos() {
+    if (this.modo === 'usuario') {
       const usuarioId = this.authService.getUsuarioId();
       if (usuarioId) this.listarMascotas(usuarioId);
+    } else {
+      this.listarMascotasPerdidas();
     }
   }
 
@@ -114,7 +148,6 @@ export class MisMascotas {
 
   irAPagina(numero: number) {
     this.paginaActual = numero;
-    const usuarioId = this.authService.getUsuarioId();
-    if (usuarioId) this.listarMascotas(usuarioId);
+    this.recargarDatos();
   }
 }

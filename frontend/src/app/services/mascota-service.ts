@@ -62,8 +62,8 @@ export class MascotaService {
   }
 
   // ===== Listar mascotas perdidas =====
-  getMascotasPerdidas(): Observable<Mascota[]> {
-    return this.http.get<Mascota[]>(`${this.baseUrl}/perdidas`);
+  getMascotasPerdidas(page: number, tamaño: number): Observable<PageDTO<Mascota>> {
+    return this.http.get<PageDTO<Mascota>>(`${this.baseUrl}/perdidas?pagina=${page}&tamaño=${tamaño}`);
   }
 
   // ===== Editar mascota =====

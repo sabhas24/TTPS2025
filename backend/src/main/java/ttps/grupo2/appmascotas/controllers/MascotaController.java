@@ -15,7 +15,6 @@ import ttps.grupo2.appmascotas.entities.EstadoMascota;
 import ttps.grupo2.appmascotas.services.MascotaService;
 import org.springframework.data.domain.Page;
 
-
 import java.util.List;
 
 @RestController
@@ -32,22 +31,21 @@ public class MascotaController {
         @PostMapping
         @ResponseStatus(HttpStatus.CREATED)
         public MascotaResponseDTO publicar(@RequestBody MascotaCreateRequestDTO dto) {
-            System.out.println("DTO recibido:");
-            System.out.println("Nombre: " + dto.getNombre());
-            System.out.println("Tamaño: " + dto.getTamanio());
-            System.out.println("Color: " + dto.getColor());
-            System.out.println("DescripcionExtra: " + dto.getDescripcionExtra());
-            System.out.println("Fotos: " + dto.getFotos());
-            if (dto.getCoordenada() != null) {
-                System.out.println("Coordenada lat: " + dto.getCoordenada().getLatitud());
-                System.out.println("Coordenada lon: " + dto.getCoordenada().getLongitud());
-                System.out.println("Coordenada barrio: " + dto.getCoordenada().getBarrio());
-            }
-            System.out.println("PublicadorId: " + dto.getPublicadorId());
+                System.out.println("DTO recibido:");
+                System.out.println("Nombre: " + dto.getNombre());
+                System.out.println("Tamaño: " + dto.getTamanio());
+                System.out.println("Color: " + dto.getColor());
+                System.out.println("DescripcionExtra: " + dto.getDescripcionExtra());
+                System.out.println("Fotos: " + dto.getFotos());
+                if (dto.getCoordenada() != null) {
+                        System.out.println("Coordenada lat: " + dto.getCoordenada().getLatitud());
+                        System.out.println("Coordenada lon: " + dto.getCoordenada().getLongitud());
+                        System.out.println("Coordenada barrio: " + dto.getCoordenada().getBarrio());
+                }
+                System.out.println("PublicadorId: " + dto.getPublicadorId());
 
-            return mascotaService.publicarMascota(dto);
+                return mascotaService.publicarMascota(dto);
         }
-
 
         @Operation(summary = "Editar una mascota existente", description = "Actualiza los datos de una mascota habilitada. No permite modificar estado ni publicador.")
         @ApiResponse(responseCode = "200", description = "Mascota actualizada correctamente", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MascotaResponseDTO.class)))
@@ -78,12 +76,13 @@ public class MascotaController {
                 mascotaService.deshabilitarMascota(id);
         }
 
-        @Operation(summary = "Listar mascotas perdidas", description = "Devuelve todas las mascotas en estado PERDIDO_PROPIO que estén habilitadas.")
-        @ApiResponse(responseCode = "200", description = "Listado de mascotas perdidas", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MascotaResponseDTO.class))))
+        @Operation(summary = "Listar mascotas perdidas paginadas", description = "Devuelve todas las mascotas en estado PERDIDO_PROPIO que estén habilitadas con paginación.")
+        @ApiResponse(responseCode = "200", description = "Listado paginado de mascotas perdidas")
         @ApiResponse(responseCode = "401", description = "No autorizado")
         @GetMapping("/perdidas")
-        public List<MascotaResponseDTO> listarPerdidas() {
-                return mascotaService.listarMascotasPerdidas();
+        public Page<MascotaResponseDTO> listarPerdidas(@RequestParam(defaultValue = "1") int pagina,
+                        @RequestParam(defaultValue = "10") int tamaño) {
+                return mascotaService.listarMascotasPerdidas(pagina, tamaño);
         }
 
         @Operation(summary = "Listar mascotas por usuario", description = "Devuelve todas las mascotas habilitadas publicadas por el usuario indicado.")
@@ -99,15 +98,14 @@ public class MascotaController {
         @ApiResponse(responseCode = "200", description = "Listado paginado de mascotas del usuario")
         @GetMapping("/usuario/{id}/paginado")
         public Page<MascotaResponseDTO> listarPorUsuarioPaginado(
-                @PathVariable Long id,
-                @RequestParam(defaultValue = "1") int pagina,
-                @RequestParam(defaultValue = "10") int tamaño
-        ) {
-            return mascotaService.listarPorUsuarioPaginado(id, pagina, tamaño);
+                        @PathVariable Long id,
+                        @RequestParam(defaultValue = "1") int pagina,
+                        @RequestParam(defaultValue = "10") int tamaño) {
+                return mascotaService.listarPorUsuarioPaginado(id, pagina, tamaño);
         }
 
         @GetMapping("/{id}")
         public MascotaResponseDTO obtenerPorId(@PathVariable Long id) {
-            return mascotaService.obtenerMascotaPorId(id);
+                return mascotaService.obtenerMascotaPorId(id);
         }
 }

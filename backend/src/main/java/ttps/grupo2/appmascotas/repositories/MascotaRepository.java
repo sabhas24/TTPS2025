@@ -11,7 +11,7 @@ import java.util.List;
 public interface MascotaRepository extends JpaRepository<Mascota, Long> {
 
     // ✅ Listar mascotas por estado (ej. perdidas)
-    List<Mascota> findByEstado(EstadoMascota estado);
+    Page<Mascota> findByEstado(EstadoMascota estado, Pageable pageable);
 
     // ✅ Listar mascotas por ID del publicador (Usuario)
     List<Mascota> findByPublicadorId(Long id);
@@ -24,6 +24,9 @@ public interface MascotaRepository extends JpaRepository<Mascota, Long> {
 
     // ✅ Listar mascotas por estado y habilitación
     List<Mascota> findByEstadoAndHabilitadoTrue(EstadoMascota estado);
+
+    // ✅ Listar mascotas por estado y habilitación con paginación
+    Page<Mascota> findByEstadoAndHabilitadoTrue(EstadoMascota estado, Pageable pageable);
 
     List<Mascota> findByPublicadorIdAndHabilitadoTrue(Long publicadorId);
 
