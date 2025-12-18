@@ -1,0 +1,145 @@
+<div class="profile-container">
+    <app-home-header></app-home-header>
+
+    <main class="profile-content">
+        <!-- New profile header with avatar, user info and edit button -->
+        <div class="profile-header-section">
+            <div class="profile-header-content">
+                <div class="profile-avatar">
+                    <img *ngIf="usuario?.foto" [src]="usuario?.foto || ''"
+                        [alt]="usuario ? (usuario.nombre + ' ' + usuario.apellido) : 'Foto de perfil'" />
+                    <div *ngIf="!usuario?.foto" class="avatar-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="profile-info">
+                    <h1 class="profile-name">{{ usuario?.nombre }} {{ usuario?.apellido }}</h1>
+                    <p class="profile-meta">Se unió en 2023</p>
+                    <p class="profile-location">{{ usuario?.ciudad }}, Argentina</p>
+                </div>
+
+                <button class="btn-edit-profile" (click)="editProfile()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                    </svg>
+                    Editar Perfil
+                </button>
+            </div>
+        </div>
+
+        <!-- Tabs section for Mascotas Reportadas and Ranking -->
+        <div class="tabs-section">
+            <div class="tabs-header">
+                <button class="tab-button" [class.active]="activeTab === 'mascotas'" (click)="setActiveTab('mascotas')">
+                    Mascotas Reportadas
+                </button>
+                <button class="tab-button" [class.active]="activeTab === 'ranking'" (click)="setActiveTab('ranking')">
+                    Ranking
+                </button>
+            </div>
+
+            <!-- Mascotas Reportadas Tab Content -->
+            <div class="tab-content" *ngIf="activeTab === 'mascotas'">
+                <h2 class="section-title">Mascotas Reportadas ({{ totalElements }})</h2>
+
+                <div class="pets-grid" *ngIf="mascotas.length > 0">
+                    <div class="pet-card" *ngFor="let mascota of mascotas">
+                        <div class="pet-image">
+                            <img [src]="mascota.fotos[0]" [alt]="mascota.nombre" />
+                        </div>
+                        <div class="pet-details">
+                            <h3 class="pet-name">{{ mascota.nombre }}</h3>
+                            <p class="pet-date">{{ getFechaTexto(mascota) }}</p>
+                            <span class="pet-status" [ngClass]="getEstadoClass(mascota.estado)">
+                                {{ getEstadoLabel(mascota.estado) }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controles de paginación -->
+                <div class="pagination-controls" *ngIf="totalPages > 1">
+                    <button class="pagination-btn" (click)="prevPage()" [disabled]="currentPage === 1">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                        Anterior
+                    </button>
+
+                    <div class="pagination-pages">
+                        <button *ngFor="let page of pages" class="pagination-page" [class.active]="page === currentPage"
+                            (click)="goToPage(page)">
+                            {{ page }}
+                        </button>
+                    </div>
+
+                    <button class="pagination-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">
+                        Siguiente
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="empty-state" *ngIf="mascotas.length === 0">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                        <path d="M2 17l10 5 10-5" />
+                        <path d="M2 12l10 5 10-5" />
+                    </svg>
+                    <p>No has reportado mascotas aún</p>
+                </div>
+            </div>
+
+            <!-- Ranking Tab Content -->
+            <div class="tab-content" *ngIf="activeTab === 'ranking'">
+                <h2 class="section-title">Ranking de Colaboración</h2>
+
+                <div class="ranking-card">
+                    <div class="ranking-header">
+                        <div class="ranking-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                                <path d="M4 22h16" />
+                                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+                                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+                                <path d="M18 2H6v7a6 6 0 0 0 12 0V2z" />
+                            </svg>
+                        </div>
+                        <div class="ranking-info">
+                            <h3 class="ranking-title">#{{ rankingPosition }} - Héroe de Mascotas</h3>
+                            <p class="ranking-subtitle">Top {{ rankingPercentile }}% de los usuarios más colaboradores
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ranking-progress">
+                        <div class="progress-header">
+                            <span class="progress-label">Puntos de Colaboración</span>
+                            <span class="progress-value">{{ rankingPoints }} / {{ rankingMaxPoints }}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" [style.width.%]="rankingProgress"></div>
+                        </div>
+                        <p class="progress-hint">{{ pointsToNextLevel }} puntos para el siguiente nivel: {{ nextLevel }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+
+    <app-home-footer></app-home-footer>
+</div>

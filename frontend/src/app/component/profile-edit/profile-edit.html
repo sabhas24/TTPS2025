@@ -1,0 +1,147 @@
+<div class="register-page">
+    <!-- Header section with navigation and logo -->
+    <header class="register-header">
+        <div class="header-content">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <circle cx="16" cy="16" r="16" fill="#00a7e1" />
+                    <path d="M16 8L12 12H20L16 8Z" fill="white" />
+                    <circle cx="16" cy="18" r="6" fill="white" />
+                </svg>
+                <span class="logo-text">PetFind</span>
+            </div>
+
+            <nav class="nav-links">
+                <a routerLink="/" class="nav-link">¿Dónde estás? Volvé a casa</a>
+                <a href="#" class="nav-link" (click)="$event.preventDefault()">Mascotas perdidas</a>
+                <a href="#" class="nav-link" (click)="$event.preventDefault()">Ranking</a>
+                <a routerLink="/" class="btn-home">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main content with form and image upload -->
+    <main class="register-content">
+        <div class="form-section">
+            <h1>Editar Perfil</h1>
+
+            <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="register-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" formControlName="nombre" placeholder="Jane"
+                            [class.error]="hasError('nombre', 'required') || hasError('nombre', 'minlength')">
+                        <span class="error-text" *ngIf="hasError('nombre', 'required')">
+                            El nombre es requerido
+                        </span>
+                        <span class="error-text" *ngIf="hasError('nombre', 'minlength')">
+                            Mínimo 2 caracteres
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="apellido">Apellido</label>
+                        <input type="text" id="apellido" formControlName="apellido" placeholder="Smitherton"
+                            [class.error]="hasError('apellido', 'required') || hasError('apellido', 'minlength')">
+                        <span class="error-text" *ngIf="hasError('apellido', 'required')">
+                            El apellido es requerido
+                        </span>
+                        <span class="error-text" *ngIf="hasError('apellido', 'minlength')">
+                            Mínimo 2 caracteres
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" formControlName="telefono" placeholder="1123456789"
+                            [class.error]="hasError('telefono', 'required') || hasError('telefono', 'pattern')">
+                        <span class="error-text" *ngIf="hasError('telefono', 'required')">
+                            El teléfono es requerido
+                        </span>
+                        <span class="error-text" *ngIf="hasError('telefono', 'pattern')">
+                            Formato inválido (10-15 dígitos)
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="barrio">Barrio</label>
+                        <input type="text" id="barrio" formControlName="barrio" placeholder="Palermo"
+                            [class.error]="hasError('barrio', 'required')">
+                        <span class="error-text" *ngIf="hasError('barrio', 'required')">
+                            El barrio es requerido
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ciudad">Ciudad</label>
+                        <input type="text" id="ciudad" formControlName="ciudad" placeholder="Buenos Aires"
+                            [class.error]="hasError('ciudad', 'required')">
+                        <span class="error-text" *ngIf="hasError('ciudad', 'required')">
+                            La ciudad es requerida
+                        </span>
+                    </div>
+
+
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" (click)="cancel()" [disabled]="isSubmitting">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-submit" [disabled]="isSubmitting">
+                        {{ isSubmitting ? 'Guardando...' : 'Guardar Cambios' }}
+                    </button>
+                </div>
+            </form>
+
+            <p *ngIf="error" class="error-message-global">{{ error }}</p>
+        </div>
+
+        <!-- Image upload section on the right -->
+        <div class="image-section">
+            <div class="image-container">
+                <div class="image-preview" [class.has-image]="imagePreview">
+                    <img *ngIf="imagePreview" [src]="imagePreview" alt="Preview de perfil">
+                    <div *ngIf="!imagePreview" class="placeholder">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2" />
+                            <circle cx="12" cy="7" r="4" stroke-width="2" />
+                        </svg>
+                        <p>Tu foto de perfil</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-actions">
+                <label for="file-upload" class="btn-image">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke-width="2" />
+                        <polyline points="17 8 12 3 7 8" stroke-width="2" />
+                        <line x1="12" y1="3" x2="12" y2="15" stroke-width="2" />
+                    </svg>
+                    Cargar Imagen
+                </label>
+                <input type="file" id="file-upload" accept="image/*" (change)="onImageSelected($event)"
+                    style="display: none;">
+
+                <button type="button" class="btn-image btn-remove" *ngIf="imagePreview" (click)="removeImage()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polyline points="3 6 5 6 21 6" stroke-width="2" />
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                            stroke-width="2" />
+                    </svg>
+                    Eliminar Imagen
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="register-footer">
+        <p class="footer-slogan">¿Dónde estás? Volvé a casa</p>
+    </footer>
+</div>

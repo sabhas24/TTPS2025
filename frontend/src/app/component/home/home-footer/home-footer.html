@@ -1,7 +1,7 @@
 <footer class="footer">
     <div class="footer-container">
         <nav class="footer-links">
-            <a *ngFor="let link of footerLinks" [routerLink]="link.path" class="footer-link">
+            <a *ngFor="let link of footerLinks" href="#" class="footer-link" (click)="$event.preventDefault()">
                 {{ link.label }}
             </a>
         </nav>

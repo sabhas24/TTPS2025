@@ -23,15 +23,13 @@
       <div *ngFor="let mascota of mascotasPaginadas" class="mascota-card">
 
         <!-- Imagen segura -->
-        <img
-          [src]="mascota.fotos && mascota.fotos.length > 0 ? mascota.fotos[0] : 'assets/no-image.png'"
-          alt="{{ mascota.nombre }}"
-        />
+        <img [src]="mascota.fotos && mascota.fotos.length > 0 ? mascota.fotos[0] : 'assets/no-image.png'"
+          alt="{{ mascota.nombre }}" />
 
         <div class="info">
           <h3>{{ mascota.nombre }}</h3>
 
-          <p>Barrio: {{ mascota.coordenada?.barrio || 'No definido' }}</p>
+          <p>Barrio: {{ mascota.coordenada.barrio }}</p>
           <p>Color: {{ mascota.color }}</p>
           <p>{{ mascota.descripcionExtra }}</p>
 
@@ -45,26 +43,17 @@
     <!-- Controles de paginación -->
     <div class="paginacion" *ngIf="totalPaginas > 1">
 
-      <button
-        class="btn-pag"
-        (click)="paginaAnterior()"
-        [disabled]="paginaActual === 1">
+      <button class="btn-pag" (click)="paginaAnterior()" [disabled]="paginaActual === 1">
         &laquo; Anterior
       </button>
 
       <ng-container *ngFor="let p of paginasArray()">
-        <button
-          class="btn-pag"
-          [class.active]="p === paginaActual"
-          (click)="irAPagina(p)">
+        <button class="btn-pag" [class.active]="p === paginaActual" (click)="irAPagina(p)">
           {{ p }}
         </button>
       </ng-container>
 
-      <button
-        class="btn-pag"
-        (click)="siguientePagina()"
-        [disabled]="paginaActual === totalPaginas">
+      <button class="btn-pag" (click)="siguientePagina()" [disabled]="paginaActual === totalPaginas">
         Siguiente &raquo;
       </button>
 

@@ -22,7 +22,7 @@ export class HomeHeader {
 
   navLinks: NavLink[] = [
     { label: 'Inicio', path: '/' },
-    { label: 'Mascotas Perdidas', path: '/mascotas-perdidas' },
+    // { label: 'Mascotas Perdidas', path: '/mascotas-perdidas' }, // Ruta pendiente de implementar
     { label: 'Registrar Mascota Perdida', path: '/mascotas/crear', requiereLogin: true },
     { label: 'Mis Mascotas', path: '/mascotas/mis-mascotas', requiereLogin: true }
   ];
