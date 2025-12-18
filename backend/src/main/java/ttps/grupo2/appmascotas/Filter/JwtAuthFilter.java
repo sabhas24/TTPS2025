@@ -27,11 +27,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         this.userDetailsService = user;
     }
 
-    // 🔴 CLAVE: NO ejecutar el filtro en rutas públicas (login, registrar, swagger, etc.)
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
+    protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
         String path = request.getServletPath();
-        return PublicRoutes.PUBLIC_PATHS.stream().anyMatch(path::startsWith);
+
+        return PublicRoutes.PUBLIC_PATHS.stream().anyMatch(publicPath -> {
+            if (publicPath.endsWith("/**")) {
+                String base = publicPath.substring(0, publicPath.length() - 3);
+                return path.startsWith(base);
+            }
+            return path.equals(publicPath);
+        });
     }
 
     @Override
@@ -60,12 +66,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 var authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
-                        userDetails.getAuthorities()
-                );
+                        userDetails.getAuthorities());
 
                 authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
+                        new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
