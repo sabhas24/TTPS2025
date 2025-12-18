@@ -36,14 +36,30 @@ export class EditarMascotaPerdida {
   error: string = '';
   exito: string = '';
 
+  // ✅ Expresiones regulares
+  private regexNombreColor = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ ]+$/;
+  private regexDescripcion = /^[a-zA-ZÁÉÍÓÚáéíóúñÑ0-9 ,.]+$/;
+
+  // ✅ Errores por campo
+  validaciones = {
+    nombre: '',
+    tamanio: '',
+    color: '',
+    descripcion: ''
+  };
+
   constructor(
     private route: ActivatedRoute,
     public router: Router,
     private mascotaService: MascotaService,
     private authService: AuthService,
     private ngZone: NgZone,
-    private cdRef: ChangeDetectorRef  // ✅ agregado
+    private cdRef: ChangeDetectorRef
   ) {}
+
+  volver() {
+    this.router.navigate(['/mascotas/mis-mascotas']);
+  }
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -64,7 +80,7 @@ export class EditarMascotaPerdida {
         }
 
         this.cargando = false;
-        this.cdRef.detectChanges();  // ✅ fuerza el renderizado
+        this.cdRef.detectChanges();
       },
       error: (err) => {
         console.error("❌ Error al cargar mascota:", err);
@@ -79,6 +95,48 @@ export class EditarMascotaPerdida {
   }
 
   actualizarMascota() {
+
+    // ✅ Validar nombre
+    if (!this.regexNombreColor.test(this.mascota.nombre)) {
+      this.validaciones.nombre = 'El nombre solo puede contener letras y espacios';
+    } else {
+      this.validaciones.nombre = '';
+    }
+
+    // ✅ Validar tamaño
+    if (this.mascota.tamanio <= 0) {
+      this.validaciones.tamanio = 'El tamaño debe ser un número positivo';
+    } else {
+      this.validaciones.tamanio = '';
+    }
+
+    // ✅ Validar color
+    if (!this.regexNombreColor.test(this.mascota.color)) {
+      this.validaciones.color = 'El color solo puede contener letras y espacios';
+    } else {
+      this.validaciones.color = '';
+    }
+
+    // ✅ Validar descripción
+    if (this.mascota.descripcionExtra && !this.regexDescripcion.test(this.mascota.descripcionExtra)) {
+      this.validaciones.descripcion = 'La descripción solo puede contener letras, números, espacios, comas y puntos';
+    } else {
+      this.validaciones.descripcion = '';
+    }
+
+    // ✅ Si hay errores, no enviar
+    if (
+      this.validaciones.nombre ||
+      this.validaciones.tamanio ||
+      this.validaciones.color ||
+      this.validaciones.descripcion
+    ) {
+      this.error = 'Hay errores en el formulario';
+      return;
+    }
+
+    this.error = '';
+
     const dto = {
       nombre: this.mascota.nombre,
       color: this.mascota.color,
@@ -91,7 +149,8 @@ export class EditarMascotaPerdida {
     this.mascotaService.updateMascota(this.mascota.id, dto).subscribe({
       next: () => {
         this.exito = 'Mascota actualizada correctamente';
-        setTimeout(() => this.router.navigate(['/mis-mascotas']), 1500);
+
+        this.router.navigate(['/mascotas/mis-mascotas']);
       },
       error: (err) => {
         console.error(err);

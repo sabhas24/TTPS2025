@@ -7,7 +7,7 @@
   <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
   <div *ngIf="exito" class="alert alert-success">{{ exito }}</div>
 
-  <!-- ✅ Solo la foto, sin mostrar base64 -->
+  <!-- ✅ Foto visible -->
   <div *ngIf="mascota.fotos.length > 0" class="row mb-4">
     <div class="col-md-4 mb-3" *ngFor="let foto of mascota.fotos">
       <img [src]="foto" alt="Foto de mascota" class="img-fluid rounded shadow" style="max-height: 300px;">
@@ -16,28 +16,58 @@
 
   <form (ngSubmit)="actualizarMascota()">
 
-    <div class="form-group">
+    <!-- ✅ Nombre -->
+    <div class="form-group mb-2">
       <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" class="form-control" [(ngModel)]="mascota.nombre" name="nombre" required>
+      <input type="text"
+             id="nombre"
+             class="form-control"
+             [class.is-invalid]="validaciones.nombre"
+             [(ngModel)]="mascota.nombre"
+             name="nombre"
+             required>
+      <div class="invalid-feedback">{{ validaciones.nombre }}</div>
     </div>
 
-    <div class="form-group">
-      <label for="tamanio">Tamaño (Cm)</label>
-      <input type="number" id="tamanio" class="form-control" [(ngModel)]="mascota.tamanio" name="tamanio" required>
+    <!-- ✅ Tamaño -->
+    <div class="form-group mb-2">
+      <label for="tamanio">Tamaño (cm)</label>
+      <input type="number"
+             id="tamanio"
+             class="form-control"
+             [class.is-invalid]="validaciones.tamanio"
+             [(ngModel)]="mascota.tamanio"
+             name="tamanio"
+             required>
+      <div class="invalid-feedback">{{ validaciones.tamanio }}</div>
     </div>
 
-    <div class="form-group">
+    <!-- ✅ Color -->
+    <div class="form-group mb-2">
       <label for="color">Color</label>
-      <input type="text" id="color" class="form-control" [(ngModel)]="mascota.color" name="color" required>
+      <input type="text"
+             id="color"
+             class="form-control"
+             [class.is-invalid]="validaciones.color"
+             [(ngModel)]="mascota.color"
+             name="color"
+             required>
+      <div class="invalid-feedback">{{ validaciones.color }}</div>
     </div>
 
-    <div class="form-group">
+    <!-- ✅ Descripción -->
+    <div class="form-group mb-2">
       <label for="descripcionExtra">Descripción</label>
-      <textarea id="descripcionExtra" class="form-control" [(ngModel)]="mascota.descripcionExtra" name="descripcionExtra"></textarea>
+      <textarea id="descripcionExtra"
+                class="form-control"
+                [class.is-invalid]="validaciones.descripcion"
+                [(ngModel)]="mascota.descripcionExtra"
+                name="descripcionExtra"></textarea>
+      <div class="invalid-feedback">{{ validaciones.descripcion }}</div>
     </div>
 
     <button type="submit" class="btn btn-primary mt-3">Actualizar Mascota</button>
-    <button type="button" class="btn btn-secondary mt-3" (click)="router.navigate(['/mis-mascotas'])">
+    <button type="button" class="btn btn-secondary mt-3" (click)="volver()">
       Cancelar
     </button>
 
