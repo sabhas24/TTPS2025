@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { Mascota, MascotaService } from '../../../services/mascota-service';
 import { AuthService } from '../../../services/auth-service';
@@ -13,6 +13,7 @@ import { HomeHeader } from '../../home/home-header/home-header';
   imports: [
     CommonModule,
     FormsModule,
+    RouterLink,
     HomeHeader
   ],
   templateUrl: './mis-mascotas.html',
@@ -22,7 +23,7 @@ export class MisMascotas {
 
   @Input() modo: 'usuario' | 'perdidas' = 'usuario';
   @Input() mostrarAcciones: boolean = true;
-  @Input() titulo: string = 'Mis Mascotas';
+  @Input() titulo: string = '';
 
   mascotasPaginadas: Mascota[] = [];
   cargando: boolean = true;
@@ -31,6 +32,7 @@ export class MisMascotas {
   paginaActual: number = 1;
   mascotasPorPagina: number = 5;
   totalPaginas: number = 1;
+  totalElementos: number = 0;
 
   constructor(
     private mascotaService: MascotaService,
@@ -40,6 +42,16 @@ export class MisMascotas {
   ) { }
 
   ngOnInit() {
+    // Establecer título por defecto si no se proporciona
+    if (!this.titulo) {
+      this.titulo = this.modo === 'usuario' ? 'Mis Mascotas' : 'Mascotas Perdidas';
+    }
+
+    // Establecer mostrarAcciones según el modo si no se especificó
+    if (this.modo === 'perdidas' && this.mostrarAcciones === true) {
+      this.mostrarAcciones = false;
+    }
+
     if (this.modo === 'usuario') {
       const usuarioId = this.authService.getUsuarioId();
 
@@ -57,6 +69,7 @@ export class MisMascotas {
 
   listarMascotas(usuarioId: number) {
     this.cargando = true;
+    this.error = '';
 
     this.mascotaService
       .getMascotasPorUsuarioPaginado(usuarioId, this.paginaActual, this.mascotasPorPagina)
@@ -64,13 +77,14 @@ export class MisMascotas {
         next: (res) => {
           this.mascotasPaginadas = res.content;
           this.totalPaginas = res.totalPages;
+          this.totalElementos = res.totalElements || 0;
 
           this.cargando = false;
           this.cdRef.detectChanges();
         },
         error: (err) => {
           console.error(err);
-          this.error = 'Error al cargar mascotas';
+          this.error = 'Error al cargar tus mascotas';
           this.cargando = false;
           this.cdRef.detectChanges();
         }
@@ -79,11 +93,13 @@ export class MisMascotas {
 
   listarMascotasPerdidas() {
     this.cargando = true;
+    this.error = '';
 
     this.mascotaService.getMascotasPerdidas(this.paginaActual, this.mascotasPorPagina).subscribe({
       next: (res) => {
         this.mascotasPaginadas = res.content;
         this.totalPaginas = res.totalPages;
+        this.totalElementos = res.totalElements || 0;
         this.cargando = false;
         this.cdRef.detectChanges();
       },

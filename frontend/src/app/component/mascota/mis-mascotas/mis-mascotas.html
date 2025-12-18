@@ -1,10 +1,16 @@
 <app-home-header></app-home-header>
 
 <main class="mis-mascotas-page">
-  <h1>{{ titulo }}</h1>
+  <div class="header-section">
+    <h1>{{ titulo }}</h1>
+    <p *ngIf="totalElementos > 0 && !cargando" class="contador">
+      {{ totalElementos }} {{ totalElementos === 1 ? 'mascota' : 'mascotas' }}
+      {{ modo === 'usuario' ? 'registrada(s)' : 'perdida(s)' }}
+    </p>
+  </div>
 
   <!-- Estado de carga -->
-  <div *ngIf="cargando">Cargando...</div>
+  <div *ngIf="cargando" class="loading-spinner">Cargando...</div>
 
   <!-- Error global -->
   <div *ngIf="error" class="error-message-global">{{ error }}</div>
@@ -14,7 +20,11 @@
 
     <!-- Si no hay mascotas -->
     <div *ngIf="mascotasPaginadas.length === 0" class="no-mascotas">
-      <p>{{ modo === 'usuario' ? 'No tienes mascotas registradas.' : 'No hay mascotas perdidas en este momento.' }}</p>
+      <p *ngIf="modo === 'usuario'">No tienes mascotas registradas.</p>
+      <p *ngIf="modo === 'perdidas'">No hay mascotas perdidas en este momento.</p>
+      <button *ngIf="modo === 'usuario'" routerLink="/mascotas/registrar" class="btn-registrar">
+        Registrar Primera Mascota
+      </button>
     </div>
 
     <!-- Lista de mascotas -->
@@ -29,13 +39,21 @@
         <div class="info">
           <h3>{{ mascota.nombre }}</h3>
 
-          <p>Barrio: {{ mascota.coordenada.barrio }}</p>
-          <p>Color: {{ mascota.color }}</p>
-          <p>{{ mascota.descripcionExtra }}</p>
+          <p><strong>Barrio:</strong> {{ mascota.coordenada.barrio }}</p>
+          <p><strong>Color:</strong> {{ mascota.color }}</p>
+          <p *ngIf="mascota.descripcionExtra" class="descripcion">{{ mascota.descripcionExtra }}</p>
+
+          <p *ngIf="modo === 'perdidas'" class="estado-badge">
+            <span class="badge perdida">🔍 Perdida</span>
+          </p>
 
           <div *ngIf="mostrarAcciones" class="acciones">
-            <button (click)="editarMascota(mascota.id)">Editar</button>
-            <button (click)="eliminarMascota(mascota.id)">Eliminar</button>
+            <button class="btn-editar" (click)="editarMascota(mascota.id)">Editar</button>
+            <button class="btn-eliminar" (click)="eliminarMascota(mascota.id)">Eliminar</button>
+          </div>
+
+          <div *ngIf="modo === 'perdidas'" class="acciones-perdidas">
+            <button class="btn-reportar">Reportar Avistamiento</button>
           </div>
         </div>
 
