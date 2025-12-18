@@ -28,7 +28,7 @@ public class UsuarioController {
         @PostMapping("/registrar")
         @ResponseStatus(HttpStatus.CREATED)
         public UsuarioRegisterResponseDTO registrar(@RequestBody UsuarioCreateRequestDTO dto) {
-            return usuarioService.registrar(dto);
+                return usuarioService.registrar(dto);
         }
 
         @Operation(summary = "Editar perfil de usuario", description = "Actualiza los datos personales del usuario identificado por su ID. Solo se modifican campos visibles del perfil.")
