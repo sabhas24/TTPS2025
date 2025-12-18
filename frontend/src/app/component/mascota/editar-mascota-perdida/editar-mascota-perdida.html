@@ -2,12 +2,19 @@
 
 <div class="container" *ngIf="!cargando; else cargandoTemplate">
 
-  <h2>Editar Mascota Perdida</h2>
+  <h2 class="mt-4">Editar Mascota Perdida</h2>
 
   <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
   <div *ngIf="exito" class="alert alert-success">{{ exito }}</div>
 
-  <form *ngIf="mascota" (ngSubmit)="actualizarMascota()">
+  <!-- ✅ Previsualización de todas las fotos -->
+  <div *ngIf="mascota.fotos.length > 0" class="row mb-4">
+    <div class="col-md-4 mb-3" *ngFor="let foto of mascota.fotos">
+      <img [src]="foto" alt="Foto de mascota" class="img-fluid rounded shadow" style="max-height: 300px;">
+    </div>
+  </div>
+
+  <form (ngSubmit)="actualizarMascota()">
 
     <div class="form-group">
       <label for="nombre">Nombre</label>

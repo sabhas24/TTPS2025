@@ -8,7 +8,6 @@ import { jwtDecode } from 'jwt-decode';
 
 const API_BASE_URL = environment.apiUrl;
 
-/** 🔐 Datos que vienen dentro del JWT */
 interface UsuarioToken {
   id: number;
   nombre: string;
@@ -25,19 +24,21 @@ export class AuthService {
 
   private readonly TOKEN_KEY = 'auth_token';
 
-  /** Estado de login */
   private loggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
   public loggedIn$ = this.loggedInSubject.asObservable();
 
-  /** Usuario autenticado */
-  private usuarioSubject = new BehaviorSubject<UsuarioToken | null>(
-    this.getUsuarioDesdeToken()
-  );
+  private usuarioSubject = new BehaviorSubject<UsuarioToken | null>(null);
   public usuario$ = this.usuarioSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    // 🔹 Inicializamos usuarioSubject desde el token si existe
+    const usuario = this.getUsuarioDesdeToken();
+    if (usuario) {
+      this.usuarioSubject.next(usuario);
+      this.loggedInSubject.next(true);
+    }
+  }
 
-  /** LOGIN */
   login(credentials: UsuarioLogin): Observable<JwtResponse> {
     return this.http
       .post<JwtResponse>(`${API_BASE_URL}/auth/login`, credentials)
@@ -48,14 +49,12 @@ export class AuthService {
       );
   }
 
-  /** LOGOUT */
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     this.usuarioSubject.next(null);
     this.loggedInSubject.next(false);
   }
 
-  /** TOKEN */
   getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
   }
@@ -64,7 +63,6 @@ export class AuthService {
     return !!this.getToken();
   }
 
-  /** REGISTRO */
   register(user: UsuarioCreate): Observable<JwtResponse> {
     return this.http
       .post<JwtResponse>(`${API_BASE_URL}/usuarios/registrar`, user)
@@ -76,10 +74,6 @@ export class AuthService {
         })
       );
   }
-
-  /** =====================
-   *  JWT & USUARIO
-   *  ===================== */
 
   private setToken(token: string): void {
     localStorage.setItem(this.TOKEN_KEY, token);
@@ -98,8 +92,6 @@ export class AuthService {
       return null;
     }
   }
-
-  /** Accesos cómodos desde componentes */
 
   getUsuario(): UsuarioToken | null {
     return this.usuarioSubject.value;

@@ -106,4 +106,8 @@ public class MascotaController {
             return mascotaService.listarPorUsuarioPaginado(id, pagina, tamaño);
         }
 
+        @GetMapping("/{id}")
+        public MascotaResponseDTO obtenerPorId(@PathVariable Long id) {
+            return mascotaService.obtenerMascotaPorId(id);
+        }
 }

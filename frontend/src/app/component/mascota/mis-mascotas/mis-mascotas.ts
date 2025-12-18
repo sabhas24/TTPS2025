@@ -23,7 +23,6 @@ export class MisMascotas {
   cargando: boolean = true;
   error: string = '';
 
-  // Variables de paginación
   paginaActual: number = 1;
   mascotasPorPagina: number = 5;
   totalPaginas: number = 1;
@@ -35,19 +34,17 @@ export class MisMascotas {
   ) {}
 
   ngOnInit() {
-    this.listarMascotas();
-  }
-
-  listarMascotas() {
     const usuarioId = this.authService.getUsuarioId();
     if (!usuarioId) {
       this.error = 'Usuario no autenticado';
       this.cargando = false;
       return;
     }
+    this.listarMascotas(usuarioId);
+  }
 
+  listarMascotas(usuarioId: number) {
     this.cargando = true;
-
     this.mascotaService.getMascotasPorUsuarioPaginado(usuarioId, this.paginaActual, this.mascotasPorPagina)
       .subscribe({
         next: (res) => {
@@ -66,14 +63,16 @@ export class MisMascotas {
   siguientePagina() {
     if (this.paginaActual < this.totalPaginas) {
       this.paginaActual++;
-      this.listarMascotas();
+      const usuarioId = this.authService.getUsuarioId();
+      if (usuarioId) this.listarMascotas(usuarioId);
     }
   }
 
   paginaAnterior() {
     if (this.paginaActual > 1) {
       this.paginaActual--;
-      this.listarMascotas();
+      const usuarioId = this.authService.getUsuarioId();
+      if (usuarioId) this.listarMascotas(usuarioId);
     }
   }
 
@@ -83,15 +82,13 @@ export class MisMascotas {
 
   eliminarMascota(id: number) {
     if (!confirm('¿Desea eliminar esta mascota?')) return;
-
     this.mascotaService.deleteMascota(id).subscribe({
       next: () => {
-        // Ajustar página si eliminamos el último elemento de la última página
         if (this.mascotasPaginadas.length === 1 && this.paginaActual > 1) {
           this.paginaActual--;
         }
-        // Volvemos a cargar la página actual desde backend
-        this.listarMascotas();
+        const usuarioId = this.authService.getUsuarioId();
+        if (usuarioId) this.listarMascotas(usuarioId);
       },
       error: (err) => {
         console.error(err);
@@ -99,14 +96,14 @@ export class MisMascotas {
       }
     });
   }
+
   paginasArray(): number[] {
     return Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
   }
 
   irAPagina(numero: number) {
     this.paginaActual = numero;
-    this.listarMascotas();
+    const usuarioId = this.authService.getUsuarioId();
+    if (usuarioId) this.listarMascotas(usuarioId);
   }
-
-
 }

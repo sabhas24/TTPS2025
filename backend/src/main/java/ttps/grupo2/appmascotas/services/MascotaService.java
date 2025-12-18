@@ -128,9 +128,12 @@ public class MascotaService {
         dto.setId(mascota.getId());
         dto.setNombre(mascota.getNombre());
         dto.setColor(mascota.getColor());
+        dto.setTamanio(mascota.getTamanio());
+        dto.setDescripcionExtra(mascota.getDescripcionExtra());
         dto.setEstado(mascota.getEstado());
         dto.setFotos(mascota.getFotos());
         dto.setCoordenada(mascota.getCoordenada());
+        dto.setPublicadorId(mascota.getPublicador().getId());
         dto.setNombrePublicador(mascota.getPublicador().getNombre());
         return dto;
     }
@@ -141,4 +144,11 @@ public class MascotaService {
 
         return mascotasPage.map(this::convertirAResponseDTO);
     }
+
+    public MascotaResponseDTO obtenerMascotaPorId(Long id) {
+        Mascota mascota = mascotaRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mascota no encontrada"));
+        return convertirAResponseDTO(mascota);
+    }
+
 }

@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MascotaService, Mascota, CoordenadaDTO } from '../../../services/mascota-service';
+import { MascotaService, Mascota } from '../../../services/mascota-service';
 import { AuthService } from '../../../services/auth-service';
 import { HomeHeader } from '../../home/home-header/home-header';
 
@@ -12,7 +12,7 @@ import { HomeHeader } from '../../home/home-header/home-header';
   imports: [
     CommonModule,
     FormsModule,
-    HomeHeader
+    HomeHeader,
   ],
   templateUrl: './editar-mascota-perdida.html',
   styleUrls: ['./editar-mascota-perdida.css']
@@ -38,13 +38,16 @@ export class EditarMascotaPerdida {
 
   constructor(
     private route: ActivatedRoute,
-    public router: Router,  // 👈 router público para usar en HTML
+    public router: Router,
     private mascotaService: MascotaService,
-    private authService: AuthService
+    private authService: AuthService,
+    private ngZone: NgZone,
+    private cdRef: ChangeDetectorRef  // ✅ agregado
   ) {}
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+
     if (!id) {
       this.error = 'ID de mascota inválido';
       this.cargando = false;
@@ -53,31 +56,29 @@ export class EditarMascotaPerdida {
 
     this.mascotaService.getMascotaById(id).subscribe({
       next: (res) => {
+        console.log("✅ Mascota recibida:", res);
         this.mascota = res;
-        // Si coordenada es null, inicializamos
+
         if (!this.mascota.coordenada) {
           this.mascota.coordenada = { latitud: 0, longitud: 0, barrio: '' };
         }
+
         this.cargando = false;
+        this.cdRef.detectChanges();  // ✅ fuerza el renderizado
       },
       error: (err) => {
-        console.error(err);
+        console.error("❌ Error al cargar mascota:", err);
         this.error = 'No se pudo cargar la mascota';
         this.cargando = false;
       }
     });
   }
 
-  // Método para actualizar las fotos
   onFotosChange(value: string) {
-    if (this.mascota) {
-      this.mascota.fotos = value.split(',').map(f => f.trim());
-    }
+    this.mascota.fotos = value.split(',').map(f => f.trim());
   }
 
   actualizarMascota() {
-    if (!this.mascota) return;
-
     const dto = {
       nombre: this.mascota.nombre,
       color: this.mascota.color,
@@ -98,4 +99,5 @@ export class EditarMascotaPerdida {
       }
     });
   }
+
 }
