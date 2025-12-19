@@ -4,12 +4,27 @@
       <span class="text-muted">ID #{{ avistamiento.id }}</span>
     </div>
 
+    <div class="card p-3 mb-4 shadow-sm">
     <p><b><i class="bi bi-person-circle"></i> Reportado por:</b> 
             {{ reporter ? reporter : 'Cargando...' }}
           </p>
     <p><b>Fecha:</b> {{ avistamiento.fecha | date:'medium' }}</p>
+    <p><b><i class="bi bi-geo-alt-fill text-danger"></i> Ubicación:</b> 
+      {{ avistamiento.coordenada?.barrio || 'Ubicación no especificada' }}
+    </p>
+    <p class="text-muted ps-4" style="font-size: 0.9rem;" *ngIf="avistamiento.coordenada">
+      <b>Coordenadas:</b> 
+      {{ avistamiento.coordenada.latitud | number:'1.1-4' }}, 
+      {{ avistamiento.coordenada.longitud | number:'1.1-4' }}
+    </p>
+    <hr>
     <p><b>Comentario:</b> {{ avistamiento.comentario || 'Sin descripción adicional.' }}</p>
-    <p><b>En posesión:</b> {{ avistamiento.enPosesion ? 'Sí' : 'No' }}</p>
+    <p><b>En posesión:</b> 
+      <span [class]="avistamiento.enPosesion ? 'badge bg-success' : 'badge bg-secondary'">
+        {{ avistamiento.enPosesion ? 'Sí, tiene a la mascota' : 'No, solo lo vio' }}
+      </span>
+    </p>
+    </div>
 
     <div class="row">
       <div class="col-md-6">

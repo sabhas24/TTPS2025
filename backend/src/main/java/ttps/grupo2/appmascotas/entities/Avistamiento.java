@@ -20,6 +20,8 @@ public class Avistamiento {
     private boolean habilitado;
 
     @ElementCollection
+    @CollectionTable(name = "avistamiento_fotos", joinColumns = @JoinColumn(name = "avistamiento_id"))
+    @Column(name = "fotos", columnDefinition = "LONGTEXT")
     private List<String> fotos;
 
     private boolean enPosesion;

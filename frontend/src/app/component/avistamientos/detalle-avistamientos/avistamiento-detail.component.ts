@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Avistamiento, AvistamientoResponse } from '../../../interfaces/avistamiento';
 import { AvistamientoService } from '../../../services/avistamiento-service';
@@ -23,6 +23,7 @@ export class AvistamientoDetailComponent implements OnInit {
   selectedImageIndex = 0;
   reporter?: string;
   mascota?: string;
+  private cdr = inject(ChangeDetectorRef)
 
   constructor(
     private route: ActivatedRoute,
@@ -33,10 +34,12 @@ export class AvistamientoDetailComponent implements OnInit {
   ) {}
 
     ngOnInit(): void {
-    const idMascota = this.route.snapshot.paramMap.get('id');
-    const idAvistamiento = this.route.snapshot.paramMap.get('avistamientoId');
+        const idMascota = this.route.snapshot.paramMap.get('id');
+        const idAvistamiento = this.route.snapshot.paramMap.get('avistamientoId');
 
+        console.log("ids: " + idMascota + " " + idAvistamiento);
         if (idMascota && idAvistamiento) {
+            console.log("Entró");
             this.mascotaId = Number(idMascota);
             this.obtenerDetalle(Number(idAvistamiento));
         }
@@ -46,26 +49,43 @@ export class AvistamientoDetailComponent implements OnInit {
     this.cargando = true;
     this.service.obtenerDetalle(id).subscribe({
       next: (data) => {
+        console.log(data);
+        this.avistamiento = data;
         this.cargarDatosRelacionados(data);
         this.cargando = false;
+        this.cdr.detectChanges();
       },
-      error: () => (this.cargando = false),
+      error: () => {
+        this.cargando = false;
+        this.cdr.detectChanges();
+        console.log("error")
+      }
     });
   }
 
   private cargarDatosRelacionados(avistamiento: AvistamientoResponse) {
     // 1. Cargar nombre del reportero
+    console.log("Cargando datos related")
     if (avistamiento.usuarioId) {
+        console.log("Entró 1");
       this.usuarioService.getPerfil(avistamiento.usuarioId).subscribe({
-        next: (user) => this.reporter =  user ? `${user.nombre} ${user.apellido}` : '',
-        error: (err) => console.error('Error cargando reportero', err)
+        next: (user) => {
+            this.reporter =  `${user.nombre} ${user.apellido}`
+            this.cdr.detectChanges();
+        },
+        
+            error: (err) => console.error('Error cargando reportero', err)
       });
     }
 
     // 2. Cargar nombre de la mascota
     if (this.mascotaId) {
-      this.mascotaService.getMascotaById(this.mascotaId).subscribe({
-        next: (pet) => this.mascota = pet.nombre,
+        console.log("Entró 2");
+      this.mascotaService.getMascotaById(this.mascotaId).subscribe(
+        {next: (pet) => {
+          this.mascota = pet.nombre;
+          this.cdr.detectChanges();
+        },
         error: (err) => console.error('Error cargando mascota', err)
       });
     }
