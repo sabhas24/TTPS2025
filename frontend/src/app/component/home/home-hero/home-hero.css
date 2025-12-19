@@ -91,7 +91,8 @@
     }
 
     .hero-buttons {
-        justify-content: center;
+      margin: 0 auto;
+      display: block;
     }
 
     .hero-image {
