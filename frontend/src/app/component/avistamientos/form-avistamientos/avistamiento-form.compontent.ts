@@ -146,6 +146,7 @@ ngOnInit(): void {
             ctx.drawImage(img, 0, 0, width, height);
             const compressed = canvas.toDataURL('image/jpeg', 0.7);
             this.fotosBase64.push(compressed);
+            this.cdr.detectChanges();
           }
         };
         img.src = e.target?.result as string;
@@ -156,6 +157,7 @@ ngOnInit(): void {
 
   eliminarFoto(index: number) {
     this.fotosBase64.splice(index, 1);
+    this.cdr.detectChanges();
   }
 
   private initForm() {
@@ -180,7 +182,10 @@ ngOnInit(): void {
           longitud: data.coordenada?.longitud,
           barrio: data.coordenada?.barrio,
         });
-        if (data.fotos) this.fotosBase64 = data.fotos;
+        if (data.fotos) {
+          this.fotosBase64 = data.fotos;
+          this.cdr.detectChanges();
+        }
       }
     });
   }
