@@ -61,14 +61,16 @@ export class RegistrarMascota {
   // ===== Inicializar ubicación desde localStorage o calculando del usuario =====
   private inicializarUbicacion() {
     const usuario = this.authService.getUsuario();
-    if (!usuario) return;
+    if (!usuario?.ciudad) return;
 
     this.usuarioNombre = `${usuario.nombre} ${usuario.apellido}`;
     this.usuarioId = usuario.id;
 
-    const stored = localStorage.getItem('ubicacionUsuario');
-    if (stored) {
-      const coord = JSON.parse(stored);
+    const storedUbicacion = localStorage.getItem('ubicacionUsuario');
+    const storedCiudad = localStorage.getItem('ciudadUsuario');
+
+    if (storedUbicacion && storedCiudad === usuario.ciudad) {
+      const coord = JSON.parse(storedUbicacion);
       this.lat = coord.lat;
       this.lon = coord.lon;
     } else {
@@ -78,23 +80,26 @@ export class RegistrarMascota {
 
   private calcularUbicacionUsuario() {
     const usuario = this.authService.getUsuario();
-    if (!usuario) return;
+    if (!usuario?.ciudad) return;
 
-    const lugar = usuario.barrio || usuario.ciudad;
-    if (lugar) {
-      this.georefService.obtenerCentroideLocalidad(lugar).subscribe({
-        next: (coord) => {
-          this.lat = coord.lat;
-          this.lon = coord.lon;
-          localStorage.setItem(
-            'ubicacionUsuario',
-            JSON.stringify({ lat: this.lat, lon: this.lon })
-          );
-        },
-        error: () => console.warn('No se pudo obtener la ubicación inicial')
-      });
-    }
+    const ciudad = usuario.ciudad.trim();
+
+    this.georefService.obtenerCentroideLocalidad(ciudad).subscribe({
+      next: (coord) => {
+        this.lat = coord.lat;
+        this.lon = coord.lon;
+
+        localStorage.setItem(
+          'ubicacionUsuario',
+          JSON.stringify({ lat: this.lat, lon: this.lon })
+        );
+
+        localStorage.setItem('ciudadUsuario', ciudad);
+      },
+      error: () => console.warn('No se pudo obtener la ubicación inicial')
+    });
   }
+
 
   onFotoSeleccionada(event: Event) {
     const input = event.target as HTMLInputElement;
