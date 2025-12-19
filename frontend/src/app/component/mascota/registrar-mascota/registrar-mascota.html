@@ -4,51 +4,74 @@
   <div class="form-container">
 
     <h2 class="form-title">Registrar Mascota Perdida</h2>
-
     <p class="form-subtitle">
       Completá el formulario para publicar una mascota perdida.
     </p>
 
     <form (ngSubmit)="submit()">
 
-
       <!-- Nombre -->
       <div class="form-group">
         <label>Nombre de la mascota</label>
-        <input type="text" [(ngModel)]="nombre" name="nombre" required />
+        <input
+          type="text"
+          [(ngModel)]="nombre"
+          name="nombre"
+          required
+          (ngModelChange)="validarNombre()"
+          [class.input-error]="errores.nombre"
+        />
         <div class="error-text" *ngIf="errores.nombre">{{ errores.nombre }}</div>
       </div>
 
       <!-- Tamaño -->
       <div class="form-group">
         <label>Tamaño (cm)</label>
-        <input type="number" [(ngModel)]="tamanio" name="tamanio" required />
+        <input
+          type="number"
+          [(ngModel)]="tamanio"
+          name="tamanio"
+          required
+          (ngModelChange)="validarTamanio()"
+          [class.input-error]="errores.tamanio"
+        />
         <div class="error-text" *ngIf="errores.tamanio">{{ errores.tamanio }}</div>
       </div>
 
       <!-- Color -->
       <div class="form-group">
         <label>Color</label>
-        <input type="text" [(ngModel)]="color" name="color" />
+        <input
+          type="text"
+          [(ngModel)]="color"
+          name="color"
+          (ngModelChange)="validarColor()"
+          [class.input-error]="errores.color"
+        />
         <div class="error-text" *ngIf="errores.color">{{ errores.color }}</div>
       </div>
 
       <!-- Descripción -->
       <div class="form-group">
         <label>Descripción</label>
-        <textarea [(ngModel)]="descripcionExtra" name="descripcionExtra"></textarea>
+        <textarea
+          [(ngModel)]="descripcionExtra"
+          name="descripcionExtra"
+          (ngModelChange)="validarDescripcion()"
+          [class.input-error]="errores.descripcion"
+        ></textarea>
         <div class="error-text" *ngIf="errores.descripcion">{{ errores.descripcion }}</div>
       </div>
 
-
+      <!-- Foto -->
       <div class="form-group">
         <label>Foto de referencia</label>
         <input type="file" multiple (change)="onFotoSeleccionada($event)" />
       </div>
 
+      <!-- Ubicación -->
       <div class="form-group">
         <label>Ubicación donde se perdió</label>
-
         <app-mapa
           *ngIf="lat && lon"
           [lat]="lat"
@@ -61,6 +84,7 @@
         </p>
       </div>
 
+      <!-- Usuario -->
       <div class="form-group">
         <label>Usuario que publica</label>
         <input

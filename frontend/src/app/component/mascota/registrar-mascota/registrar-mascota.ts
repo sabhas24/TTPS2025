@@ -100,7 +100,6 @@ export class RegistrarMascota {
     });
   }
 
-
   onFotoSeleccionada(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files) return;
@@ -152,6 +151,41 @@ export class RegistrarMascota {
     localStorage.setItem('ubicacionUsuario', JSON.stringify({ lat: this.lat, lon: this.lon }));
   }
 
+  // ===== Validaciones en tiempo real =====
+  validarNombre() {
+    if (!this.nombre.trim() || !this.regexNombreColor.test(this.nombre)) {
+      this.errores.nombre = 'El nombre solo puede contener letras y espacios.';
+    } else {
+      this.errores.nombre = '';
+    }
+  }
+
+  validarTamanio() {
+    if (this.tamanio === null || this.tamanio <= 0) {
+      this.errores.tamanio = 'El tamaño debe ser un número positivo.';
+    } else if (this.tamanio > 150) {
+      this.errores.tamanio = 'El tamaño no puede superar los 150 cm.';
+    } else {
+      this.errores.tamanio = '';
+    }
+  }
+
+  validarColor() {
+    if (this.color.trim() && !this.regexNombreColor.test(this.color)) {
+      this.errores.color = 'El color solo puede contener letras y espacios.';
+    } else {
+      this.errores.color = '';
+    }
+  }
+
+  validarDescripcion() {
+    if (this.descripcionExtra.trim() && !this.regexDescripcion.test(this.descripcionExtra)) {
+      this.errores.descripcion = 'La descripción solo puede contener letras, números, espacios, comas, puntos y "/".';
+    } else {
+      this.errores.descripcion = '';
+    }
+  }
+
   submit() {
     if (!this.usuarioId || this.tamanio === null || !this.nombre.trim()) {
       window.alert('⚠️ Faltan datos obligatorios para publicar la mascota.');
@@ -159,25 +193,10 @@ export class RegistrarMascota {
     }
 
     // ✅ Validaciones
-    this.errores = { nombre: '', tamanio: '', color: '', descripcion: '' };
-
-    if (!this.nombre.trim() || !this.regexNombreColor.test(this.nombre)) {
-      this.errores.nombre = 'El nombre solo puede contener letras y espacios.';
-    }
-
-    if (this.tamanio === null || this.tamanio <= 0) {
-      this.errores.tamanio = 'El tamaño debe ser un número positivo.';
-    } else if (this.tamanio > 150) {
-      this.errores.tamanio = 'El tamaño no puede superar los 150 cm.';
-    }
-
-    if (this.color.trim() && !this.regexNombreColor.test(this.color)) {
-      this.errores.color = 'El color solo puede contener letras y espacios.';
-    }
-
-    if (this.descripcionExtra.trim() && !this.regexDescripcion.test(this.descripcionExtra)) {
-      this.errores.descripcion = 'La descripción solo puede contener letras, números, espacios, comas, puntos y "/".';
-    }
+    this.validarNombre();
+    this.validarTamanio();
+    this.validarColor();
+    this.validarDescripcion();
 
     if (
       this.errores.nombre ||
@@ -186,11 +205,6 @@ export class RegistrarMascota {
       this.errores.descripcion
     ) {
       window.alert('⚠️ Hay errores en el formulario. Revisá los campos.');
-      return;
-    }
-
-    if (!this.usuarioId || this.tamanio === null || !this.nombre.trim()) {
-      window.alert('⚠️ Faltan datos obligatorios para publicar la mascota.');
       return;
     }
 
