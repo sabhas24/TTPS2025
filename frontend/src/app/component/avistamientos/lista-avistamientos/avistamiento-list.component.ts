@@ -24,12 +24,16 @@ export class AvistamientoListComponent implements OnInit {
     private router: Router
   ) {}
 
+
   ngOnInit(): void {
-    this.route.parent!.paramMap.subscribe(params => {
-      this.mascotaId = Number(params.get('mascotaId'));
+  this.route.parent?.paramMap.subscribe(params => {
+    const id = params.get('id'); 
+    if (id) {
+      this.mascotaId = Number(id);
       this.cargarAvistamientos();
-    });
-  }
+    }
+  });
+}
 
   private cargarAvistamientos() {
     this.cargando = true;
@@ -49,10 +53,10 @@ export class AvistamientoListComponent implements OnInit {
 
 
   verDetalle(id: number) {
-    this.router.navigate([id], { relativeTo: this.route });
+    this.router.navigate(['/mascotas/detalle', this.mascotaId, 'avistamientos', id]);
   }
 
   nuevoAvistamiento() {
-    this.router.navigate(['nuevo'], { relativeTo: this.route });
+    this.router.navigate(['/mascotas/detalle', this.mascotaId, 'avistamientos', 'nuevo']);
   }
 }

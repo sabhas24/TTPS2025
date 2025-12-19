@@ -46,15 +46,31 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
 
+
+  // AVISTAMIENTOS
+  {
+    path: "mascotas/detalle/:id/avistamientos/nuevo",
+    loadComponent: () => import("./component/avistamientos/form-avistamientos/avistamiento-form.compontent").then(m => m.AvistamientoFormComponent),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "mascotas/detalle/:id/avistamientos/:avistamientoId",
+    loadComponent: () => import("./component/avistamientos/detalle-avistamientos/avistamiento-detail.component").then(m => m.AvistamientoDetailComponent)
+  },
+  {
+    path: "mascotas/detalle/:id/avistamientos/:avistamientoId/editar",
+    loadComponent: () => import("./component/avistamientos/form-avistamientos/avistamiento-form.compontent").then(m => m.AvistamientoFormComponent),
+    canActivate: [AuthGuard]
+  },
+
+  // 2. RUTA DE DETALLE MASCOTA (Con listado integrado)
   {
     path: "mascotas/detalle/:id",
     loadComponent: () => import("./component/mascota/detalle-mascota/detalle-mascota").then((m) => m.DetalleMascota),
     children: [
       {
-        path: 'avistamientos',
-        loadChildren: () =>
-          import('./component/avistamientos/avistamientos-routing')
-            .then(m => m.default)
+        path: "", // Al entrar al detalle, se carga el listado automáticamente
+        loadComponent: () => import("./component/avistamientos/lista-avistamientos/avistamiento-list.component").then(m => m.AvistamientoListComponent)
       }
     ]
   },

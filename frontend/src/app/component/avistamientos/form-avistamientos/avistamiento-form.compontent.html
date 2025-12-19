@@ -16,12 +16,19 @@
         </div>
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Fecha y Hora</label>
-        <input type="datetime-local" class="form-control" formControlName="fecha">
-        <div class="text-danger small" *ngIf="form.get('fecha')?.errors?.['fechaFutura']">
+      <div class="form-group">
+        <label>Fecha y hora:</label>
+        <input 
+          type="datetime-local" 
+          formControlName="fecha"
+          [class.input-error]="form.get('fecha')?.invalid && form.get('fecha')?.touched"
+        >
+        <small class="error-text" *ngIf="form.get('fecha')?.hasError('required') && form.get('fecha')?.touched">
+          La fecha es obligatoria.
+        </small>
+        <small class="error-text" *ngIf="form.get('fecha')?.hasError('fechaFutura') && form.get('fecha')?.touched">
           La fecha no puede ser futura.
-        </div>
+        </small>
       </div>
 
       <div class="mb-3">
@@ -73,7 +80,7 @@
       </div>
 
       <div class="mt-4 border-top pt-3">
-        <button type="submit" class="btn btn-primary px-4 me-2" [disabled]="form.invalid">
+        <button type="submit" class="btn btn-primary px-4 me-2">
           {{ editando ? 'Actualizar' : 'Publicar' }} Avistamiento
         </button>
         <button type="button" class="btn btn-outline-secondary" (click)="volver()">Cancelar</button>

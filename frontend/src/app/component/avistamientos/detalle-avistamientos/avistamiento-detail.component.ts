@@ -33,8 +33,8 @@ export class AvistamientoDetailComponent implements OnInit {
   ) {}
 
     ngOnInit(): void {
-        const idMascota = this.route.parent?.snapshot.paramMap.get('id');
-        const idAvistamiento = this.route.snapshot.paramMap.get('avistamientoId');
+    const idMascota = this.route.snapshot.paramMap.get('id');
+    const idAvistamiento = this.route.snapshot.paramMap.get('avistamientoId');
 
         if (idMascota && idAvistamiento) {
             this.mascotaId = Number(idMascota);
@@ -77,12 +77,11 @@ export class AvistamientoDetailComponent implements OnInit {
 
     editar() {
         if (this.avistamiento?.id) {
-        this.router.navigate(['editar'], { relativeTo: this.route });
-        }
+        this.router.navigate(['editar'], { relativeTo: this.route });        }
     }
 
 
     volver() {
-        this.router.navigate(['/mascotas/detalle', this.mascotaId, 'avistamientos']);
+        this.router.navigate(['/mascotas/detalle', this.mascotaId]);
     }
 }

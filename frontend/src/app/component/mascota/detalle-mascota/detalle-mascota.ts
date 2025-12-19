@@ -214,8 +214,10 @@ export class DetalleMascota implements OnInit, AfterViewInit {
       .bindPopup(`<b>${this.mascota?.nombre}</b><br>Punto de partida`);
 
     // 2. Marcadores de AVISTAMIENTOS numerados
+    const cronologico = [...this.avistamientos].reverse();
 
-    this.avistamientos.forEach((av, index) => {
+
+    cronologico.forEach((av, index) => {
       if (av.coordenada) {
         // Creamos un icono circular con el número
         const posicion: L.LatLngExpression = [av.coordenada.latitud, av.coordenada.longitud];
@@ -306,10 +308,10 @@ export class DetalleMascota implements OnInit, AfterViewInit {
     return date.toLocaleDateString("es-ES", options)
   }
 
-reportarAvistamiento(): void {
+  reportarAvistamiento(): void {
     if (!this.mascota) return;
-    this.router.navigate(['avistamientos', 'nuevo'], { relativeTo: this.route });
-  }
+      this.router.navigate(['/mascotas/detalle', this.mascota.id, 'avistamientos', 'nuevo']);  
+    }
 
   volverAtras(): void {
     if (window.history.length > 1) {
