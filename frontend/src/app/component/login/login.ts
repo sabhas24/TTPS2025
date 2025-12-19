@@ -1,4 +1,4 @@
-import { Component } from "@angular/core"
+import { Component, ChangeDetectorRef } from "@angular/core"
 import { ReactiveFormsModule, FormBuilder, type FormGroup, Validators } from "@angular/forms"
 import { CommonModule } from "@angular/common"
 import { RouterLink, Router } from "@angular/router"
@@ -23,6 +23,7 @@ export class Login {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     this.loginForm = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
@@ -68,6 +69,7 @@ export class Login {
           this.error = "Error del servidor. Intentá nuevamente más tarde."
         }
         console.error(err)
+        this.cdr.detectChanges(); // Force update
       },
     })
   }
