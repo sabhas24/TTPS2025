@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="78e42ac3-30f5-4e3e-9f53-c1c1138b248c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/config/DataSeeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ttps/grupo2/appmascotas/config/DataSeeder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,6 +198,8 @@
       <workItem from="1766103477265" duration="6832000" />
       <workItem from="1766162384633" duration="137000" />
       <workItem from="1766162615967" duration="660000" />
+      <workItem from="1766169039159" duration="647000" />
+      <workItem from="1766173059417" duration="7000" />
     </task>
     <servers />
   </component>
