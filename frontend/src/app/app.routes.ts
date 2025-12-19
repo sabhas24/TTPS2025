@@ -4,6 +4,8 @@ import { Register } from "./component/register/register";
 import { Home } from "./component/home/home";
 import { Profile } from "./component/profile/profile";
 import { ProfileEdit } from "./component/profile-edit/profile-edit";
+import { ForgotPassword } from "./component/forgot-password/forgot-password";
+import { ResetPassword } from "./component/reset-password/reset-password";
 
 export const routes: Routes = [
   { path: "", component: Home },
@@ -11,6 +13,8 @@ export const routes: Routes = [
   { path: "register", component: Register },
   { path: "perfil", component: Profile },
   { path: "perfil/editar", component: ProfileEdit },
+  { path: "forgot-password", component: ForgotPassword },
+  { path: "auth/reset-password", component: ResetPassword },
   {
     path: 'mascotas/crear',
     loadComponent: () =>

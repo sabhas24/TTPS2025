@@ -51,7 +51,7 @@ public class DataSeeder {
             usuario2.setNombre("Pablo");
             usuario2.setApellido("redruello");
             usuario2.setEmail("pabliito.23.94@gmail.com");
-            usuario2.setContraseña(passwordEncoder.encode("     "));
+            usuario2.setContraseña(passwordEncoder.encode("password123"));
             usuario2.setTelefono("1198765432");
             usuario2.setBarrio("la plata");
             usuario2.setCiudad("la plata");
