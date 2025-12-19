@@ -59,31 +59,11 @@
                         <div class="mapa-col">
                             <div id="mapa-mascota" class="mapa-container"></div>
                         </div>
-                        <div *ngIf="avistamientos.length > 0" class="avistamientos-col">
-                            <div class="avistamientos-lista">
-                                <div class="avistamiento-card" *ngFor="let avistamiento of avistamientos">
-                                    <img *ngIf="mascota.fotos[0]" [src]="mascota.fotos[0]" [alt]="mascota.nombre"
-                                        class="avistamiento-thumb" />
-                                    <div class="avistamiento-info">
-                                        <h3 class="avistamiento-lugar">{{ avistamiento.coordenada.barrio || 'Ubicación
-                                            no especificada' }}</h3>
-                                        <p class="avistamiento-coordenadas">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                                                <path
-                                                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
-                                                    fill="currentColor" />
-                                            </svg>
-                                            {{ avistamiento.coordenada.latitud.toFixed(4) }}° N, {{
-                                            avistamiento.coordenada.longitud.toFixed(4) }}° W
-                                        </p>
-                                        <p class="avistamiento-descripcion">{{ avistamiento.descripcion }}</p>
-                                    </div>
-                                    <span class="avistamiento-fecha">{{ formatearFechaAvistamiento(avistamiento.fecha)
-                                        }}</span>
-                                </div>
-                            </div>
-                        </div>
                     </div>
+                </div>
+
+                <div class="zona-dinamica-avistamientos mt-5">
+                    <router-outlet></router-outlet>
                 </div>
             </div>
 

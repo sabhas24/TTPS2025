@@ -1,0 +1,42 @@
+<div class="container mt-4" *ngIf="!cargando && avistamiento">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Avistamiento de {{ mascota || 'Mascota' }}</h2>
+      <span class="text-muted">ID #{{ avistamiento.id }}</span>
+    </div>
+
+    <p><b><i class="bi bi-person-circle"></i> Reportado por:</b> 
+            {{ reporter ? reporter : 'Cargando...' }}
+          </p>
+    <p><b>Fecha:</b> {{ avistamiento.fecha | date:'medium' }}</p>
+    <p><b>Comentario:</b> {{ avistamiento.comentario || 'Sin descripción adicional.' }}</p>
+    <p><b>En posesión:</b> {{ avistamiento.enPosesion ? 'Sí' : 'No' }}</p>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="image-gallery" *ngIf="avistamiento.fotos && avistamiento.fotos.length > 0">
+          <div class="main-image">
+            <img [src]="avistamiento.fotos[selectedImageIndex]" 
+                 alt="Foto del avistamiento"
+                 class="pet-image" />
+          </div>
+          
+          <div class="thumbnail-grid" *ngIf="avistamiento.fotos.length > 1">
+            <div *ngFor="let foto of avistamiento.fotos; let i = index" 
+                 class="thumbnail"
+                 [class.active]="i === selectedImageIndex" 
+                 (click)="selectImage(i)">
+              <img [src]="foto" [alt]="'Miniatura ' + (i + 1)">
+            </div>
+          </div>
+        </div>
+        
+        <div *ngIf="!avistamiento.fotos?.length" class="text-center p-5 bg-light rounded">
+          <p>Sin fotos disponibles</p>
+        </div>
+    </div>
+
+  <button class="btn btn-secondary me-2" (click)="volver()">Volver</button>
+  <button class="btn btn-warning" (click)="editar()">Editar</button>
+</div>
+
+<div *ngIf="cargando" class="container mt-4">Cargando...</div>

@@ -33,6 +33,13 @@ export const routes: Routes = [
   {
     path: "mascotas/detalle/:id",
     loadComponent: () => import("./component/mascota/detalle-mascota/detalle-mascota").then((m) => m.DetalleMascota),
+    children: [
+      {
+        path: 'avistamientos',
+        loadChildren: () =>
+          import('./component/avistamientos/avistamientos-routing')
+            .then(m => m.default)
+      }
+    ]
   },
-
 ];

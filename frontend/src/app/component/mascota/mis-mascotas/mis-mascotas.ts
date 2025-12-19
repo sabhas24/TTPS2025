@@ -162,4 +162,8 @@ export class MisMascotas {
   verDetalle(id: number) {
     this.router.navigate([`/mascotas/detalle/${id}`])
   }
+
+  irAReportarAvistamiento(mascotaId: number) {
+    this.router.navigate([`/mascotas/detalle/${mascotaId}/avistamientos/nuevo`]);
+  }
 }

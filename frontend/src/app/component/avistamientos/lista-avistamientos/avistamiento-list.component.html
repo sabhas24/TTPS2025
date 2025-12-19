@@ -1,0 +1,51 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>📍 Avistamientos de la mascota</h2>
+        <button class="btn btn-primary" (click)="nuevoAvistamiento()">+ Nuevo Avistamiento</button>
+    </div>
+
+    <div *ngIf="cargando" class="text-center p-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p>Cargando avistamientos...</p>
+    </div>
+
+    <div *ngIf="!cargando && avistamientos.length" class="avistamientos-lista">
+        
+        <div class="avistamiento-card" *ngFor="let a of avistamientos" (click)="verDetalle(a.id!)" style="cursor: pointer;">
+            
+            <div class="badge-posesion" [ngClass]="a.enPosesion ? 'bg-success' : 'bg-secondary'">
+                {{ a.enPosesion ? 'En posesión' : 'Visto' }}
+            </div>
+
+            <div class="avistamiento-info">
+                <h3 class="avistamiento-lugar">
+                    {{ a.coordenada?.barrio || 'Ubicación no especificada' }}
+                </h3>
+                
+                <p class="avistamiento-coordenadas">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="currentColor" />
+                    </svg>
+                    <ng-container *ngIf="a.coordenada; else noCoord">
+                        {{ a.coordenada.latitud.toFixed(4) }}° N, {{ a.coordenada.longitud.toFixed(4) }}° W
+                    </ng-container>
+                    <ng-template #noCoord>Sin coordenadas</ng-template>
+                </p>
+
+                <p class="avistamiento-comentario">{{ a.comentario }}</p>
+            </div>
+
+            <div class="avistamiento-footer d-flex justify-content-between align-items-center">
+                <span class="avistamiento-fecha">
+                    {{ a.fecha | date:'dd MMM, HH:mm' }}
+                </span>
+                <button class="btn btn-sm btn-outline-info">Ver detalles →</button>
+            </div>
+        </div>
+        
+    </div>
+
+    <div *ngIf="!cargando && !avistamientos.length" class="alert alert-info mt-3">
+        No hay avistamientos registrados para esta mascota.
+    </div>
+</div>

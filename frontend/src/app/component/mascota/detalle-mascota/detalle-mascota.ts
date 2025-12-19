@@ -1,6 +1,6 @@
 import { Component, type OnInit, inject, ChangeDetectorRef, AfterViewInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { ActivatedRoute, Router } from "@angular/router"
+import { ActivatedRoute, Router, RouterOutlet } from "@angular/router"
 import { MascotaService, type Mascota } from "../../../services/mascota-service"
 import { AvistamientoService } from "../../../services/avistamiento-service"
 import { UsuarioService } from "../../../services/usuario-service"
@@ -9,6 +9,7 @@ import type { Usuario } from "../../../interfaces/usuario"
 import { HomeHeader } from "../../home/home-header/home-header"
 import { HomeFooter } from "../../home/home-footer/home-footer"
 import * as L from 'leaflet'
+import { AvistamientoResponse } from "app/interfaces/avistamiento"
 
 
 
@@ -28,7 +29,7 @@ interface Avistamiento {
 @Component({
   selector: "app-detalle-mascota",
   standalone: true,
-  imports: [CommonModule, HomeFooter, HomeHeader],
+  imports: [CommonModule, HomeFooter, HomeHeader, RouterOutlet],
   templateUrl: "./detalle-mascota.html",
   styleUrls: ["./detalle-mascota.css"],
 })
@@ -43,7 +44,7 @@ export class DetalleMascota implements OnInit, AfterViewInit {
 
   mascota: Mascota | null = null
   dueno: Usuario | null = null
-  avistamientos: Avistamiento[] = []
+  avistamientos: AvistamientoResponse[] = []
   selectedImageIndex = 0
   loading = true
   error = ""
@@ -164,7 +165,7 @@ export class DetalleMascota implements OnInit, AfterViewInit {
   cargarAvistamientos(mascotaId: number): void {
     this.avistamientoService.getAvistamientosPorMascota(mascotaId).subscribe({
       next: (avistamientos) => {
-        this.avistamientos = avistamientos.sort((a: Avistamiento, b: Avistamiento) => {
+        this.avistamientos = avistamientos.sort((a: AvistamientoResponse, b: AvistamientoResponse) => {
           return new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
         })
       },
@@ -224,10 +225,9 @@ export class DetalleMascota implements OnInit, AfterViewInit {
     return date.toLocaleDateString("es-ES", options)
   }
 
-  reportarAvistamiento(): void {
-    if (!this.mascota) return
-
-    alert("Funcionalidad de reportar avistamiento en desarrollo")
+reportarAvistamiento(): void {
+    if (!this.mascota) return;
+    this.router.navigate(['avistamientos', 'nuevo'], { relativeTo: this.route });
   }
 
   volverAtras(): void {

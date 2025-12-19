@@ -3,31 +3,46 @@ import { environment } from '../../envaironment/envaironment';
 import { HttpClient } from '@angular/common/http';
 import { Mascota } from '../interfaces/mascota';
 import { Observable } from 'rxjs';
-const API_URL = environment.apiUrl;
+import {
+  AvistamientoCreateRequest,
+  AvistamientoUpdateRequest,
+  AvistamientoResponse
+} from '../interfaces/avistamiento';const API_URL = environment.apiUrl;
+
+
 @Injectable({
   providedIn: 'root',
 })
 export class AvistamientoService {
   constructor(private http: HttpClient) { }
-  getAvistamientosPorMascota(mascotaId: number): Observable<any> {
+  getAvistamientosPorMascota(mascotaId: number): Observable<AvistamientoResponse[]> {
     const url = `${environment.apiUrl}/avistamientos/mascota/${mascotaId}`;
-    return this.http.get<any>(url);
+    return this.http.get<AvistamientoResponse[]>(url);
 
   }
-  createAvistamiento(data: any): Observable<any> {
+
+  createAvistamiento(avistamiento: AvistamientoCreateRequest): Observable<AvistamientoResponse> {
     const url = `${environment.apiUrl}/avistamientos`;
-    return this.http.post<any>(url, data);
+    return this.http.post<AvistamientoResponse>(url, avistamiento);
   }
-  deleteAvistamiento(avistamientoId: number): Observable<any> {
+
+  deleteAvistamiento(avistamientoId: number): Observable<void> {
     const url = `${environment.apiUrl}/avistamientos/${avistamientoId}`;
-    return this.http.delete<any>(url);
+    return this.http.delete<void>(url);
   }
-  updateAvistamiento(avistamientoId: number, data: any): Observable<any> {
+
+  updateAvistamiento(avistamientoId: number, avistamiento: AvistamientoUpdateRequest): Observable<AvistamientoResponse> {
     const url = `${environment.apiUrl}/avistamientos/${avistamientoId}`;
-    return this.http.put<any>(url, data);
+    return this.http.put<AvistamientoResponse>(url, avistamiento);
   }
-  getAllAvistamientos(): Observable<any> {
+
+  getAllAvistamientos(): Observable<AvistamientoResponse[]> {
     const url = `${environment.apiUrl}/avistamientos`;
-    return this.http.get<any>(url);
+    return this.http.get<AvistamientoResponse[]>(url);
+  }
+
+  obtenerDetalle(avistamientoId: number): Observable<AvistamientoResponse> {
+    const url = `${environment.apiUrl}/avistamientos/${avistamientoId}`;
+    return this.http.get<AvistamientoResponse>(url);
   }
 }

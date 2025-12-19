@@ -55,7 +55,7 @@
           </div>
 
           <div *ngIf="modo === 'perdidas'" class="acciones-perdidas" (click)="$event.stopPropagation()">
-            <button class="btn-reportar">Reportar Avistamiento</button>
+            <button class="btn-reportar" (click)="irAReportarAvistamiento(mascota.id)">Reportar Avistamiento</button>
           </div>
         </div>
 
