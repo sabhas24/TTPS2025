@@ -1,7 +1,9 @@
-import { Component, inject, HostListener } from "@angular/core"
+import { Component, inject, HostListener, OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { Router, RouterModule } from "@angular/router"
 import { AuthService } from "../../../services/auth-service"
+import { UsuarioService } from "../../../services/usuario-service"
+import type { Usuario } from "../../../interfaces/usuario"
 
 interface NavLink {
   label: string
@@ -16,11 +18,15 @@ interface NavLink {
   templateUrl: "./home-header.html",
   styleUrls: ["./home-header.css"],
 })
-export class HomeHeader {
+export class HomeHeader implements OnInit {
   authService = inject(AuthService)
   router = inject(Router)
+  private usuarioService = inject(UsuarioService)
 
   isUserMenuOpen = false
+
+  // Foto de perfil del usuario logueado
+  usuarioFoto: string | null = null
 
   navLinks: NavLink[] = [
     { label: "Inicio", path: "/" },
@@ -28,6 +34,25 @@ export class HomeHeader {
     { label: "Registrar Mascota Perdida", path: "/mascotas/crear", requiereLogin: true },
     { label: "Mis Mascotas", path: "/mascotas/mis-mascotas", requiereLogin: true },
   ]
+
+  ngOnInit(): void {
+    // Cuando haya un usuario logueado, traemos su perfil completo para obtener la foto
+    this.authService.usuario$.subscribe((usuarioToken) => {
+      if (!usuarioToken) {
+        this.usuarioFoto = null
+        return
+      }
+
+      this.usuarioService.getPerfil(usuarioToken.id).subscribe({
+        next: (usuario: Usuario) => {
+          this.usuarioFoto = usuario.foto || null
+        },
+        error: () => {
+          this.usuarioFoto = null
+        },
+      })
+    })
+  }
 
   getUserInitial(): string {
     const usuario = this.authService.getUsuario()
