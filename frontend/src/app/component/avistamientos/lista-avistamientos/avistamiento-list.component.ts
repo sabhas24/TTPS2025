@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { Avistamiento, AvistamientoResponse } from '../../../interfaces/avistamiento';
 import { AvistamientoService } from '../../../services/avistamiento-service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,6 +17,7 @@ export class AvistamientoListComponent implements OnInit {
   avistamientos: AvistamientoResponse[] = [];
   mascotaId!: number;
   cargando = true;
+  private cdr = inject(ChangeDetectorRef); 
 
   constructor(
     private service: AvistamientoService,
@@ -42,10 +43,12 @@ export class AvistamientoListComponent implements OnInit {
         this.cargando = false;
         this.avistamientos = avistamientos.sort((a: AvistamientoResponse, b: AvistamientoResponse) => {
           return new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
-        })
+        });
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.cargando = false;
+        this.cdr.detectChanges();
         console.error("Error al cargar avistamientos:", err)
       }  
     });
