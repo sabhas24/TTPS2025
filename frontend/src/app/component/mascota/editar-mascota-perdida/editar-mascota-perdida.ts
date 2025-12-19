@@ -88,7 +88,6 @@ export class EditarMascotaPerdida {
     });
   }
 
-  // ✅ Convertir nueva foto a base64 y reemplazar la actual
   onNuevaFoto(event: any) {
     const file = event.target.files[0];
     if (!file) return;
@@ -96,36 +95,52 @@ export class EditarMascotaPerdida {
     const reader = new FileReader();
     reader.onload = () => {
       const base64 = reader.result as string;
-      this.mascota.fotos = [base64]; // ✅ reemplaza la foto actual
+      this.mascota.fotos = [base64];
     };
     reader.readAsDataURL(file);
   }
 
-  actualizarMascota() {
-
+  // ✅ Validaciones en tiempo real
+  validarNombre() {
     if (!this.regexNombreColor.test(this.mascota.nombre)) {
       this.validaciones.nombre = 'El nombre solo puede contener letras y espacios';
     } else {
       this.validaciones.nombre = '';
     }
+  }
 
+  validarTamanio() {
     if (this.mascota.tamanio <= 0) {
       this.validaciones.tamanio = 'El tamaño debe ser un número positivo';
+    } else if (this.mascota.tamanio > 150) {
+      this.validaciones.tamanio = 'El tamaño no puede ser mayor a 150 cm';
     } else {
       this.validaciones.tamanio = '';
     }
+  }
 
+  validarColor() {
     if (!this.regexNombreColor.test(this.mascota.color)) {
       this.validaciones.color = 'El color solo puede contener letras y espacios';
     } else {
       this.validaciones.color = '';
     }
+  }
 
+  validarDescripcion() {
     if (this.mascota.descripcionExtra && !this.regexDescripcion.test(this.mascota.descripcionExtra)) {
       this.validaciones.descripcion = 'La descripción solo puede contener letras, números, espacios, comas y puntos';
     } else {
       this.validaciones.descripcion = '';
     }
+  }
+
+  actualizarMascota() {
+    // Validación final antes de enviar
+    this.validarNombre();
+    this.validarTamanio();
+    this.validarColor();
+    this.validarDescripcion();
 
     if (
       this.validaciones.nombre ||
@@ -158,5 +173,4 @@ export class EditarMascotaPerdida {
       }
     });
   }
-
 }

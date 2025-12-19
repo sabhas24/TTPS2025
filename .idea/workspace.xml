@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="78e42ac3-30f5-4e3e-9f53-c1c1138b248c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/avistamientos/detalle-avistamientos/avistamiento-detail.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/avistamientos/detalle-avistamientos/avistamiento-detail.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/avistamientos/form-avistamientos/avistamiento-form.compontent.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/avistamientos/form-avistamientos/avistamiento-form.compontent.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/avistamientos/form-avistamientos/form-avistamientos.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/avistamientos/form-avistamientos/form-avistamientos.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mascota/editar-mascota-perdida/editar-mascota-perdida.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/editar-mascota-perdida/editar-mascota-perdida.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/component/mascota/editar-mascota-perdida/editar-mascota-perdida.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/component/mascota/editar-mascota-perdida/editar-mascota-perdida.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

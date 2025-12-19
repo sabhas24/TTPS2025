@@ -25,32 +25,40 @@
     <!-- ✅ Nombre -->
     <div class="form-group mb-2">
       <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" class="form-control" [class.is-invalid]="validaciones.nombre"
-        [(ngModel)]="mascota.nombre" name="nombre" required>
+      <input type="text" id="nombre" class="form-control"
+             [class.is-invalid]="validaciones.nombre"
+             [(ngModel)]="mascota.nombre" name="nombre"
+             (ngModelChange)="validarNombre()" required>
       <div class="invalid-feedback">{{ validaciones.nombre }}</div>
     </div>
 
     <!-- ✅ Tamaño -->
     <div class="form-group mb-2">
       <label for="tamanio">Tamaño (cm)</label>
-      <input type="number" id="tamanio" class="form-control" [class.is-invalid]="validaciones.tamanio"
-        [(ngModel)]="mascota.tamanio" name="tamanio" required>
+      <input type="number" id="tamanio" class="form-control"
+             [class.is-invalid]="validaciones.tamanio"
+             [(ngModel)]="mascota.tamanio" name="tamanio"
+             (ngModelChange)="validarTamanio()" required>
       <div class="invalid-feedback">{{ validaciones.tamanio }}</div>
     </div>
 
     <!-- ✅ Color -->
     <div class="form-group mb-2">
       <label for="color">Color</label>
-      <input type="text" id="color" class="form-control" [class.is-invalid]="validaciones.color"
-        [(ngModel)]="mascota.color" name="color" required>
+      <input type="text" id="color" class="form-control"
+             [class.is-invalid]="validaciones.color"
+             [(ngModel)]="mascota.color" name="color"
+             (ngModelChange)="validarColor()" required>
       <div class="invalid-feedback">{{ validaciones.color }}</div>
     </div>
 
     <!-- ✅ Descripción -->
     <div class="form-group mb-2">
       <label for="descripcionExtra">Descripción</label>
-      <textarea id="descripcionExtra" class="form-control" [class.is-invalid]="validaciones.descripcion"
-        [(ngModel)]="mascota.descripcionExtra" name="descripcionExtra"></textarea>
+      <textarea id="descripcionExtra" class="form-control"
+                [class.is-invalid]="validaciones.descripcion"
+                [(ngModel)]="mascota.descripcionExtra" name="descripcionExtra"
+                (ngModelChange)="validarDescripcion()"></textarea>
       <div class="invalid-feedback">{{ validaciones.descripcion }}</div>
     </div>
 
