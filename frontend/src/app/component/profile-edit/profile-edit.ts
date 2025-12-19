@@ -66,7 +66,13 @@ export class ProfileEdit implements OnInit {
       },
       error: (error) => {
         console.error("Error loading profile:", error)
-        this.error = "No se pudo cargar el perfil"
+        if (error.status === 403 || error.status === 401) {
+          this.error = "Sesión expirada. Por favor iniciá sesión nuevamente."
+          this.authService.logout(); // Optional: clear invalid token
+          this.router.navigate(["/login"]);
+        } else {
+          this.error = "No se pudo cargar el perfil"
+        }
       },
     })
   }
