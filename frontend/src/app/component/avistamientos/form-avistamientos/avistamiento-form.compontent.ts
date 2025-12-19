@@ -1,9 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';import { 
-  AvistamientoCreateRequest, 
-  AvistamientoUpdateRequest, 
-  AvistamientoResponse 
+import { ActivatedRoute, Router } from '@angular/router';import {
+  AvistamientoCreateRequest,
+  AvistamientoUpdateRequest,
+  AvistamientoResponse
 } from '../../../interfaces/avistamiento';
 import { AvistamientoService } from '../../../services/avistamiento-service';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -24,7 +24,7 @@ import { GeorefService } from '../../../services/georef.service';
   ]
 })
 export class AvistamientoFormComponent implements OnInit {
-  private cdr = inject(ChangeDetectorRef); 
+  private cdr = inject(ChangeDetectorRef);
   form!: FormGroup;
   editando = false;
   avistamientoId?: number;
@@ -33,7 +33,7 @@ export class AvistamientoFormComponent implements OnInit {
   fotosBase64: string[] = [];
   nombreMascota: string = '';
   nombreUsuario: string = '';
-  lat: number = -34.9205; 
+  lat: number = -34.9205;
   lon: number = -57.9536;
   lugarNombre: string = 'Buscando ubicación...';
 
@@ -46,7 +46,7 @@ export class AvistamientoFormComponent implements OnInit {
     private route: ActivatedRoute,
     private georefService: GeorefService
   ) {}
- 
+
 
   private fechaNoFuturaValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -60,7 +60,7 @@ export class AvistamientoFormComponent implements OnInit {
 ngOnInit(): void {
     const idMascotaParam = this.route.snapshot.paramMap.get('id');
     const idAvistamientoParam = this.route.snapshot.paramMap.get('avistamientoId');
-    
+
     const idUsuario = this.authService.getUsuarioId();
     if (idUsuario) {
       this.usuarioId = idUsuario;
@@ -77,18 +77,41 @@ ngOnInit(): void {
       this.mascotaService.getMascotaById(this.mascotaId).subscribe({
         next: (m) => {
           this.nombreMascota = m.nombre;
-          this.cdr.detectChanges(); 
+          // =========================
+          // NUEVO (no rompe nada)
+          // =========================
+          if (m.coordenada?.barrio) {
+            this.georefService.obtenerCentroideLocalidad(m.coordenada?.barrio).subscribe({
+              next: (coord) => {
+                this.lat = coord.lat;
+                this.lon = coord.lon;
+
+                this.form.patchValue({
+                  latitud: coord.lat,
+                  longitud: coord.lon,
+                  barrio: m.coordenada?.barrio
+                });
+
+                this.cdr.detectChanges();
+              },
+              error: () => {
+                console.warn('No se pudo centrar el mapa con georef');
+              }
+            });
+          }
+          // =========================
+          this.cdr.detectChanges();
         }
       });
     }
-    
+
     if (idAvistamientoParam) {
       this.avistamientoId = Number(idAvistamientoParam);
       this.editando = true;
       this.cargarDatos();
     }
   }
-  
+
   onFotoSeleccionada(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files) return;
@@ -139,7 +162,7 @@ ngOnInit(): void {
     this.form = this.fb.group({
       comentario: ['', [Validators.maxLength(500)]],
       enPosesion: [false],
-      fecha: [new Date().toISOString().substring(0, 16), [Validators.required, this.fechaNoFuturaValidator()]],      
+      fecha: [new Date().toISOString().substring(0, 16), [Validators.required, this.fechaNoFuturaValidator()]],
       latitud: [null, Validators.required],
       longitud: [null, Validators.required],
       barrio: ['', Validators.required],
@@ -208,11 +231,11 @@ if (this.form.invalid) {
       });
     }
   }
-  
+
   private navegarAlListado() {
     this.router.navigate(['/mascotas/detalle', this.mascotaId]);
   }
-  
+
   volver() {
     this.router.navigate(['/mascotas/detalle', this.mascotaId]);
   }
@@ -228,14 +251,14 @@ if (this.form.invalid) {
     this.form.get('longitud')?.markAsDirty();
 
     this.lugarNombre = 'Buscando ubicación...';
-    this.cdr.detectChanges(); 
+    this.cdr.detectChanges();
 
     this.georefService.obtenerUbicacion(event.lat, event.lon).subscribe({
       next: (ubicacion) => {
         this.lugarNombre = ubicacion.municipio_nombre || ubicacion.departamento_nombre || 'Ubicación identificada';
         this.form.patchValue({ barrio: this.lugarNombre });
         this.form.get('barrio')?.markAsDirty(); // Importante para que el formulario sepa que cambió
-        this.cdr.detectChanges(); 
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error en georef inversa', err);

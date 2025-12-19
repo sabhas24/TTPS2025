@@ -194,7 +194,8 @@ export class RegistrarMascota {
       return;
     }
 
-    const barrioUsuario = this.authService.getUsuario()?.barrio || 'Sin especificar';
+    // no pasamos barrio sino ciudad
+    const barrioUsuario =  this.authService.getUsuario()?.ciudad || 'Sin especificar';
 
     const mascotaDTO: MascotaCreateDTO = {
       nombre: this.nombre,
