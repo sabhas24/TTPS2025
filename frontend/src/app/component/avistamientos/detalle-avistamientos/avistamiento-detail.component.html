@@ -1,57 +1,221 @@
-<div class="container mt-4" *ngIf="!cargando && avistamiento">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2>Avistamiento de {{ mascota || 'Mascota' }}</h2>
-      <span class="text-muted">ID #{{ avistamiento.id }}</span>
-    </div>
+<div class="avistamiento-detalle-container" *ngIf="!cargando && avistamiento">
+  <style>
+    /* Contenedor principal */
+    .avistamiento-detalle-container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      font-family: 'Arial', sans-serif;
+      color: #1f2937;
+    }
 
-    <div class="card p-3 mb-4 shadow-sm">
-    <p><b><i class="bi bi-person-circle"></i> Reportado por:</b> 
-            {{ reporter ? reporter : 'Cargando...' }}
-          </p>
+    h2 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .header span {
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    .card {
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+      background-color: #f9fafb;
+    }
+
+    .card p {
+      margin: 0.5rem 0;
+    }
+
+    .card hr {
+      border: 0;
+      border-top: 1px solid #e5e7eb;
+      margin: 1rem 0;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .badge-success {
+      background-color: #10b981;
+    }
+
+    .badge-secondary {
+      background-color: #6b7280;
+    }
+
+    /* Galería de imágenes */
+    .image-gallery {
+      margin-bottom: 1rem;
+    }
+
+    .main-image {
+      width: 100%;
+      height: 400px;
+      margin-bottom: 0.5rem;
+    }
+
+    .main-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .thumbnail-grid {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .thumbnail {
+      width: 80px;
+      height: 80px;
+      overflow: hidden;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border 0.2s;
+    }
+
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .thumbnail.active {
+      border-color: #3b82f6;
+    }
+
+    .no-photos {
+      text-align: center;
+      padding: 2rem;
+      background-color: #f3f4f6;
+      border-radius: 12px;
+      color: #6b7280;
+      font-size: 0.95rem;
+    }
+
+    /* Botones */
+    .botones {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .botones button {
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary {
+      background-color: #6b7280;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #4b5563;
+    }
+
+    .btn-warning {
+      background-color: #f59e0b;
+      color: white;
+    }
+
+    .btn-warning:hover {
+      background-color: #d97706;
+    }
+
+    /* Cargando */
+    .cargando {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #6b7280;
+      padding: 3rem;
+    }
+  </style>
+
+  <!-- Header -->
+  <div class="header">
+    <h2>Avistamiento de {{ mascota || 'Mascota' }}</h2>
+    <span>ID #{{ avistamiento.id }}</span>
+  </div>
+
+  <!-- Información del avistamiento -->
+  <div class="card">
+    <p><b><i class="bi bi-person-circle"></i> Reportado por:</b> {{ reporter ? reporter : 'Cargando...' }}</p>
     <p><b>Fecha:</b> {{ avistamiento.fecha | date:'medium' }}</p>
-    <p><b><i class="bi bi-geo-alt-fill text-danger"></i> Ubicación:</b> 
+    <p><b><i class="bi bi-geo-alt-fill" style="color:#ef4444;"></i> Ubicación:</b>
       {{ avistamiento.coordenada?.barrio || 'Ubicación no especificada' }}
     </p>
     <p class="text-muted ps-4" style="font-size: 0.9rem;" *ngIf="avistamiento.coordenada">
-      <b>Coordenadas:</b> 
-      {{ avistamiento.coordenada.latitud | number:'1.1-4' }}, 
+      <b>Coordenadas:</b>
+      {{ avistamiento.coordenada.latitud | number:'1.1-4' }},
       {{ avistamiento.coordenada.longitud | number:'1.1-4' }}
     </p>
     <hr>
     <p><b>Comentario:</b> {{ avistamiento.comentario || 'Sin descripción adicional.' }}</p>
-    <p><b>En posesión:</b> 
-      <span [class]="avistamiento.enPosesion ? 'badge bg-success' : 'badge bg-secondary'">
+    <p><b>En posesión:</b>
+      <span [class]="avistamiento.enPosesion ? 'badge badge-success' : 'badge badge-secondary'">
         {{ avistamiento.enPosesion ? 'Sí, tiene a la mascota' : 'No, solo lo vio' }}
       </span>
     </p>
-    </div>
+  </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="image-gallery" *ngIf="avistamiento.fotos && avistamiento.fotos.length > 0">
-          <div class="main-image">
-            <img [src]="avistamiento.fotos[selectedImageIndex]" 
-                 alt="Foto del avistamiento"
-                 class="pet-image" />
-          </div>
-          
-          <div class="thumbnail-grid" *ngIf="avistamiento.fotos.length > 1">
-            <div *ngFor="let foto of avistamiento.fotos; let i = index" 
-                 class="thumbnail"
-                 [class.active]="i === selectedImageIndex" 
-                 (click)="selectImage(i)">
-              <img [src]="foto" [alt]="'Miniatura ' + (i + 1)">
-            </div>
+  <!-- Galería de fotos -->
+  <div class="row">
+    <div class="col">
+      <div class="image-gallery" *ngIf="avistamiento.fotos && avistamiento.fotos.length > 0">
+        <div class="main-image">
+          <img [src]="avistamiento.fotos[selectedImageIndex]" alt="Foto del avistamiento" class="pet-image" />
+        </div>
+        <div class="thumbnail-grid" *ngIf="avistamiento.fotos.length > 1">
+          <div *ngFor="let foto of avistamiento.fotos; let i = index"
+               class="thumbnail"
+               [class.active]="i === selectedImageIndex"
+               (click)="selectImage(i)">
+            <img [src]="foto" [alt]="'Miniatura ' + (i + 1)">
           </div>
         </div>
-        
-        <div *ngIf="!avistamiento.fotos?.length" class="text-center p-5 bg-light rounded">
-          <p>Sin fotos disponibles</p>
-        </div>
+      </div>
+      <div *ngIf="!avistamiento.fotos?.length" class="no-photos">
+        <p>Sin fotos disponibles</p>
+      </div>
     </div>
+  </div>
 
-  <button class="btn btn-secondary me-2" (click)="volver()">Volver</button>
-  <button class="btn btn-warning" (click)="editar()">Editar</button>
+  <!-- Botones -->
+  <div class="botones">
+    <button class="btn-secondary" (click)="volver()">Volver</button>
+    <button class="btn-warning" (click)="editar()">Editar</button>
+  </div>
 </div>
 
-<div *ngIf="cargando" class="container mt-4">Cargando...</div>
+<div *ngIf="cargando" class="cargando">Cargando...</div>

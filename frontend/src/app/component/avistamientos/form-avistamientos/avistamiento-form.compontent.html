@@ -1,90 +1,269 @@
-<div class="container mt-4">
-  <div class="card shadow p-4">
-    <h2>{{ editando ? 'Editar' : 'Nuevo' }} Avistamiento</h2>
-    <hr>
+<div class="avistamiento-container">
+  <style>
+    /* Contenedor principal */
+    .avistamiento-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      font-family: 'Arial', sans-serif;
+      color: #1f2937;
+    }
 
-    <form [formGroup]="form" (ngSubmit)="guardar()">
-      
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <label class="form-label">Mascota</label>
-          <input type="text" class="form-control bg-light" [value]="nombreMascota" readonly>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">Reportado por</label>
-          <input type="text" class="form-control bg-light" [value]="nombreUsuario" readonly>
-        </div>
+    .avistamiento-container h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+
+    .avistamiento-container hr {
+      border: 0;
+      border-top: 1px solid #e5e7eb;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Formulario */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    input[type="text"],
+    input[type="datetime-local"],
+    textarea,
+    input[type="file"] {
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 1rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    input[readonly] {
+      background-color: #f3f4f6;
+      cursor: not-allowed;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .input-error {
+      border-color: #ef4444;
+    }
+
+    .error-text {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+
+    /* Mapa */
+    .map-wrapper {
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      overflow: hidden;
+      height: 300px;
+    }
+
+    .lugar-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      background-color: #f3f4f6;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    /* Check */
+    .form-check {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Fotos */
+    .foto-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .foto-item {
+      position: relative;
+      width: 100px;
+      height: 100px;
+    }
+
+    .foto-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .foto-item button {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background-color: #ef4444;
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      padding: 0;
+    }
+
+    .foto-item button:hover {
+      background-color: #dc2626;
+    }
+
+    /* Botones */
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+    }
+
+    .form-actions button {
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 1rem;
+    }
+
+    .form-actions button[type="submit"] {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    .form-actions button[type="submit"]:hover {
+      background-color: #2563eb;
+    }
+
+    .form-actions .btn-cancel {
+      background-color: #f3f4f6;
+      color: #1f2937;
+    }
+
+    .form-actions .btn-cancel:hover {
+      background-color: #e5e7eb;
+    }
+  </style>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+
+    <div class="row">
+      <div class="col">
+        <label>Mascota</label>
+        <input type="text" [value]="nombreMascota" readonly>
+      </div>
+      <div class="col">
+        <label>Reportado por</label>
+        <input type="text" [value]="nombreUsuario" readonly>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Fecha y hora:</label>
+      <input
+        type="datetime-local"
+        formControlName="fecha"
+        [class.input-error]="form.get('fecha')?.invalid && form.get('fecha')?.touched"
+      >
+      <small class="error-text" *ngIf="form.get('fecha')?.hasError('required') && form.get('fecha')?.touched">
+        La fecha es obligatoria.
+      </small>
+      <small class="error-text" *ngIf="form.get('fecha')?.hasError('fechaFutura') && form.get('fecha')?.touched">
+        La fecha no puede ser futura.
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label><b>¿Dónde lo viste?</b> (Hacé clic en el mapa)</label>
+      <div class="map-wrapper">
+        <app-mapa
+          [lat]="lat"
+          [lon]="lon"
+          (coordenadasSeleccionadas)="onMapaSeleccionado($event)">
+        </app-mapa>
       </div>
 
-      <div class="form-group">
-        <label>Fecha y hora:</label>
-        <input 
-          type="datetime-local" 
-          formControlName="fecha"
-          [class.input-error]="form.get('fecha')?.invalid && form.get('fecha')?.touched"
-        >
-        <small class="error-text" *ngIf="form.get('fecha')?.hasError('required') && form.get('fecha')?.touched">
-          La fecha es obligatoria.
+      <div class="lugar-info">
+        <div>
+          <i class="bi bi-geo-alt-fill text-danger"></i>
+          <strong>{{ lugarNombre }}</strong>
+        </div>
+        <small>
+          {{ form.get('latitud')?.value | number:'1.1-4' }}, {{ form.get('longitud')?.value | number:'1.1-4' }}
         </small>
-        <small class="error-text" *ngIf="form.get('fecha')?.hasError('fechaFutura') && form.get('fecha')?.touched">
-          La fecha no puede ser futura.
-        </small>
       </div>
+      <div class="error-text" *ngIf="form.get('barrio')?.touched && form.get('barrio')?.invalid">
+        Debes marcar un punto en el mapa.
+      </div>
+    </div>
 
-      <div class="mb-3">
-        <label class="form-label"><b>¿Dónde lo viste?</b> (Hacé clic en el mapa)</label>
-        <div class="border rounded overflow-hidden">
-          <app-mapa 
-            [lat]="lat" 
-            [lon]="lon" 
-            (coordenadasSeleccionadas)="onMapaSeleccionado($event)">
-          </app-mapa>
-        </div>
-        
-        <div class="mt-2 p-2 bg-light border rounded d-flex justify-content-between align-items-center">
-          <div>
-            <i class="bi bi-geo-alt-fill text-danger"></i> 
-            <strong>{{ lugarNombre }}</strong>
-          </div>
-          <small class="text-muted">
-            {{ form.get('latitud')?.value | number:'1.1-4' }}, {{ form.get('longitud')?.value | number:'1.1-4' }}
-          </small>
-        </div>
-        <div class="text-danger small" *ngIf="form.get('barrio')?.touched && form.get('barrio')?.invalid">
-          Debes marcar un punto en el mapa.
-        </div>
-      </div>
+    <div class="form-group">
+      <label>Comentario</label>
+      <textarea formControlName="comentario" placeholder="Ej: Tenía un collar rojo, parecía asustado..."></textarea>
+    </div>
 
-      <div class="mb-3">
-        <label class="form-label">Comentario</label>
-        <textarea class="form-control" formControlName="comentario" placeholder="Ej: Tenía un collar rojo, parecía asustado..."></textarea>
-      </div>
+    <div class="form-check">
+      <input type="checkbox" formControlName="enPosesion" id="posCheck" />
+      <label for="posCheck">Tengo a la mascota conmigo</label>
+    </div>
 
-      <div class="mb-3 form-check form-switch">
-        <input type="checkbox" class="form-check-input" formControlName="enPosesion" id="posCheck" />
-        <label class="form-check-label" for="posCheck">Tengo a la mascota conmigo</label>
-      </div>
+    <div class="form-group">
+      <label><b>Fotos del avistamiento</b></label>
+      <input type="file" multiple (change)="onFotoSeleccionada($event)" accept="image/*" />
+    </div>
 
-      <div class="mb-3">
-        <label class="form-label"><b>Fotos del avistamiento</b></label>
-        <input type="file" class="form-control" multiple (change)="onFotoSeleccionada($event)" accept="image/*" />
+    <div class="foto-preview" *ngIf="fotosBase64.length > 0">
+      <div *ngFor="let foto of fotosBase64; let i = index" class="foto-item">
+        <img [src]="foto">
+        <button type="button" (click)="eliminarFoto(i)">&times;</button>
       </div>
+    </div>
 
-      <div class="d-flex flex-wrap mb-3" *ngIf="fotosBase64.length > 0">
-        <div *ngFor="let foto of fotosBase64; let i = index" class="position-relative m-2">
-          <img [src]="foto" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
-          <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 shadow-sm" (click)="eliminarFoto(i)">
-            &times;
-          </button>
-        </div>
-      </div>
+    <div class="form-actions">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Publicar' }} Avistamiento</button>
+      <button type="button" class="btn-cancel" (click)="volver()">Cancelar</button>
+    </div>
 
-      <div class="mt-4 border-top pt-3">
-        <button type="submit" class="btn btn-primary px-4 me-2">
-          {{ editando ? 'Actualizar' : 'Publicar' }} Avistamiento
-        </button>
-        <button type="button" class="btn btn-outline-secondary" (click)="volver()">Cancelar</button>
-      </div>
-    </form>
-  </div>
+  </form>
 </div>

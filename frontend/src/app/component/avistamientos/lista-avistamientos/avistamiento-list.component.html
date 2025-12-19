@@ -1,51 +1,205 @@
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>📍 Avistamientos de la mascota</h2>
-        <button class="btn btn-primary" (click)="nuevoAvistamiento()">+ Nuevo Avistamiento</button>
+<div class="avistamientos-container">
+  <style>
+    /* Contenedor principal */
+    .avistamientos-container {
+      max-width: 900px;
+      margin: 2rem auto;
+      font-family: 'Arial', sans-serif;
+      color: #1f2937;
+    }
+
+    /* Header y botón */
+    .avistamientos-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .avistamientos-header h2 {
+      font-size: 1.8rem;
+      margin: 0;
+    }
+
+    .avistamientos-header button {
+      padding: 0.6rem 1.2rem;
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s;
+    }
+
+    .avistamientos-header button:hover {
+      background-color: #2563eb;
+    }
+
+    /* Cargando */
+    .cargando {
+      text-align: center;
+      padding: 3rem;
+      color: #6b7280;
+    }
+
+    /* Lista de avistamientos */
+    .avistamientos-lista {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    /* Card de avistamiento */
+    .avistamiento-card {
+      background-color: #f9fafb;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .avistamiento-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    /* Badge de posesión */
+    .badge-posesion {
+      display: inline-block;
+      padding: 0.3rem 0.7rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: white;
+      width: fit-content;
+      margin-bottom: 0.5rem;
+    }
+
+    .badge-posesion.bg-success {
+      background-color: #10b981;
+    }
+
+    .badge-posesion.bg-secondary {
+      background-color: #6b7280;
+    }
+
+    /* Información */
+    .avistamiento-info h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .avistamiento-info p {
+      margin: 0.25rem 0;
+      font-size: 0.95rem;
+    }
+
+    .avistamiento-coordenadas svg {
+      vertical-align: middle;
+      margin-right: 0.25rem;
+      fill: #ef4444;
+    }
+
+    .avistamiento-comentario {
+      color: #4b5563;
+      font-size: 0.95rem;
+      margin-top: 0.25rem;
+    }
+
+    /* Footer */
+    .avistamiento-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+
+    .avistamiento-footer span {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .avistamiento-footer button {
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      border: none;
+      background-color: #60a5fa;
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .avistamiento-footer button:hover {
+      background-color: #3b82f6;
+    }
+
+    /* Alerta cuando no hay avistamientos */
+    .alert-info {
+      padding: 1rem 1.5rem;
+      background-color: #dbeafe;
+      color: #1e40af;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+  </style>
+
+  <!-- Header -->
+  <div class="avistamientos-header">
+    <h2>📍 Avistamientos de la mascota</h2>
+    <button (click)="nuevoAvistamiento()">+ Nuevo Avistamiento</button>
+  </div>
+
+  <!-- Cargando -->
+  <div *ngIf="cargando" class="cargando">
+    <div class="spinner-border" role="status" style="display:inline-block;width:2rem;height:2rem;border:.25em solid #3b82f6;border-top:.25em solid transparent;border-radius:50%;animation:spin 1s linear infinite;"></div>
+    <p>Cargando avistamientos...</p>
+  </div>
+
+  <!-- Lista de avistamientos -->
+  <div *ngIf="!cargando && avistamientos.length" class="avistamientos-lista">
+    <div class="avistamiento-card" *ngFor="let a of avistamientos" (click)="verDetalle(a.id!)">
+      <div class="badge-posesion" [ngClass]="a.enPosesion ? 'bg-success' : 'bg-secondary'">
+        {{ a.enPosesion ? 'En posesión' : 'Visto' }}
+      </div>
+
+      <div class="avistamiento-info">
+        <h3 class="avistamiento-lugar">{{ a.coordenada?.barrio || 'Ubicación no especificada' }}</h3>
+        <p class="avistamiento-coordenadas">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="currentColor"/>
+          </svg>
+          <ng-container *ngIf="a.coordenada; else noCoord">
+            {{ a.coordenada.latitud.toFixed(4) }}° N, {{ a.coordenada.longitud.toFixed(4) }}° W
+          </ng-container>
+          <ng-template #noCoord>Sin coordenadas</ng-template>
+        </p>
+        <p class="avistamiento-comentario">{{ a.comentario }}</p>
+      </div>
+
+      <div class="avistamiento-footer">
+        <span class="avistamiento-fecha">{{ a.fecha | date:'dd MMM, HH:mm' }}</span>
+        <button>Ver detalles →</button>
+      </div>
     </div>
+  </div>
 
-    <div *ngIf="cargando" class="text-center p-5">
-        <div class="spinner-border text-primary" role="status"></div>
-        <p>Cargando avistamientos...</p>
-    </div>
+  <!-- Sin avistamientos -->
+  <div *ngIf="!cargando && !avistamientos.length" class="alert-info">
+    No hay avistamientos registrados para esta mascota.
+  </div>
 
-    <div *ngIf="!cargando && avistamientos.length" class="avistamientos-lista">
-        
-        <div class="avistamiento-card" *ngFor="let a of avistamientos" (click)="verDetalle(a.id!)" style="cursor: pointer;">
-            
-            <div class="badge-posesion" [ngClass]="a.enPosesion ? 'bg-success' : 'bg-secondary'">
-                {{ a.enPosesion ? 'En posesión' : 'Visto' }}
-            </div>
-
-            <div class="avistamiento-info">
-                <h3 class="avistamiento-lugar">
-                    {{ a.coordenada?.barrio || 'Ubicación no especificada' }}
-                </h3>
-                
-                <p class="avistamiento-coordenadas">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="currentColor" />
-                    </svg>
-                    <ng-container *ngIf="a.coordenada; else noCoord">
-                        {{ a.coordenada.latitud.toFixed(4) }}° N, {{ a.coordenada.longitud.toFixed(4) }}° W
-                    </ng-container>
-                    <ng-template #noCoord>Sin coordenadas</ng-template>
-                </p>
-
-                <p class="avistamiento-comentario">{{ a.comentario }}</p>
-            </div>
-
-            <div class="avistamiento-footer d-flex justify-content-between align-items-center">
-                <span class="avistamiento-fecha">
-                    {{ a.fecha | date:'dd MMM, HH:mm' }}
-                </span>
-                <button class="btn btn-sm btn-outline-info">Ver detalles →</button>
-            </div>
-        </div>
-        
-    </div>
-
-    <div *ngIf="!cargando && !avistamientos.length" class="alert alert-info mt-3">
-        No hay avistamientos registrados para esta mascota.
-    </div>
+  <style>
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </div>
