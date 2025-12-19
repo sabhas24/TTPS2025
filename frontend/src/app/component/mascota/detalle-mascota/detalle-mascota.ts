@@ -71,6 +71,7 @@ export class DetalleMascota implements OnInit, AfterViewInit {
     // El mapa se inicializará cuando se cargue la mascota
   }
 
+  /*
   inicializarMapa(): void {
     // Esperar a que el div del mapa exista en el DOM
     const mapDiv = document.getElementById('mapa-mascota');
@@ -112,6 +113,21 @@ export class DetalleMascota implements OnInit, AfterViewInit {
         </div>
       `)
       .openPopup();
+  }*/
+
+  inicializarMapa(): void {
+    const mapDiv = document.getElementById('mapa-mascota');
+    if (!mapDiv) return;
+
+    if (this.map) { this.map.remove(); }
+
+    this.map = L.map('mapa-mascota').setView([this.mapaLat, this.mapaLon], 14);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(this.map);
+
+    this.dibujarMarcadores();
   }
 
   cargarMascota(id: number): void {
@@ -167,13 +183,78 @@ export class DetalleMascota implements OnInit, AfterViewInit {
       next: (avistamientos) => {
         this.avistamientos = avistamientos.sort((a: AvistamientoResponse, b: AvistamientoResponse) => {
           return new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
-        })
+        });
+
+        if (this.map) {
+          this.dibujarMarcadores();
+        }
+        
       },
       error: (err) => {
         console.error("Error al cargar avistamientos:", err)
       },
     })
   }
+
+  private dibujarMarcadores(): void {
+    if (!this.map) return;
+
+    const puntosRuta: L.LatLngExpression[] = [[this.mapaLat, this.mapaLon]];
+
+    // 1. Marcador de la ubicación ORIGINAL (Casa/Pérdida)
+    const casaIcon = L.icon({
+      iconUrl: 'leaflet/marker-icon.png',
+      shadowUrl: 'leaflet/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41]
+    });
+
+    L.marker([this.mapaLat, this.mapaLon], { icon: casaIcon })
+      .addTo(this.map)
+      .bindPopup(`<b>${this.mascota?.nombre}</b><br>Punto de partida`);
+
+    // 2. Marcadores de AVISTAMIENTOS numerados
+
+    this.avistamientos.forEach((av, index) => {
+      if (av.coordenada) {
+        // Creamos un icono circular con el número
+        const posicion: L.LatLngExpression = [av.coordenada.latitud, av.coordenada.longitud];
+        // Agregamos a la ruta
+        puntosRuta.push(posicion);
+        const numeroIcon = L.divIcon({
+          className: 'custom-div-icon',
+          html: `<div class="marker-pin"></div><span class="marker-num">${index + 1}</span>`,
+          iconSize: [30, 42],
+          iconAnchor: [15, 42]
+        });
+
+        L.marker([av.coordenada.latitud, av.coordenada.longitud], { icon: numeroIcon })
+          .addTo(this.map!)
+          .bindPopup(`
+            <strong>Avistamiento #${index + 1}</strong><br>
+            Fecha: ${this.formatearFechaAvistamiento(av.fecha)}<br>
+            ${av.comentario ? '<i>' + av.comentario + '</i>' : ''}
+          `);
+      }
+    });
+
+
+    if (puntosRuta.length > 1) {
+      const polyline = L.polyline(puntosRuta, {
+        color: '#ffc107',      // Color amarillo/naranja
+        weight: 3,             // Grosor de la línea
+        opacity: 0.6,          // Transparencia
+        dashArray: '10, 10',   // Línea punteada para que parezca un rastro
+        lineJoin: 'round'
+      }).addTo(this.map);
+
+      // Opcional: Ajustar el zoom para que se vean todos los puntos automáticamente
+      const bounds = L.latLngBounds(puntosRuta);
+      this.map.fitBounds(bounds, { padding: [50, 50] });
+    }
+  }
+
+  
 
   selectImage(index: number): void {
     this.selectedImageIndex = index

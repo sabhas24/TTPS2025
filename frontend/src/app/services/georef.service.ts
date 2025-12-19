@@ -32,4 +32,21 @@ export class GeorefService {
         })
       );
   }
+
+  obtenerUbicacion(lat: number, lon: number): Observable<any> {
+  return this.http.get<any>(`${this.API_URL}/ubicacion`, {
+    params: {
+      lat: lat.toString(),
+      lon: lon.toString(),
+      aplanar: 'true'
+    }
+  }).pipe(
+    map(response => {
+      console.log(response);
+      return response.ubicacion;
+    })
+  );
+}
+
+
 }

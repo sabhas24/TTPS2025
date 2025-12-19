@@ -1,66 +1,83 @@
 <div class="container mt-4">
-  <h2>{{ editando ? 'Editar' : 'Nuevo' }} Avistamiento</h2>
+  <div class="card shadow p-4">
+    <h2>{{ editando ? 'Editar' : 'Nuevo' }} Avistamiento</h2>
+    <hr>
 
-  <form [formGroup]="form" (ngSubmit)="guardar()">
-    
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <label class="form-label">Mascota</label>
-        <input type="text" class="form-control bg-light" [value]="nombreMascota" readonly>
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+      
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label">Mascota</label>
+          <input type="text" class="form-control bg-light" [value]="nombreMascota" readonly>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Reportado por</label>
+          <input type="text" class="form-control bg-light" [value]="nombreUsuario" readonly>
+        </div>
       </div>
-      <div class="col-md-6">
-        <label class="form-label">Avistamiento reportado por</label>
-        <input type="text" class="form-control bg-light" [value]="nombreUsuario" readonly>
+
+      <div class="mb-3">
+        <label class="form-label">Fecha y Hora</label>
+        <input type="datetime-local" class="form-control" formControlName="fecha">
+        <div class="text-danger small" *ngIf="form.get('fecha')?.errors?.['fechaFutura']">
+          La fecha no puede ser futura.
+        </div>
       </div>
-    </div>
 
-    <div class="mb-3">
-      <label class="form-label">Fecha y Hora del avistamiento</label>
-      <input type="datetime-local" class="form-control" formControlName="fecha">
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">Comentario</label>
-      <textarea class="form-control" formControlName="comentario"></textarea>
-    </div>
-
-    <div class="mb-3 form-check">
-      <input type="checkbox" class="form-check-input" formControlName="enPosesion" />
-      <label class="form-check-label">En posesión</label>
-    </div>
-
-    <div class="row">
-      <div class="col">
-        <label class="form-label">Latitud</label>
-        <input type="number" class="form-control" formControlName="coordenadaLat" />
+      <div class="mb-3">
+        <label class="form-label"><b>¿Dónde lo viste?</b> (Hacé clic en el mapa)</label>
+        <div class="border rounded overflow-hidden">
+          <app-mapa 
+            [lat]="lat" 
+            [lon]="lon" 
+            (coordenadasSeleccionadas)="onMapaSeleccionado($event)">
+          </app-mapa>
+        </div>
+        
+        <div class="mt-2 p-2 bg-light border rounded d-flex justify-content-between align-items-center">
+          <div>
+            <i class="bi bi-geo-alt-fill text-danger"></i> 
+            <strong>{{ lugarNombre }}</strong>
+          </div>
+          <small class="text-muted">
+            {{ form.get('latitud')?.value | number:'1.1-4' }}, {{ form.get('longitud')?.value | number:'1.1-4' }}
+          </small>
+        </div>
+        <div class="text-danger small" *ngIf="form.get('barrio')?.touched && form.get('barrio')?.invalid">
+          Debes marcar un punto en el mapa.
+        </div>
       </div>
-      <div class="col">
-        <label class="form-label">Longitud</label>
-        <input type="number" class="form-control" formControlName="coordenadaLng" />
+
+      <div class="mb-3">
+        <label class="form-label">Comentario</label>
+        <textarea class="form-control" formControlName="comentario" placeholder="Ej: Tenía un collar rojo, parecía asustado..."></textarea>
       </div>
-    </div>
 
-    <div class="mb-3">
-      <label class="form-label"><b>Fotos del avistamiento</b></label>
-      <input type="file" class="form-control" multiple (change)="onFotoSeleccionada($event)" accept="image/*" />
-      <small class="text-muted">Podés seleccionar varias fotos.</small>
-    </div>
+      <div class="mb-3 form-check form-switch">
+        <input type="checkbox" class="form-check-input" formControlName="enPosesion" id="posCheck" />
+        <label class="form-check-label" for="posCheck">Tengo a la mascota conmigo</label>
+      </div>
 
-    <div class="d-flex flex-wrap mb-3" *ngIf="fotosBase64.length > 0">
-      <div *ngFor="let foto of fotosBase64; let i = index" class="position-relative m-2">
-        <img [src]="foto" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
-        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" (click)="eliminarFoto(i)">
-          ×
+      <div class="mb-3">
+        <label class="form-label"><b>Fotos del avistamiento</b></label>
+        <input type="file" class="form-control" multiple (change)="onFotoSeleccionada($event)" accept="image/*" />
+      </div>
+
+      <div class="d-flex flex-wrap mb-3" *ngIf="fotosBase64.length > 0">
+        <div *ngFor="let foto of fotosBase64; let i = index" class="position-relative m-2">
+          <img [src]="foto" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+          <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 shadow-sm" (click)="eliminarFoto(i)">
+            &times;
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-4 border-top pt-3">
+        <button type="submit" class="btn btn-primary px-4 me-2" [disabled]="form.invalid">
+          {{ editando ? 'Actualizar' : 'Publicar' }} Avistamiento
         </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="volver()">Cancelar</button>
       </div>
-    </div>
-
-
-
-
-    <div class="mt-4">
-      <button type="submit" class="btn btn-success me-2">Guardar</button>
-      <button type="button" class="btn btn-secondary" (click)="volver()">Cancelar</button>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>

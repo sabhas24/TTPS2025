@@ -590,4 +590,35 @@
         position: static;
         margin-top: 0.5rem;
     }
+
+
+    /* Estilo del marcador numerado */
+::ng-deep .custom-div-icon {
+    position: relative;
+}
+
+::ng-deep .marker-pin {
+    width: 30px;
+    height: 30px;
+    border-radius: 50% 50% 50% 0;
+    background: #ffc107; /* Color warning de bootstrap */
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 50%;
+    top: 50%;
+    margin: -15px 0 0 -15px;
+    border: 2px solid #856404;
+}
+
+::ng-deep .marker-num {
+    position: absolute;
+    width: 30px;
+    text-align: center;
+    top: -2px;
+    left: 0;
+    font-weight: bold;
+    color: #856404;
+    font-size: 14px;
+    z-index: 10;
+}
 }

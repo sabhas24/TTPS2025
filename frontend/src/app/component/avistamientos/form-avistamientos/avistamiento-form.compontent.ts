@@ -10,13 +10,16 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { AuthService } from '../../../services/auth-service';
 import { MascotaService } from '../../../services/mascota-service';
 import { ValidatorFn, AbstractControl } from '@angular/forms';
+import { MapaComponent } from '../../mapa/mapa.component';
+import { GeorefService } from '../../../services/georef.service';
 
 @Component({
   selector: 'app-avistamiento-form',
   templateUrl: './avistamiento-form.compontent.html',
   standalone: true,imports: [
     CommonModule,
-    ReactiveFormsModule 
+    ReactiveFormsModule,
+    MapaComponent
   ]
 })
 export class AvistamientoFormComponent implements OnInit {
@@ -28,6 +31,9 @@ export class AvistamientoFormComponent implements OnInit {
   fotosBase64: string[] = [];
   nombreMascota: string = '';
   nombreUsuario: string = '';
+  lat: number = -34.9205; 
+  lon: number = -57.9536;
+  lugarNombre: string = 'Buscando ubicación...';
 
   constructor(
     private fb: FormBuilder,
@@ -35,7 +41,8 @@ export class AvistamientoFormComponent implements OnInit {
     private mascotaService: MascotaService,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private georefService: GeorefService
   ) {}
  
 
@@ -150,9 +157,11 @@ ngOnInit(): void {
     });
   }
 
-
   guardar() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched(); 
+      return;
+    }
 
     const val = this.form.value;
     
@@ -179,9 +188,9 @@ ngOnInit(): void {
         usuarioId: this.usuarioId, 
         comentario: val.comentario,
         enPosesion: val.enPosesion,
-        fecha: new Date(val.fecha).toISOString(),
+        fecha: new Date(val.fecha).toISOString(), 
         coordenada: coordenada,
-        foto: this.fotosBase64
+        foto: this.fotosBase64 
       };
 
       this.service.createAvistamiento(createReq).subscribe({
@@ -196,5 +205,31 @@ ngOnInit(): void {
   
   volver() {
     this.router.navigate(['/mascotas/detalle', this.mascotaId, 'avistamientos']);
+  }
+
+  onMapaSeleccionado(event: { lat: number; lon: number }) {
+    this.lat = event.lat;
+    this.lon = event.lon;
+
+    // 1. Actualizamos lat y lon en el formulario inmediatamente
+    this.form.patchValue({
+      latitud: event.lat,
+      longitud: event.lon
+    });
+
+    // Llamamos a la API con las coordenadas del clic
+    this.georefService.obtenerUbicacion(this.lat, this.lon).subscribe({
+      next: (ubicacion) => {
+        // Priorizamos municipio o departamento según lo que devuelva la API
+        this.lugarNombre = ubicacion.municipio_nombre || ubicacion.departamento_nombre || 'Ubicación identificada';
+        console.log('Datos de ubicación:', ubicacion);
+        // 3. Actualizamos el campo 'barrio' del formulario para el submit
+        this.form.patchValue({ barrio: this.lugarNombre });
+      },
+      error: (err) => {
+        console.error('Error en georef inversa', err);
+        this.lugarNombre = 'Ubicación seleccionada';
+      }
+    });
   }
 }
