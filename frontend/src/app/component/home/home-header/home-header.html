@@ -46,7 +46,12 @@
           <button class="user-menu-button" (click)="toggleUserMenu()" [class.active]="isUserMenuOpen">
 
             <div class="user-avatar">
-              <span class="user-initial">{{ getUserInitial() }}</span>
+              <ng-container *ngIf="usuarioFoto; else initialAvatar">
+                <img [src]="usuarioFoto" alt="Foto de perfil" />
+              </ng-container>
+              <ng-template #initialAvatar>
+                <span class="user-initial">{{ getUserInitial() }}</span>
+              </ng-template>
             </div>
             <div class="user-info">
               <span class="user-name">{{ authService.getNombreCompleto() }}</span>
@@ -60,9 +65,14 @@
 
           <div class="user-dropdown" *ngIf="isUserMenuOpen">
             <div class="dropdown-header">
-              <!-- También mostrando inicial en el dropdown -->
+              <!-- Avatar en el dropdown: foto si existe, inicial si no -->
               <div class="dropdown-user-avatar">
-                <span class="user-initial">{{ getUserInitial() }}</span>
+                <ng-container *ngIf="usuarioFoto; else dropdownInitial">
+                  <img [src]="usuarioFoto" alt="Foto de perfil" />
+                </ng-container>
+                <ng-template #dropdownInitial>
+                  <span class="user-initial">{{ getUserInitial() }}</span>
+                </ng-template>
               </div>
               <div class="dropdown-user-info">
                 <p class="dropdown-user-name">{{ authService.getNombreCompleto() }}</p>

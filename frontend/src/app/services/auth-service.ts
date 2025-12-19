@@ -105,4 +105,12 @@ export class AuthService {
   getUsuarioId(): number | null {
     return this.usuarioSubject.value?.id ?? null;
   }
+
+  resetPassword(token: string, password: string) {
+    return this.http.post(`${API_BASE_URL}/auth/reset-password`, { token, password });
+  }
+
+  forgotPassword(email: string) {
+    return this.http.post(`${API_BASE_URL}/auth/forgot-password`, { email });
+  }
 }

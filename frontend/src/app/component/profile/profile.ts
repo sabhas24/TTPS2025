@@ -1,4 +1,4 @@
-import { Component, type OnInit } from "@angular/core"
+import { Component, type OnInit, ChangeDetectorRef } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { Router, RouterModule } from "@angular/router"
 import { FormBuilder, type FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
@@ -45,6 +45,7 @@ export class Profile implements OnInit {
   nextLevel = "Leyenda de Mascotas"
 
   userId: number | null = null
+  private hasLoadedUserData = false
 
   constructor(
     private usuarioService: UsuarioService,
@@ -52,6 +53,7 @@ export class Profile implements OnInit {
     private mascotaService: MascotaService,
     private router: Router,
     private fb: FormBuilder,
+    private cdr: ChangeDetectorRef,
   ) {
     this.profileForm = this.fb.group({
       nombre: ["", [Validators.required, Validators.minLength(2)]],
@@ -65,9 +67,18 @@ export class Profile implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userId = this.authService.getUsuarioId()
-    this.loadUserProfile()
-    this.loadUserPets()
+    // Nos suscribimos al usuario del AuthService para asegurarnos
+    // de que el ID esté disponible antes de cargar datos.
+    this.authService.usuario$.subscribe((usuarioAuth) => {
+      if (!usuarioAuth || this.hasLoadedUserData) {
+        return
+      }
+
+      this.userId = usuarioAuth.id
+      this.hasLoadedUserData = true
+      this.loadUserProfile()
+      this.loadUserPets()
+    })
   }
 
   loadUserProfile(): void {
@@ -96,6 +107,7 @@ export class Profile implements OnInit {
         }
         this.isLoading = false
         this.profileForm.disable()
+        this.cdr.detectChanges()
       },
       error: (error: any) => {
         console.error("Error loading profile:", error)
@@ -122,6 +134,7 @@ export class Profile implements OnInit {
         }))
         this.totalPages = response.totalPages
         this.totalElements = response.totalElements ?? 0
+        this.cdr.detectChanges()
       },
       error: (error: any) => {
         console.error("Error cargando mascotas del usuario:", error)

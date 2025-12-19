@@ -48,6 +48,12 @@ public class Usuario {
     @Column(columnDefinition = "TEXT")
     private String foto; // almacena Base64
 
+    @Column(name = "reset_token")
+    private String resetToken;
+
+    @Column(name = "reset_token_expiration")
+    private java.time.LocalDateTime resetTokenExpiration;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Usuario_Medalla", joinColumns = @JoinColumn(name = "Id_Usuario", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "Id_Medalla", referencedColumnName = "id"))
     private List<Medalla> medallas;
@@ -195,6 +201,22 @@ public class Usuario {
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+
+    public java.time.LocalDateTime getResetTokenExpiration() {
+        return resetTokenExpiration;
+    }
+
+    public void setResetTokenExpiration(java.time.LocalDateTime resetTokenExpiration) {
+        this.resetTokenExpiration = resetTokenExpiration;
     }
 
     // Métodos adicionales

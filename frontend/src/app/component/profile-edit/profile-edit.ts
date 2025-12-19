@@ -1,4 +1,4 @@
-import { Component, type OnInit } from "@angular/core"
+import { Component, type OnInit, ChangeDetectorRef } from "@angular/core"
 import { ReactiveFormsModule, FormBuilder, type FormGroup, Validators } from "@angular/forms"
 import { CommonModule } from "@angular/common"
 import { Router, RouterLink } from "@angular/router"
@@ -26,6 +26,7 @@ export class ProfileEdit implements OnInit {
     private usuarioService: UsuarioService,
     private authService: AuthService,
     private router: Router,
+    private cdr: ChangeDetectorRef,
   ) {
     this.editForm = this.fb.group({
       nombre: ["", [Validators.required, Validators.minLength(2)]],
@@ -63,10 +64,17 @@ export class ProfileEdit implements OnInit {
         if (usuario.foto) {
           this.imagePreview = usuario.foto
         }
+        this.cdr.detectChanges()
       },
       error: (error) => {
         console.error("Error loading profile:", error)
-        this.error = "No se pudo cargar el perfil"
+        if (error.status === 403 || error.status === 401) {
+          this.error = "Sesión expirada. Por favor iniciá sesión nuevamente."
+          this.authService.logout(); // Optional: clear invalid token
+          this.router.navigate(["/login"]);
+        } else {
+          this.error = "No se pudo cargar el perfil"
+        }
       },
     })
   }
@@ -81,12 +89,14 @@ export class ProfileEdit implements OnInit {
         this.imagePreview = e.target?.result as string
       }
       reader.readAsDataURL(this.selectedFile)
+      this.cdr.detectChanges()
     }
   }
 
   removeImage(): void {
     this.selectedFile = null
     this.imagePreview = null
+    this.cdr.detectChanges()
   }
 
   getControl(name: string) {
@@ -122,16 +132,22 @@ export class ProfileEdit implements OnInit {
 
     this.usuarioService.editarPerfil(userId, updateData).subscribe({
       next: () => {
-        this.router.navigate(["/profile"])
+        this.router.navigate(["/perfil"])
       },
       error: (err) => {
         this.isSubmitting = false
-        this.error = "Error al actualizar el perfil, intenta más tarde"
+        if (err.status === 403 || err.status === 401) {
+          this.error = "Sesión expirada. Por favor iniciá sesión nuevamente."
+          this.authService.logout();
+          this.router.navigate(["/login"]);
+        } else {
+          this.error = "Error al actualizar el perfil, intenta más tarde"
+        }
       },
     })
   }
 
   cancel(): void {
-    this.router.navigate(["/profile"])
+    this.router.navigate(["/perfil"])
   }
 }

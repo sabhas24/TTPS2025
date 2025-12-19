@@ -51,7 +51,7 @@ public class DataSeeder {
             usuario2.setNombre("Pablo");
             usuario2.setApellido("redruello");
             usuario2.setEmail("pabliito.23.94@gmail.com");
-            usuario2.setContraseña(passwordEncoder.encode("     "));
+            usuario2.setContraseña(passwordEncoder.encode("password123"));
             usuario2.setTelefono("1198765432");
             usuario2.setBarrio("la plata");
             usuario2.setCiudad("la plata");
@@ -89,7 +89,8 @@ public class DataSeeder {
             mascota2.setTamanio(1);
             mascota2.setColor("Blanco y negro");
             mascota2.setDescripcionExtra("Gata siamesa, ojos azules. Muy tímida.");
-            mascota2.setFotos(List.of("https://images.dog.ceo/breeds/siamese/n02124075_1783.jpg"));
+            mascota2.setFotos(List.of(
+                    "https://www.elespectador.com/resizer/v2/VWG5YLUQP5FHFGVU4PQK2QTU3U.jpg?auth=9ddacf585a065c1a9c59a6b3816bf7f18edd13b616f2e8918f5b8b3190c50195&width=920&height=613&smart=true&quality=60"));
             mascota2.setCoordenada(new Coordenada(-34.5889, -58.3969, "Recoleta"));
             mascota2.setPublicador(usuario2);
             mascota2.setEstado(EstadoMascota.PERDIDO_PROPIO);
@@ -101,7 +102,8 @@ public class DataSeeder {
             mascota3.setTamanio(3);
             mascota3.setColor("Negro");
             mascota3.setDescripcionExtra("Labrador negro adulto. Muy juguetón y le encanta nadar.");
-            mascota3.setFotos(List.of("https://images.dog.ceo/breeds/labrador/n02099712_1181.jpg"));
+            mascota3.setFotos(List.of(
+                    "https://valmajano.com/wp-content/uploads/2023/05/labrador_americano_25002_0_600-1024x680.jpg"));
             mascota3.setCoordenada(new Coordenada(-34.5627, -58.4556, "Belgrano"));
             mascota3.setPublicador(usuario3);
             mascota3.setEstado(EstadoMascota.PERDIDO_PROPIO);
@@ -125,7 +127,8 @@ public class DataSeeder {
             mascota5.setTamanio(2);
             mascota5.setColor("Dorado");
             mascota5.setDescripcionExtra("Cocker Spaniel, pelaje largo y dorado. Tiene chip.");
-            mascota5.setFotos(List.of("https://images.dog.ceo/breeds/cocker-spaniel/n02102318_3410.jpg"));
+            mascota5.setFotos(
+                    List.of("https://rovinfood.com/wp-content/uploads/2025/02/portada-cocker-spaniel-ingles.jpg"));
             mascota5.setCoordenada(new Coordenada(-34.5812, -58.4093, "Barrio Norte"));
             mascota5.setPublicador(usuario2);
             mascota5.setEstado(EstadoMascota.PERDIDO_PROPIO);
@@ -174,7 +177,7 @@ public class DataSeeder {
             mascota9.setTamanio(2);
             mascota9.setColor("Caramelo");
             mascota9.setDescripcionExtra("Perra mestiza vista en el parque. No tiene dueño conocido.");
-            mascota9.setFotos(List.of("https://images.dog.ceo/breeds/ridgeback-rhodesian/n02087394_4041.jpg"));
+            mascota9.setFotos(List.of("https://lepardland.com/wp-content/uploads/2022/05/Gato-Persa-Azul.jpg"));
             mascota9.setCoordenada(new Coordenada(-34.5813, -58.4094, "Barrio Norte"));
             mascota9.setPublicador(usuario3);
             mascota9.setEstado(EstadoMascota.PERDIDO_AJENO);
@@ -234,7 +237,8 @@ public class DataSeeder {
             avistamiento2.setFecha(LocalDateTime.now().minusDays(1));
             avistamiento2.setCoordenada(new Coordenada(-34.5890, -58.3975, "Recoleta"));
             avistamiento2.setComentario("Gata blanca y negra, muy asustada. Corrió hacia los árboles.");
-            avistamiento2.setFotos(List.of("https://images.dog.ceo/breeds/siamese/n02124075_2089.jpg"));
+            avistamiento2.setFotos(List.of(
+                    "https://cdn.shopify.com/s/files/1/0450/7392/4260/files/They_ve_Got_Sass_to_Spare.png?v=1642760705"));
             avistamiento2.setEnPosesion(false);
             avistamiento2.setMascota(mascota2);
             avistamiento2.setUsuario(usuario3);

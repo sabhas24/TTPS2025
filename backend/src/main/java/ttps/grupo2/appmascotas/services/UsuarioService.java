@@ -128,4 +128,50 @@ public class UsuarioService {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private EmailService emailService;
+
+    public void forgotPassword(String email) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
+        if (usuarioOpt.isEmpty()) {
+            return; // No revelar si el email existe
+        }
+
+        Usuario usuario = usuarioOpt.get();
+        String token = java.util.UUID.randomUUID().toString();
+        usuario.setResetToken(token);
+        usuario.setResetTokenExpiration(java.time.LocalDateTime.now().plusHours(1)); // Validez de 1 hora
+        usuarioRepository.save(usuario);
+
+        String resetLink = "http://localhost:4200/auth/reset-password?token=" + token;
+        String cuerpo = "Hola " + usuario.getNombre() + ",\n\n" +
+                "Has solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:\n" +
+                resetLink + "\n\n" +
+                "Si no solicitaste esto, ignora este mensaje.";
+
+        emailService.enviarEmail(usuario.getEmail(), "Restablecer Contraseña - AppMascotas", cuerpo);
+    }
+
+    public boolean resetPassword(String token, String nuevaPassword) {
+        // Buscar usuario por token de recuperación
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByResetToken(token);
+        if (usuarioOpt.isEmpty()) {
+            return false;
+        }
+
+        Usuario usuario = usuarioOpt.get();
+
+        // Verifica que el token no esté expirado
+        if (usuario.getResetTokenExpiration() != null &&
+                usuario.getResetTokenExpiration().isBefore(java.time.LocalDateTime.now())) {
+            return false;
+        }
+
+        // Actualiza la contraseña y elimina el token
+        usuario.setContraseña(passwordEncoder.encode(nuevaPassword));
+        usuario.setResetToken(null);
+        usuario.setResetTokenExpiration(null);
+        usuarioRepository.save(usuario);
+        return true;
+    }
 }

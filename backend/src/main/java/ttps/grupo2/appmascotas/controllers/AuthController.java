@@ -2,11 +2,14 @@ package ttps.grupo2.appmascotas.controllers;
 
 import ttps.grupo2.appmascotas.DTOs.AuthDTOs.JwtResponseDTO;
 import ttps.grupo2.appmascotas.DTOs.AuthDTOs.LoginRequestDTO;
+import ttps.grupo2.appmascotas.DTOs.AuthDTOs.ForgotPasswordDTO;
+import ttps.grupo2.appmascotas.DTOs.AuthDTOs.ResetPasswordDTO;
 import ttps.grupo2.appmascotas.entities.Usuario;
 import ttps.grupo2.appmascotas.services.JWTService;
 import ttps.grupo2.appmascotas.services.UsuarioService;
-
 import jakarta.validation.Valid;
+
+import java.util.Map; // Fix missing Map import
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,5 +72,22 @@ public class AuthController {
                         // Email o contraseña incorrectos -> 401
                         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
                 }
+        }
+
+        @PostMapping("/reset-password")
+        public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTO dto) {
+                boolean ok = usuarioService.resetPassword(dto.getToken(), dto.getPassword());
+                if (ok) {
+                        return ResponseEntity.ok().body(Map.of("message", "Contraseña restablecida con éxito"));
+                } else {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                        .body(Map.of("message", "Token inválido o expirado"));
+                }
+        }
+
+        @PostMapping("/forgot-password")
+        public ResponseEntity<?> forgotPassword(@RequestBody @Valid ForgotPasswordDTO dto) {
+                usuarioService.forgotPassword(dto.email());
+                return ResponseEntity.ok(Map.of("message", "Si el email existe, se envió un correo de recuperación"));
         }
 }
