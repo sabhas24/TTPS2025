@@ -53,8 +53,8 @@ public class DataSeeder {
             usuario2.setEmail("pabliito.23.94@gmail.com");
             usuario2.setContraseña(passwordEncoder.encode("password123"));
             usuario2.setTelefono("1198765432");
-            usuario2.setBarrio("la plata");
-            usuario2.setCiudad("la plata");
+            usuario2.setBarrio("La Plata");
+            usuario2.setCiudad("La Plata");
             usuario2.setTipo(TipoUsuario.USUARIO);
             usuario2.setHabilitado(true);
             usuarioRepository.save(usuario2);
@@ -78,7 +78,7 @@ public class DataSeeder {
             mascota1.setColor("Marrón");
             mascota1.setDescripcionExtra("Perro Golden Retriever, muy amigable. Tiene collar azul.");
             mascota1.setFotos(List.of("https://images.dog.ceo/breeds/retriever-golden/n02099601_100.jpg"));
-            mascota1.setCoordenada(new Coordenada(-34.5875, -58.4080, "Palermo"));
+            mascota1.setCoordenada(new Coordenada(-34.5875, -58.4080, "Buenos Aires"));
             mascota1.setPublicador(usuario1);
             mascota1.setEstado(EstadoMascota.PERDIDO_PROPIO);
             mascota1.setHabilitado(true);
@@ -91,7 +91,7 @@ public class DataSeeder {
             mascota2.setDescripcionExtra("Gata siamesa, ojos azules. Muy tímida.");
             mascota2.setFotos(List.of(
                     "https://www.elespectador.com/resizer/v2/VWG5YLUQP5FHFGVU4PQK2QTU3U.jpg?auth=9ddacf585a065c1a9c59a6b3816bf7f18edd13b616f2e8918f5b8b3190c50195&width=920&height=613&smart=true&quality=60"));
-            mascota2.setCoordenada(new Coordenada(-34.5889, -58.3969, "Recoleta"));
+            mascota2.setCoordenada(new Coordenada(-34.5889, -58.3969, "La Plata"));
             mascota2.setPublicador(usuario2);
             mascota2.setEstado(EstadoMascota.PERDIDO_PROPIO);
             mascota2.setHabilitado(true);
@@ -104,7 +104,7 @@ public class DataSeeder {
             mascota3.setDescripcionExtra("Labrador negro adulto. Muy juguetón y le encanta nadar.");
             mascota3.setFotos(List.of(
                     "https://valmajano.com/wp-content/uploads/2023/05/labrador_americano_25002_0_600-1024x680.jpg"));
-            mascota3.setCoordenada(new Coordenada(-34.5627, -58.4556, "Belgrano"));
+            mascota3.setCoordenada(new Coordenada(-34.5627, -58.4556, "Buenos Aires"));
             mascota3.setPublicador(usuario3);
             mascota3.setEstado(EstadoMascota.PERDIDO_PROPIO);
             mascota3.setHabilitado(true);
@@ -116,7 +116,7 @@ public class DataSeeder {
             mascota4.setColor("Atigrado");
             mascota4.setDescripcionExtra("Gato atigrado con manchas blancas. Muy cariñoso.");
             mascota4.setFotos(List.of("https://images.dog.ceo/breeds/shiba/shiba-11.jpg"));
-            mascota4.setCoordenada(new Coordenada(-34.5702, -58.4214, "Palermo Soho"));
+            mascota4.setCoordenada(new Coordenada(-34.5702, -58.4214, "Buenos Aires"));
             mascota4.setPublicador(usuario1);
             mascota4.setEstado(EstadoMascota.PERDIDO_PROPIO);
             mascota4.setHabilitado(true);
@@ -129,7 +129,7 @@ public class DataSeeder {
             mascota5.setDescripcionExtra("Cocker Spaniel, pelaje largo y dorado. Tiene chip.");
             mascota5.setFotos(
                     List.of("https://rovinfood.com/wp-content/uploads/2025/02/portada-cocker-spaniel-ingles.jpg"));
-            mascota5.setCoordenada(new Coordenada(-34.5812, -58.4093, "Barrio Norte"));
+            mascota5.setCoordenada(new Coordenada(-34.5812, -58.4093, "La Plata"));
             mascota5.setPublicador(usuario2);
             mascota5.setEstado(EstadoMascota.PERDIDO_PROPIO);
             mascota5.setHabilitado(true);
@@ -142,7 +142,7 @@ public class DataSeeder {
             mascota6.setColor("Blanco y marrón");
             mascota6.setDescripcionExtra("Beagle muy activo. Castrado y vacunado.");
             mascota6.setFotos(List.of("https://images.dog.ceo/breeds/beagle/n02088364_11136.jpg"));
-            mascota6.setCoordenada(new Coordenada(-34.5888, -58.3974, "Recoleta"));
+            mascota6.setCoordenada(new Coordenada(-34.5888, -58.3974, "Buenos Aires"));
             mascota6.setPublicador(usuario3);
             mascota6.setEstado(EstadoMascota.EN_ADOPCION);
             mascota6.setHabilitado(true);
@@ -154,7 +154,7 @@ public class DataSeeder {
             mascota7.setColor("Gris");
             mascota7.setDescripcionExtra("Gata persa, pelo largo. Muy tranquila.");
             mascota7.setFotos(List.of("https://images.dog.ceo/breeds/poodle-toy/n02113624_2294.jpg"));
-            mascota7.setCoordenada(new Coordenada(-34.5703, -58.4215, "Palermo"));
+            mascota7.setCoordenada(new Coordenada(-34.5703, -58.4215, "Buenos Aires"));
             mascota7.setPublicador(usuario1);
             mascota7.setEstado(EstadoMascota.EN_ADOPCION);
             mascota7.setHabilitado(true);
@@ -166,7 +166,7 @@ public class DataSeeder {
             mascota8.setColor("Negro y dorado");
             mascota8.setDescripcionExtra("Pastor Alemán. Fue encontrado y recuperado.");
             mascota8.setFotos(List.of("https://images.dog.ceo/breeds/germanshepherd/n02106662_1074.jpg"));
-            mascota8.setCoordenada(new Coordenada(-34.5628, -58.4557, "Belgrano"));
+            mascota8.setCoordenada(new Coordenada(-34.5628, -58.4557, "La Plata"));
             mascota8.setPublicador(usuario2);
             mascota8.setEstado(EstadoMascota.RECUPERADO);
             mascota8.setHabilitado(true);
@@ -178,7 +178,7 @@ public class DataSeeder {
             mascota9.setColor("Caramelo");
             mascota9.setDescripcionExtra("Perra mestiza vista en el parque. No tiene dueño conocido.");
             mascota9.setFotos(List.of("https://lepardland.com/wp-content/uploads/2022/05/Gato-Persa-Azul.jpg"));
-            mascota9.setCoordenada(new Coordenada(-34.5813, -58.4094, "Barrio Norte"));
+            mascota9.setCoordenada(new Coordenada(-34.5813, -58.4094, "Buenos Aires"));
             mascota9.setPublicador(usuario3);
             mascota9.setEstado(EstadoMascota.PERDIDO_AJENO);
             mascota9.setHabilitado(true);
@@ -190,7 +190,7 @@ public class DataSeeder {
             mascota10.setColor("Naranja");
             mascota10.setDescripcionExtra("Gato naranja. Fue adoptado recientemente.");
             mascota10.setFotos(List.of("https://images.dog.ceo/breeds/shiba/shiba-8.jpg"));
-            mascota10.setCoordenada(new Coordenada(-34.5876, -58.4081, "Palermo"));
+            mascota10.setCoordenada(new Coordenada(-34.5876, -58.4081, "Buenos Aires"));
             mascota10.setPublicador(usuario1);
             mascota10.setEstado(EstadoMascota.ADOPTADO);
             mascota10.setHabilitado(true);
@@ -202,7 +202,7 @@ public class DataSeeder {
             mascota11.setColor("Blanco");
             mascota11.setDescripcionExtra("Dálmata. Está en posesión del dueño.");
             mascota11.setFotos(List.of("https://images.dog.ceo/breeds/dalmatian/cooper2.jpg"));
-            mascota11.setCoordenada(new Coordenada(-34.5889, -58.3970, "Recoleta"));
+            mascota11.setCoordenada(new Coordenada(-34.5889, -58.3970, "La Plata"));
             mascota11.setPublicador(usuario2);
             mascota11.setEstado(EstadoMascota.EN_POSESION);
             mascota11.setHabilitado(true);
@@ -215,7 +215,7 @@ public class DataSeeder {
             mascota12.setColor("Gris");
             mascota12.setDescripcionExtra("Publicación antigua, ya no válida.");
             mascota12.setFotos(List.of("https://images.dog.ceo/breeds/husky/n02110185_1469.jpg"));
-            mascota12.setCoordenada(new Coordenada(-34.5702, -58.4214, "Palermo"));
+            mascota12.setCoordenada(new Coordenada(-34.5702, -58.4214, "Buenos Aires"));
             mascota12.setPublicador(usuario3);
             mascota12.setEstado(EstadoMascota.PERDIDO_PROPIO);
             mascota12.setHabilitado(false); // Deshabilitada
